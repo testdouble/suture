@@ -71,8 +71,7 @@ behavior:
 ``` ruby
 class MyWorker
   def do_work(id)
-    MyMailer.send(Suture.create({
-      name: :worker,
+    MyMailer.send(Suture.create(:worker, {
       old: LegacyWorker.new,
       args: [id]
     }))
@@ -131,8 +130,8 @@ class MyWorkerCharacterizationTest < Minitest::Test
   end
 
   def test_that_it_still_works
-    Suture.verify(LegacyWorker.new, {
-      :name => :worker,
+    Suture.verify(:worker, {
+      :subject => LegacyWorker.new
       :fail_fast => true
     })
   end
@@ -168,7 +167,7 @@ configuration:
 ``` ruby
 class MyWorker
   def do_work(id)
-    MyMailer.send(Suture.create({
+    MyMailer.send(Suture.create(:worker, {
       old: LegacyWorker.new,
       new: NewWorker.new,
       args: [id]
@@ -195,15 +194,15 @@ class MyWorkerCharacterizationTest < Minitest::Test
   end
 
   def test_that_it_still_works
-    Suture.verify(LegacyWorker.new, {
-      name: :worker,
+    Suture.verify(:worker, {
+      subject: LegacyWorker.new,
       fail_fast: true
     })
   end
 
   def test_new_thing_also_works
-    Suture.verify(NewWorker.new, {
-      name: :worker,
+    Suture.verify(:worker, {
+      subject: NewWorker.new,
       fail_fast: false
     })
   end
@@ -274,7 +273,7 @@ This is governed by the `:run_both` to `true`:
 ``` ruby
 class MyWorker
   def do_work(id)
-    MyMailer.send(Suture.create({
+    MyMailer.send(Suture.create(:worker, {
       old: LegacyWorker.new,
       new: NewWorker.new,
       args: [id],
@@ -309,7 +308,7 @@ append any errors to a log at that location.
 ``` ruby
 class MyWorker
   def do_work(id)
-    MyMailer.send(Suture.create({
+    MyMailer.send(Suture.create(:worker, {
       old: LegacyWorker.new,
       new: NewWorker.new,
       args: [id],
@@ -329,7 +328,7 @@ to invoke the legacy code path instead.
 ``` ruby
 class MyWorker
   def do_work(id)
-    MyMailer.send(Suture.create({
+    MyMailer.send(Suture.create(:worker, {
       old: LegacyWorker.new,
       new: NewWorker.new,
       args: [id],
