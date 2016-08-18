@@ -32,7 +32,7 @@ you'd like to change. A good seam is:
 
 * easy to invoke in isolation
 * takes arguments, returns a value
-* minimizes side effects
+* eliminates (or at least minimizes) side effects
 
 Then, to create a seam, typically we create a new unit to house the code that we
 excise from its original site, and then we call it. This adds a level of
@@ -49,7 +49,7 @@ end
 
 class LegacyWorker
   def call(id)
-    thing = LegacyThing.find(id)
+    thing = Thing.find(id)
     # … Still 99 lines. Still terrible …
     thing.result
   end
@@ -100,7 +100,7 @@ class MyWorker
     MyMailer.send(Suture.create({
       old: LegacyWorker.new,
       args: [id],
-      record_calls: 'test/sutures/my_worker.yml'
+      name: :worker
     }))
   end
 end
@@ -138,7 +138,10 @@ class MyWorkerCharacterizationTest < Minitest::Test
   end
 
   def test_that_it_still_works
-    Suture.verify(LegacyWorker.new, 'test/sutures/my_worker.yml')
+    Suture.verify(LegacyWorker.new, {
+      :name => :worker,
+      :fail_fast => true
+    })
   end
 end
 ```
@@ -200,11 +203,17 @@ class MyWorkerCharacterizationTest < Minitest::Test
   end
 
   def test_that_it_still_works
-    Suture.verify(LegacyWorker.new, 'test/sutures/my_worker.yml')
+    Suture.verify(LegacyWorker.new, {
+      name: :worker,
+      fail_fast: true
+    })
   end
 
   def test_new_thing_also_works
-    Suture.verify(NewWorker.new, 'test/sutures/my_worker.yml')
+    Suture.verify(NewWorker.new, {
+      name: :worker,
+      fail_fast: false
+    })
   end
 end
 ```
