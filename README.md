@@ -72,6 +72,7 @@ behavior:
 class MyWorker
   def do_work(id)
     MyMailer.send(Suture.create({
+      name: :worker,
       old: LegacyWorker.new,
       args: [id]
     }))
@@ -92,22 +93,14 @@ arguments are sent to it and what values does it return? By recording the calls
 as we use our app locally, we can later test that the old and new
 implementations behave the same way.
 
-First, we tell Suture to start recording calls to a YAML file:
-
-``` ruby
-class MyWorker
-  def do_work(id)
-    MyMailer.send(Suture.create({
-      old: LegacyWorker.new,
-      args: [id],
-      name: :worker
-    }))
-  end
-end
-```
+First, we tell Suture to start recording calls by setting the environment
+variable `SUTURE_RECORD_CALLS` to something truthy (e.g.
+`SUTURE_RECORD_CALLS=true bundle exec rails s`). So long as this variable is set,
+any calls to our suture will record the arguments passed to the legacy code path
+and the return value.
 
 As you use the application (whether it's a queue system, a web app, or a CLI),
-the calls will be appended to the YAML file. If the legacy code path relies on
+the calls will be saved to a sqlite database. If the legacy code path relies on
 external data sources or services, keep in mind that your recorded inputs and
 outputs will rely on them as well. You may want to narrow the scope of your
 seam accordingly (e.g. to receive an object as an argument instead of a database
@@ -116,7 +109,7 @@ id).
 #### Hard to exploratory test the code locally?
 
 If it's difficult to generate realistic usage locally, then consider running
-this step in production and fetching the YAML file after you've generated enough
+this step in production and fetching the sqlite DB after you've generated enough
 inputs and outputs to be confident you've covered most realistic uses. Keep in
 mind that this approach means your test environment will probably need access to
 the same data stores as the environment that made the recording, which may not
@@ -189,8 +182,7 @@ class NewWorker
 end
 ```
 
-Next, we specify a `NewWorker` under the `:new` key.  We can also remove the
-`:record_calls` entry now that our characterization test is passing. For now,
+Next, we specify a `NewWorker` under the `:new` key. For now,
 Suture will start sending all of its calls to `NewWorker#call`.
 
 Next, let's write a test to verify the new code path also passes the recorded
