@@ -14,9 +14,8 @@ class DevelopmentTest < SafeTest
 
     result = Suture.create :add,
       :old => ->(c,*d){ c + d[0] + d[1] },
-      :args => [1,2,3]
-      #:record_calls => true
-    dictaphone.record(:add, [1,2,3], 6) #DELETE ME (the surgeon's job)
+      :args => [1,2,3],
+      :record_calls => true
 
     assert_equal 6, result
     observations = dictaphone.play(:add)
