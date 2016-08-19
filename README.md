@@ -1,5 +1,7 @@
 # Suture
 
+[![Build Status](https://travis-ci.org/testdouble/suture.svg?branch=master)](https://travis-ci.org/testdouble/suture)
+
 A refactoring tool for Ruby, designed to make it safe to change code you don't
 confidently understand. In fact, changing untrustworthy code is so fraught,
 Suture hopes to make it safer to completely reimplement a code path.
