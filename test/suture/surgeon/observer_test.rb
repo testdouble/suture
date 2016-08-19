@@ -9,7 +9,7 @@ module Suture::Surgeon
     def test_record_calls
       plan = Suture::Value::Plan.new(
         :name => :panda,
-        :old => ->(*args){ :pants },
+        :old => lambda {|*args| :pants },
         :args => [:arg1]
       )
 
@@ -20,4 +20,3 @@ module Suture::Surgeon
     end
   end
 end
-

@@ -3,7 +3,7 @@ require "sqlite3"
 class DevelopmentTest < SafeTest
   def test_no_record_is_no_op
     result = Suture.create :add,
-      :old => ->(c,d){ c + d },
+      :old => lambda {|c,d| c + d },
       :args => [5,9]
 
     assert_equal 14, result
@@ -13,7 +13,7 @@ class DevelopmentTest < SafeTest
     dictaphone = Suture::Adapter::Dictaphone.new
 
     result = Suture.create :add,
-      :old => ->(c,*d){ c + d[0] + d[1] },
+      :old => lambda {|c,*d| c + d[0] + d[1] },
       :args => [1,2,3],
       :record_calls => true
 

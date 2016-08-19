@@ -14,7 +14,7 @@ module Suture::Surgeon
 
     def test_old_path_defined
       plan = Suture::Value::Plan.new(
-        :old => ->(a,b,c){ a + b + c},
+        :old => lambda {|a,b,c| a + b + c},
         :args => [1, 3, 5]
       )
 

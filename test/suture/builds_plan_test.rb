@@ -5,8 +5,8 @@ module Suture
     end
 
     def test_build_without_env_vars
-      some_callable = ->{ "hi" }
-      some_new_callable = ->{ "hi" }
+      some_callable = lambda { "hi" }
+      some_new_callable = lambda { "hi" }
       some_args = [1,2,3]
 
       result = BuildsPlan.new.build(:some_name, {
