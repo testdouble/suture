@@ -1,5 +1,5 @@
 require "fileutils"
-require "SQLite3"
+require "sqlite3"
 
 module Suture::Wrap
   module Sqlite
