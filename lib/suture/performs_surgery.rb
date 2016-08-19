@@ -1,6 +1,7 @@
 module Suture
   class PerformsSurgery
-    def perform
+    def perform(plan, surgeon)
+      surgeon.operate(plan)
     end
   end
 end
