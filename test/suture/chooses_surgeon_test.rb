@@ -5,7 +5,7 @@ module Suture
     end
 
     def test_no_op
-      plan = Value::Plan.new(:old => ->{}, args: ['hi'])
+      plan = Value::Plan.new
 
       result = @subject.choose(plan)
 
@@ -13,6 +13,11 @@ module Suture
     end
 
     def test_development
+      plan = Value::Plan.new(:record_calls => true)
+
+      result = @subject.choose(plan)
+
+      assert_kind_of Surgeon::Observer, result
     end
   end
 end
