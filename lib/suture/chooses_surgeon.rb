@@ -1,6 +1,7 @@
 module Suture
   class ChoosesSurgeon
-    def choose
+    def choose(plan)
+      Surgeon::NoOp.new
     end
   end
 end

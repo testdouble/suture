@@ -1,16 +1,16 @@
-require "suture/builds_plan"
+module Suture
+  class BuildsPlanTest < Minitest::Test
+    def test_build
+      some_callable = ->{ "hi" }
+      some_args = [1,2,3]
 
-class BuildsPlanTest < Minitest::Test
-  def test_build
-    some_callable = ->{ "hi" }
-    some_args = [1,2,3]
+      result = BuildsPlan.new.build({
+        :old => some_callable,
+        :args => some_args
+      })
 
-    result = Suture::BuildsPlan.new.build({
-      :old => some_callable,
-      :args => some_args
-    })
-
-    assert_equal some_callable, result.old
-    assert_equal some_args, result.args
+      assert_equal some_callable, result.old
+      assert_equal some_args, result.args
+    end
   end
 end

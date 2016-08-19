@@ -1,5 +1,3 @@
-require "suture"
-
 class SutureTest < Minitest::Test
   include Gimme::DSL
 
