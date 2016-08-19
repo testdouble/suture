@@ -1,9 +1,9 @@
 module Suture
   class BuildsPlan
-    UN_ENV_IABLE_OPTIONS = [:old, :new, :args]
+    UN_ENV_IABLE_OPTIONS = [:name, :old, :new, :args]
 
-    def build(options = {})
-      Value::Plan.new(options.merge(env))
+    def build(name, options = {})
+      Value::Plan.new(options.merge(:name => name).merge(env))
     end
 
   private

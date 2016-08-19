@@ -1,7 +1,8 @@
 module Suture::Value
   class Plan
-    attr_reader :old, :new, :args, :record_calls
+    attr_reader :name, :old, :new, :args, :record_calls
     def initialize(attrs = {})
+      @name = attrs[:name]
       @old = attrs[:old]
       @new = attrs[:new]
       @args = attrs[:args]

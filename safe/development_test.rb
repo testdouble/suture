@@ -10,7 +10,7 @@ class DevelopmentTest < SafeTest
   end
 
   def test_record_does_record
-    dictaphone = Suture::Value::Dictaphone.new
+    dictaphone = Suture::Adapter::Dictaphone.new
 
     result = Suture.create :add,
       :old => ->(c,*d){ c + d[0] + d[1] },

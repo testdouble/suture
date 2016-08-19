@@ -1,6 +1,6 @@
 require "suture/wrap/sqlite"
 
-module Suture::Value
+module Suture::Adapter
   class Dictaphone
     def initialize
       @db = Suture::Wrap::Sqlite.init
@@ -14,7 +14,7 @@ module Suture::Value
     def play(name)
       rows = Suture::Wrap::Sqlite.select(@db, :observations, "where name = ?", [name.to_s])
       rows.map do |row|
-        Observation.new(
+        Suture::Value::Observation.new(
           row[0],
           row[1].to_sym,
           Marshal.load(row[2]),

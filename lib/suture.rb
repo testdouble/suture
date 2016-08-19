@@ -9,7 +9,7 @@ require "suture/performs_surgery"
 
 module Suture
   def self.create(name, options)
-    plan = BuildsPlan.new.build(options)
+    plan = BuildsPlan.new.build(name, options)
     surgeon = ChoosesSurgeon.new.choose(plan)
     PerformsSurgery.new.perform(plan, surgeon)
   end

@@ -9,7 +9,7 @@ class SutureTest < Minitest::Test
     plan = Suture::Value::Plan.new
     surgeon = Suture::Surgeon::NoOp.new
 
-    give(builds_plan).build(options) { plan }
+    give(builds_plan).build(:thing, options) { plan }
     give(chooses_surgeon).choose(plan) { surgeon }
     give(performs_surgery).perform(plan, surgeon) { :pants }
 
