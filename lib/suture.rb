@@ -1,7 +1,7 @@
 require "suture/version"
 
-require "suture/value"
 require "suture/surgeon"
+require "suture/value"
 
 require "suture/builds_plan"
 require "suture/chooses_surgeon"
