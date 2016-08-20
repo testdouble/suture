@@ -25,16 +25,20 @@ module Suture::Wrap
             name varchar(255),
             args clob,
             result clob,
-            unique(name, args) on conflict abort
+            unique(name, args)
           );
         SQL
       end
     end
 
     def self.insert(db, table, cols, vals)
-      db.execute("insert into #{table} (#{cols.join(", ")}) values (?,?,?)", vals)
-    rescue SQLite3::ConstraintException => e
-      raise Suture::Error::ConflictingCharacterization.new()
+      sql = <<-SQL
+        insert into #{table}
+          (#{cols.join(", ")})
+        values
+          (#{vals.size.times.map { "?" }.join(", ")})
+      SQL
+      db.execute(sql, vals)
     end
 
     def self.select(db, table, where_clause, bind_params)

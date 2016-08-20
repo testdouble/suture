@@ -38,21 +38,6 @@ class SqliteWrapTest < SafeTest
     assert_equal "Your suture gem is too old for this schema. Either delete your database or downgrade the gem (expected schema version -44, was #{ACTUAL})", expected_error.message
   end
 
-  def test_unique_calls
-    db = Suture::Wrap::Sqlite.init
-    Suture::Wrap::Sqlite.insert(db, :observations, [:name, :args, :result],
-                                ["foo", Marshal.dump([1]), Marshal.dump(:old)])
-
-    
-    Suture::Wrap::Sqlite.insert(db, :observations, [:name, :args, :result],
-                                ["foo", Marshal.dump([1]), Marshal.dump(:new)])
-
-    result = Suture::Wrap::Sqlite.select(db, :observations, "", [])
-
-    assert_equal 1, result.size
-    assert_equal :new, Marshal.load(result[0][3])
-  end
-
   def teardown
     Suture::Wrap::Sqlite.send(:remove_const, "SCHEMA_VERSION")
     Suture::Wrap::Sqlite.const_set("SCHEMA_VERSION", ACTUAL)
