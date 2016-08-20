@@ -16,7 +16,7 @@ class PrescribesTestPlanTest < Minitest::Test
   end
 
   def test_options
-    some_subject = ->{}
+    some_subject = lambda {}
 
     result = @subject.prescribe(:foo,
       :database_path => "db",
