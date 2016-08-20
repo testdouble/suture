@@ -1,0 +1,5 @@
+{
+  "*": { "make": "bundle exec rake" },
+  "lib/*.rb": {"alternate": "test/{}_test.rb"},
+  "test/*_test.rb": {"alternate": "lib/{}.rb"}
+}
