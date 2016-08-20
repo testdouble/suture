@@ -9,6 +9,10 @@ require "suture/tests_patient"
 require "suture/interprets_results"
 
 module Suture
+  DEFAULT_OPTIONS = {
+    :database_path => "db/suture.sqlite3"
+  }
+
   def self.create(name, options)
     plan = BuildsPlan.new.build(name, options)
     surgeon = ChoosesSurgeon.new.choose(plan)
