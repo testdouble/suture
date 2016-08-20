@@ -1,3 +1,6 @@
+require "suture/surgeon/observer"
+require "suture/surgeon/no_op"
+
 module Suture
   class ChoosesSurgeon
     def choose(plan)

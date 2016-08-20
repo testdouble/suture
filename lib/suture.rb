@@ -1,8 +1,5 @@
 require "suture/version"
 
-require "suture/surgeon"
-require "suture/value"
-
 require "suture/builds_plan"
 require "suture/chooses_surgeon"
 require "suture/performs_surgery"

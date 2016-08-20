@@ -1,3 +1,5 @@
+require "suture/adapter/dictaphone"
+
 class DevelopmentTest < SafeTest
   def test_no_record_is_no_op
     result = Suture.create :add,

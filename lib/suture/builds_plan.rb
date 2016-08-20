@@ -1,3 +1,5 @@
+require "suture/value/plan"
+
 module Suture
   class BuildsPlan
     UN_ENV_IABLE_OPTIONS = [:name, :old, :new, :args]

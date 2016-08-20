@@ -1,4 +1,5 @@
 require "suture/wrap/sqlite"
+require "suture/value/observation"
 require "suture/error/observation_conflict"
 
 module Suture::Adapter
