@@ -46,5 +46,13 @@ module Suture
 
       assert_equal false, result.record_calls
     end
+
+    def test_build_with_false_string_env_var
+      ENV['SUTURE_RECORD_CALLS'] = "false"
+
+      result = BuildsPlan.new.build(:something)
+
+      assert_equal false, result.record_calls
+    end
   end
 end

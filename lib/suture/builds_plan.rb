@@ -11,12 +11,17 @@ module Suture
     def env
       Hash[ENV.keys.
           select { |k| k.start_with?("SUTURE_") }.
-          map { |k| [env_var_name_to_option_name(k), ENV[k]] }].
+          map { |k| [env_var_name_to_option_name(k), sanitize_env_value(ENV[k])] }].
           reject { |(k,v)| UN_ENV_IABLE_OPTIONS.include?(k) }
     end
 
     def env_var_name_to_option_name(name)
       name.gsub(/^SUTURE\_/,'').downcase.to_sym
+    end
+
+    def sanitize_env_value(value)
+      return false if value == "false"
+      value
     end
   end
 end
