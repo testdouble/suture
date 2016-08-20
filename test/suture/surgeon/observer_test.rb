@@ -1,3 +1,5 @@
+require "suture/adapter/dictaphone"
+
 module Suture::Surgeon
   class ObserverTest < Minitest::Test
     def setup
@@ -7,7 +9,6 @@ module Suture::Surgeon
     def test_record_calls
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       plan = Suture::Value::Plan.new(
-        :name => :panda,
         :old => lambda {|arg1| "#{arg1} pants" },
         :args => [5]
       )
