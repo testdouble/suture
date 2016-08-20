@@ -24,7 +24,8 @@ module Suture::Wrap
             id integer primary key,
             name varchar(255),
             args clob,
-            result clob
+            result clob,
+            unique(name, args) on conflict abort
           );
         SQL
       end
@@ -32,6 +33,8 @@ module Suture::Wrap
 
     def self.insert(db, table, cols, vals)
       db.execute("insert into #{table} (#{cols.join(", ")}) values (?,?,?)", vals)
+    rescue SQLite3::ConstraintException => e
+      raise Suture::Error::ConflictingCharacterization.new()
     end
 
     def self.select(db, table, where_clause, bind_params)
