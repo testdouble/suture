@@ -23,7 +23,7 @@ module Suture::Value
     end
 
     def failed_count
-      @results.count { |r| !r[:passed] }
+      @results.count { |r| !r[:passed] && r[:ran] }
     end
 
     def skipped_count
