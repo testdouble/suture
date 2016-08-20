@@ -2,12 +2,15 @@ require "suture/adapter/dictaphone"
 
 class DictaphoneAdapterTest < SafeTest
   def test_will_fail_on_identical_observation_with_different_result
-    subject = Suture::Adapter::Dictaphone.new
+    subject = Suture::Adapter::Dictaphone.new(Suture::Value::Plan.new(
+      :name => :foo,
+      :args => [1,2,3]
+    ))
 
-    subject.record(:foo, [1,2,3], :bar)
+    subject.record(:bar)
 
     e = assert_raises(Suture::Error::ObservationConflict) {
-      subject.record(:foo, [1,2,3], :baz)
+      subject.record(:baz)
     }
     expected_message = <<-MSG.gsub(/^\s{6}/,'')
       At suture :foo with inputs `[1, 2, 3]`, the newly-observed return value `:baz`
@@ -43,9 +46,12 @@ class DictaphoneAdapterTest < SafeTest
   end
 
   def test_will_succeed_on_identical_observation_with_identical_result
-    subject = Suture::Adapter::Dictaphone.new
+    subject = Suture::Adapter::Dictaphone.new(Suture::Value::Plan.new(
+      :name => :foo,
+      :args => [1,2,3]
+    ))
 
-    subject.record(:foo, [1,2,3], :bar)
-    subject.record(:foo, [1,2,3], :bar)
+    subject.record(:bar)
+    subject.record(:bar)
   end
 end

@@ -2,13 +2,10 @@ require "suture/adapter/dictaphone"
 
 module Suture::Surgeon
   class Observer
-    def initialize
-      @dictaphone = Suture::Adapter::Dictaphone.new
-    end
-
     def operate(plan)
+      dictaphone = Suture::Adapter::Dictaphone.new(plan)
       plan.old.call(*plan.args).tap do |result|
-        @dictaphone.record(plan.name, plan.args, result)
+        dictaphone.record(result)
       end
     end
   end

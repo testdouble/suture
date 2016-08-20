@@ -8,7 +8,10 @@ class DevelopmentTest < SafeTest
   end
 
   def test_record_does_record
-    dictaphone = Suture::Adapter::Dictaphone.new
+    dictaphone = Suture::Adapter::Dictaphone.new(Suture::Value::Plan.new(
+      :name => :add,
+      :args => [1,2,3]
+    ))
 
     result = Suture.create :add,
       :old => lambda {|c,*d| c + d[0] + d[1] },
@@ -16,7 +19,7 @@ class DevelopmentTest < SafeTest
       :record_calls => true
 
     assert_equal 6, result
-    observations = dictaphone.play(:add)
+    observations = dictaphone.play
     assert_equal 1, observations.size
     observation = observations.first
     assert_equal 1, observation.id
