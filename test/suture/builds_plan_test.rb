@@ -4,6 +4,13 @@ module Suture
       ENV.delete_if { |(k,v)| k.start_with?("SUTURE_") }
     end
 
+    def test_defaults
+      result = BuildsPlan.new.build(:foo)
+
+      assert_equal "db/suture.sqlite3", result.database_path
+      assert_equal :foo, result.name
+    end
+
     def test_build_without_env_vars
       some_callable = lambda { "hi" }
       some_new_callable = lambda { "hi" }
@@ -13,7 +20,8 @@ module Suture
         :old => some_callable,
         :new => some_new_callable,
         :args => some_args,
-        :record_calls => :panda
+        :record_calls => :panda,
+        :database_path => "blah.db"
       })
 
       assert_equal :some_name, result.name
@@ -21,6 +29,7 @@ module Suture
       assert_equal some_new_callable, result.new
       assert_equal some_args, result.args
       assert_equal true, result.record_calls
+      assert_equal "blah.db", result.database_path
     end
 
     def test_build_with_env_vars
@@ -29,11 +38,14 @@ module Suture
       ENV['SUTURE_OLD'] = 'a'
       ENV['SUTURE_NEW'] = 'b'
       ENV['SUTURE_ARGS'] = 'c'
+      ENV['SUTURE_DATABASE_PATH'] = 'd'
 
       result = BuildsPlan.new.build(:a_name)
 
-      assert_equal :a_name, result.name
+      assert_equal "d", result.database_path
       assert_equal true, result.record_calls
+      # options that can't be set with ENV vars:
+      assert_equal :a_name, result.name
       assert_equal nil, result.old
       assert_equal nil, result.new
       assert_equal nil, result.args

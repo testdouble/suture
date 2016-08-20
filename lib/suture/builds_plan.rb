@@ -1,9 +1,14 @@
 module Suture
   class BuildsPlan
     UN_ENV_IABLE_OPTIONS = [:name, :old, :new, :args]
+    DEFAULTS = {
+      :database_path => "db/suture.sqlite3"
+    }
 
     def build(name, options = {})
-      Value::Plan.new(options.merge(:name => name).merge(env))
+      Value::Plan.new(
+        DEFAULTS.merge(options).merge(:name => name).merge(env)
+      )
     end
 
   private

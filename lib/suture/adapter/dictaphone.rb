@@ -4,7 +4,7 @@ require "suture/error/observation_conflict"
 module Suture::Adapter
   class Dictaphone
     def initialize(plan)
-      @db = Suture::Wrap::Sqlite.init
+      @db = Suture::Wrap::Sqlite.init(plan.database_path)
       @name = plan.name
       @args = plan.args
     end

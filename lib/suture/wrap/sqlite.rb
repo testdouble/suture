@@ -5,9 +5,10 @@ require "suture/error/schema_version"
 module Suture::Wrap
   module Sqlite
     SCHEMA_VERSION=1
-    def self.init
-      FileUtils.mkdir_p(File.join(Dir.getwd, "db"))
-      SQLite3::Database.new("db/suture.sqlite3").tap do |db|
+    def self.init(location)
+      full_path = File.join(Dir.getwd, location)
+      FileUtils.mkdir_p(File.dirname(full_path))
+      SQLite3::Database.new(full_path).tap do |db|
         db.execute <<-SQL
           create table if not exists schema_info (
             version integer unique

@@ -8,8 +8,7 @@ class DevelopmentTest < SafeTest
   end
 
   def test_record_does_record
-    dictaphone = Suture::Adapter::Dictaphone.new(Suture::Value::Plan.new(
-      :name => :add,
+    dictaphone = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:add,
       :args => [1,2,3]
     ))
 
