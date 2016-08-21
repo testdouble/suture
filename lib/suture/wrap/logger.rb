@@ -21,7 +21,7 @@ module Suture::Wrap
 
       @logger.formatter = proc { |_, time , _, msg|
         formatted_time = time.strftime("%Y-%m-%dT%H:%M:%S.%6N")
-        "[#{formatted_time}] Suture: #{msg.dump}\n".tap { |out|
+        "[#{formatted_time}] Suture: #{msg}\n".tap { |out|
           puts out if options[:log_file] && options[:log_stdout]
         }
       }
