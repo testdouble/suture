@@ -1,6 +1,6 @@
 module Suture::Util
   module Env
-    def self.to_map(excludes)
+    def self.to_map(excludes = {})
       Hash[
         ENV.keys.
             select { |k| k.start_with?("SUTURE_") }.

@@ -10,7 +10,10 @@ require "suture/interprets_results"
 
 module Suture
   DEFAULT_OPTIONS = {
-    :database_path => "db/suture.sqlite3"
+    :database_path => "db/suture.sqlite3",
+    :log_level => "INFO",
+    :log_file => nil,
+    :log_stdout => true
   }
 
   def self.create(name, options)
