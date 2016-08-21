@@ -2,9 +2,10 @@ require "date"
 
 class CustomComparatorTest < SafeTest
   class MyType
-    attr_reader :created_at
+    attr_reader :created_at, :data_stuff
     def initialize
       @created_at = Time.new
+      @data_stuff = "neato"
     end
   end
 
@@ -31,10 +32,10 @@ class CustomComparatorTest < SafeTest
         })
       end
     end
-    assert_match "At suture :time_goes_on with inputs `nil`", expected_error.message
+    assert_match "At seam :time_goes_on", expected_error.message
   end
 
-  def test_custom_comparator_that_succeeds
+  def test_custom_comparators_that_succeed
     2.times do
       # With a custom comparator, when the same callable+args is found in the DB,
       #   it'll run against this comparator and should be fine, since future
@@ -69,6 +70,45 @@ class CustomComparatorTest < SafeTest
         :comparator => lambda { |recorded, actual| recorded.created_at > actual.created_at }
       })
     end
+  end
+
+  class MyComparator < Suture::Comparator
+    def call(recorded, actual)
+      if recorded.kind_of?(MyType)
+        recorded.data_stuff == actual.data_stuff
+      else
+        super
+      end
+    end
+  end
+
+  def test_custom_comparator_that_extends
+    2.times do
+      # With a custom comparator, when the same callable+args is found in the DB,
+      #   it'll run against this comparator and should be fine, since future
+      #   instances will always be in the future.
+      Suture.create(:time_goes_on, {
+        :old => @subject,
+        :record_calls => true,
+        :comparator => MyComparator.new
+      })
+      Suture.create(:just_returns_an_array, {
+        :old => lambda { [1,2,3] },
+        :record_calls => true,
+        :comparator => MyComparator.new
+      })
+    end
+
+    # This makes sense, because the recorded created_at will always be less.
+    Suture.verify(:time_goes_on, {
+      :subject => @subject,
+      :comparator => MyComparator.new
+    })
+    Suture.verify(:just_returns_an_array, {
+      :subject => lambda { [1, 2, 3] },
+      :comparator => MyComparator.new
+    })
+
   end
 
 end
