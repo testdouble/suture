@@ -1,6 +1,6 @@
 module Suture
   class Comparator
-    def compare(recorded, actual)
+    def call(recorded, actual)
       recorded == actual
     end
   end

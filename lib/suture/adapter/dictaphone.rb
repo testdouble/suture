@@ -21,7 +21,7 @@ module Suture::Adapter
       log_info("recorded call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
     rescue SQLite3::ConstraintException => e
       old_result = known_result
-      if @comparator.compare(old_result, result)
+      if @comparator.call(old_result, result)
         log_debug("skipped recording of duplicate call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
       else
         raise Suture::Error::ObservationConflict.new(@name, @args_inspect, result, old_result)

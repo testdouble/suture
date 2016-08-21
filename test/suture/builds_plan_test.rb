@@ -13,26 +13,21 @@ module Suture
       assert_equal :foo, result.name
     end
 
-    class Lol
-      def compare(*args)
-      end
-    end
-
     def test_global_overrides
       Suture.config(:database_path => "other.db")
-      Suture.config(:comparator => Lol.new)
+      Suture.config(:comparator => :lol_compare)
 
       result = BuildsPlan.new.build(:foo)
 
       assert_equal "other.db", result.database_path
-      assert_kind_of Lol, result.comparator
+      assert_equal :lol_compare, result.comparator
     end
 
     def test_build_without_env_vars
       some_callable = lambda { "hi" }
       some_new_callable = lambda { "hi" }
       some_args = [1,2,3]
-      some_comparator = Lol.new
+      some_comparator = :some_compare
 
       result = BuildsPlan.new.build(:some_name, {
         :old => some_callable,
