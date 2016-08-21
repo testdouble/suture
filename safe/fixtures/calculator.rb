@@ -19,6 +19,10 @@ class Calculator
   end
 
   def new_add(a,b)
+    b + a
+  end
+
+  def broken_add(a,b)
     (b + a + @eww_gross_state).tap { @eww_gross_state += 1 }
   end
 end
