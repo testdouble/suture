@@ -1,6 +1,6 @@
 require "suture/tests_patient"
+require "suture/prescribes_test_plan"
 require "suture/value/observation"
-require "suture/value/test_plan"
 
 module Suture
   class TestsPatientTest < Minitest::Test
@@ -12,8 +12,7 @@ module Suture
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       observation = Value::Observation.new(1, :multiply, [1,2,3], 6)
       give(dictaphone).play { [observation] }
-      test_plan = Value::TestPlan.new(
-        :name => :multiply,
+      test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c| a * b * c }
       )
 
@@ -39,8 +38,7 @@ module Suture
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       observation = Value::Observation.new(1, :multiply, [1,2,3], "this isn't 6 at all!!!")
       give(dictaphone).play { [observation] }
-      test_plan = Value::TestPlan.new(
-        :name => :multiply,
+      test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c| a * b * c }
       )
 
@@ -67,8 +65,7 @@ module Suture
       call1 = Value::Observation.new(1, :multiply, [1,2,3], "this isn't 6 at all!!!")
       call2 = Value::Observation.new(1, :multiply, [1,2,3], 6)
       give(dictaphone).play { [call1, call2] }
-      test_plan = Value::TestPlan.new(
-        :name => :multiply,
+      test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c| a * b * c },
         :fail_fast => true
       )
@@ -101,15 +98,15 @@ module Suture
       call1 = Value::Observation.new(1, :multiply, [2,3,4], 24)
       call2 = Value::Observation.new(1, :multiply, [1,2,3], 6)
       give(dictaphone).play { [call1, call2] }
-      test_plan = Value::TestPlan.new(
-        :name => :multiply,
+      test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c|
           if a == 2
             raise some_error
           else
             a * b * c
           end
-        }
+        },
+        :fail_fast => false
       )
 
       result = @subject.test(test_plan)

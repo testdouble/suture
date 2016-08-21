@@ -25,7 +25,7 @@ module Suture
       {}.tap do |result|
         begin
           result[:new_result] = test_plan.subject.call(*observation.args)
-          result[:passed] = Suture::Comparator.new.compare(observation.result, result[:new_result])
+          result[:passed] = test_plan.comparator.compare(observation.result, result[:new_result])
         rescue StandardError => e
           result[:passed] = false
           result[:error] = e

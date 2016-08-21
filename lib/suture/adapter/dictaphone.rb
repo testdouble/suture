@@ -1,4 +1,3 @@
-require "suture/comparator"
 require "suture/wrap/sqlite"
 require "suture/adapter/log"
 require "suture/value/observation"
@@ -11,6 +10,7 @@ module Suture::Adapter
     def initialize(plan)
       @db = Suture::Wrap::Sqlite.init(plan.database_path)
       @name = plan.name
+      @comparator = plan.comparator
       @args_inspect = plan.args.inspect
       @args_dump = Marshal.dump(plan.args)
     end
@@ -21,7 +21,7 @@ module Suture::Adapter
       log_info("recorded call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
     rescue SQLite3::ConstraintException => e
       old_result = known_result
-      if Suture::Comparator.new.compare(old_result, result)
+      if @comparator.compare(old_result, result)
         log_debug("skipped recording of duplicate call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
       else
         raise Suture::Error::ObservationConflict.new(@name, @args_inspect, result, old_result)

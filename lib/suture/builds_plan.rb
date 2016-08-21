@@ -3,7 +3,7 @@ require "suture/util/env"
 
 module Suture
   class BuildsPlan
-    UN_ENV_IABLE_OPTIONS = [:name, :old, :new, :args]
+    UN_ENV_IABLE_OPTIONS = [:name, :old, :new, :args, :comparator]
 
     def build(name, options = {})
       Value::Plan.new(
