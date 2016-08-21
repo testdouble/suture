@@ -37,22 +37,18 @@ module Suture::Error
 
     def describe_failures(failures)
       return if failures.empty?
-      <<-MSG.gsub(/^ {8}/,'')
-        ## Failures
-
-        #{failures.each_with_index.map { |failure, index|
-            describe_failure(failure, index)
-          }.join("\n")}
-        If any of the above failures were marked in error, consider implementing
-        a custom comparator (TODO: not implemented yet) or deleting the record
-        from Suture's database (TODO: not implemented yet).
-      MSG
+      [
+        "## Failures\n",
+        failures.each_with_index.map { |failure, index|
+          describe_failure(failure, index)
+        }
+      ].join("\n")
     end
 
     def describe_failure(failure, index)
       expected = failure[:observation]
       return <<-MSG.gsub(/^ {8}/,'')
-        #{index + 1}.) Recorded call for seam #{expected.name.inspect} (ID: #{expected.id}) ran and failed comparison.
+        #{index + 1}.) Recorded call for seam #{expected.name.inspect} (ID: #{expected.id}) ran and #{failure[:error] ? "raised an error" : "failed comparison"}.
 
            Arguments: ```
              #{expected.args.inspect}
@@ -60,8 +56,8 @@ module Suture::Error
            Expected result: ```
              #{expected.result.inspect}
            ```
-           Actual result: ```
-             #{failure[:new_result].inspect}
+           #{failure[:error] ? "Error raised" : "Actual result"}: ```
+             #{failure[:error] ? failure[:error].inspect : failure[:new_result].inspect}
            ```
       MSG
     end
