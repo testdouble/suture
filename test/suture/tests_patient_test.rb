@@ -11,7 +11,7 @@ module Suture
     def test_single_successful_call
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       observation = Value::Observation.new(1, :multiply, [1,2,3], 6)
-      give(dictaphone).play(:multiply) { [observation] }
+      give(dictaphone).play { [observation] }
       test_plan = Value::TestPlan.new(
         :name => :multiply,
         :subject => lambda {|a,b,c| a * b * c }
@@ -37,7 +37,7 @@ module Suture
     def test_single_failing_call
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       observation = Value::Observation.new(1, :multiply, [1,2,3], "this isn't 6 at all!!!")
-      give(dictaphone).play(:multiply) { [observation] }
+      give(dictaphone).play { [observation] }
       test_plan = Value::TestPlan.new(
         :name => :multiply,
         :subject => lambda {|a,b,c| a * b * c }
@@ -64,7 +64,7 @@ module Suture
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       call1 = Value::Observation.new(1, :multiply, [1,2,3], "this isn't 6 at all!!!")
       call2 = Value::Observation.new(1, :multiply, [1,2,3], 6)
-      give(dictaphone).play(:multiply) { [call1, call2] }
+      give(dictaphone).play { [call1, call2] }
       test_plan = Value::TestPlan.new(
         :name => :multiply,
         :subject => lambda {|a,b,c| a * b * c },
@@ -98,7 +98,7 @@ module Suture
       some_error = StandardError.new
       call1 = Value::Observation.new(1, :multiply, [2,3,4], 24)
       call2 = Value::Observation.new(1, :multiply, [1,2,3], 6)
-      give(dictaphone).play(:multiply) { [call1, call2] }
+      give(dictaphone).play { [call1, call2] }
       test_plan = Value::TestPlan.new(
         :name => :multiply,
         :subject => lambda {|a,b,c|

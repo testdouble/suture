@@ -21,9 +21,12 @@ class PrescribesTestPlanTest < Minitest::Test
     result = @subject.prescribe(:foo,
       :database_path => "db",
       :subject => some_subject,
+      :args => [:lol],
       :fail_fast => false)
 
     assert_equal :foo, result.name
+    assert_equal some_subject, result.subject
+    assert_equal [:lol], result.args
     assert_equal false, result.fail_fast
     assert_equal "db", result.database_path
   end
@@ -31,6 +34,7 @@ class PrescribesTestPlanTest < Minitest::Test
   def test_env_vars
     ENV['SUTURE_NAME'] = 'bad name'
     ENV['SUTURE_SUBJECT'] = 'sub'
+    ENV['SUTURE_ARGS'] = 'nope'
     ENV['SUTURE_DATABASE_PATH'] = 'd'
     ENV['SUTURE_FAIL_FAST'] = 'false'
 
@@ -41,5 +45,6 @@ class PrescribesTestPlanTest < Minitest::Test
     # options that can't be set with ENV vars:
     assert_equal :a_name, result.name
     assert_equal nil, result.subject
+    assert_equal nil, result.args
   end
 end

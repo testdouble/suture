@@ -1,11 +1,12 @@
 require "suture/adapter/dictaphone"
+require "suture/value/test_results"
 
 module Suture
   class TestsPatient
     def test(test_plan)
       dictaphone = Suture::Adapter::Dictaphone.new(test_plan)
       experienced_failure_in_life = false
-      Value::TestResults.new(dictaphone.play(test_plan.name).map { |observation|
+      Value::TestResults.new(dictaphone.play.map { |observation|
         if test_plan.fail_fast && experienced_failure_in_life
           {
             :observation => observation,
