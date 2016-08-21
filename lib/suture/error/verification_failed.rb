@@ -57,10 +57,20 @@ module Suture::Error
              #{expected.result.inspect}
            ```
            #{failure[:error] ? "Error raised" : "Actual result"}: ```
-             #{failure[:error] ? failure[:error].inspect : failure[:new_result].inspect}
+             #{if failure[:error]
+                 stringify_error(failure[:error])
+               else
+                 failure[:new_result].inspect
+               end
+             }
            ```
       MSG
     end
 
+    def stringify_error(error)
+      s = error.inspect
+      s += "\n" + error.backtrace.join("\n") if error.backtrace
+      s
+    end
   end
 end
