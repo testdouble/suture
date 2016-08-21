@@ -1,15 +1,15 @@
 module Suture::Error
   class ObservationConflict < StandardError
-    def initialize(name, args, new_result, old_result)
+    def initialize(name, args_inspect, new_result, old_result)
       @name = name
-      @args = args
+      @args_inspect = args_inspect
       @new_result = new_result
       @old_result = old_result
     end
 
     def message
       <<-MSG.gsub(/^ {8}/,'')
-        At suture #{@name.inspect} with inputs `#{@args.inspect}`, the newly-observed return value `#{@new_result.inspect}`
+        At suture #{@name.inspect} with inputs `#{@args_inspect}`, the newly-observed return value `#{@new_result.inspect}`
         conflicts with previously recorded return value `#{@old_result.inspect}`.
 
         That's not good! Here are a few ideas of what may have happened:
