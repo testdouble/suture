@@ -26,4 +26,13 @@ module Suture
       Suture::InterpretsResults.new.interpret(test_results)
     end
   end
+
+  def self.config(config = {})
+    @config ||= DEFAULT_OPTIONS.dup
+    @config.merge!(config)
+  end
+
+  def self.reset!
+    @config = nil
+  end
 end

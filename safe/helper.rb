@@ -9,6 +9,7 @@ class SafeTest < Minitest::Test
     super
     clean("db")
     ENV.delete_if { |(k,v)| k.start_with?("SUTURE_") }
+    Suture.reset!
   end
 
 private

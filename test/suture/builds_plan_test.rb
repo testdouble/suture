@@ -2,6 +2,7 @@ module Suture
   class BuildsPlanTest < Minitest::Test
     def teardown
       ENV.delete_if { |(k,v)| k.start_with?("SUTURE_") }
+      Suture.reset!
     end
 
     def test_defaults
@@ -9,6 +10,14 @@ module Suture
 
       assert_equal "db/suture.sqlite3", result.database_path
       assert_equal :foo, result.name
+    end
+
+    def test_global_overrides
+      Suture.config(:database_path => "other.db")
+
+      result = BuildsPlan.new.build(:foo)
+
+      assert_equal "other.db", result.database_path
     end
 
     def test_build_without_env_vars

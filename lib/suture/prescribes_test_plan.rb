@@ -9,8 +9,8 @@ module Suture
     }
 
     def prescribe(name, options = {})
-      Value::TestPlan.new(DEFAULT_OPTIONS.
-                          merge(DEFAULT_TEST_OPTIONS).
+      Value::TestPlan.new(DEFAULT_TEST_OPTIONS.
+                          merge(Suture.config).
                           merge(options).
                           merge(:name => name).
                           merge(Suture::Util::Env.to_map(UN_ENV_IABLE_OPTIONS)))

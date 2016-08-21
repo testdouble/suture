@@ -5,6 +5,7 @@ class PrescribesTestPlanTest < Minitest::Test
 
   def teardown
     ENV.delete_if { |(k,v)| k.start_with?("SUTURE_") }
+    Suture.reset!
   end
 
   def test_defaults
@@ -13,6 +14,14 @@ class PrescribesTestPlanTest < Minitest::Test
     assert_equal :foo, result.name
     assert_equal true, result.fail_fast
     assert_equal "db/suture.sqlite3", result.database_path
+  end
+
+  def test_global_overrides
+    Suture.config(:database_path => "other.db")
+
+    result = @subject.prescribe(:foo)
+
+    assert_equal "other.db", result.database_path
   end
 
   def test_options

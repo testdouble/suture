@@ -7,7 +7,7 @@ module Suture
 
     def build(name, options = {})
       Value::Plan.new(
-        DEFAULT_OPTIONS.
+        Suture.config.
           merge(options).
           merge(:name => name).
           merge(Suture::Util::Env.to_map(UN_ENV_IABLE_OPTIONS))

@@ -44,4 +44,30 @@ class SutureTest < Minitest::Test
 
     verify(interprets_results).interpret(test_results)
   end
+
+  def test_config_default
+    assert_equal Suture::DEFAULT_OPTIONS, Suture.config
+  end
+
+  def test_config_override
+    initial = Suture::DEFAULT_OPTIONS
+
+    result = Suture.config({:pants => true})
+
+    expected = Suture::DEFAULT_OPTIONS.merge(:pants => true)
+    assert_equal expected, result
+    assert_equal expected, Suture.config
+  end
+
+  def test_reset!
+    Suture.config({:trollface => "lol"})
+
+    Suture.reset!
+
+    assert_equal Suture::DEFAULT_OPTIONS, Suture.config
+  end
+
+  def teardown
+    Suture.reset!
+  end
 end
