@@ -11,6 +11,11 @@ module Suture::Adapter
       @logger
     end
 
+    def self.reset!
+      @setup = nil
+      @logger = nil
+    end
+
     def log_debug(*args, &blk)
       Log.logger.debug(*args, &blk)
     end

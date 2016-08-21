@@ -8,6 +8,8 @@ require "suture/prescribes_test_plan"
 require "suture/tests_patient"
 require "suture/interprets_results"
 
+require "suture/adapter/log"
+
 module Suture
   DEFAULT_OPTIONS = {
     :database_path => "db/suture.sqlite3",
@@ -37,5 +39,6 @@ module Suture
 
   def self.reset!
     @config = nil
+    Adapter::Log.reset!
   end
 end
