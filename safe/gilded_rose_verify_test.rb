@@ -2,8 +2,8 @@ require "fixtures/gilded_rose"
 
 class GildedRoseVerifyTest < SafeTest
   def setup
+    super
     record_calls_of_the_original_code!
-    ENV.delete("SUTURE_RECORD_CALLS")
   end
 
   # This test verifies that when we play back what we just recorded against
@@ -51,6 +51,7 @@ class GildedRoseVerifyTest < SafeTest
     100.times do
       GildedRose.update_quality(items)
     end
+    ENV.delete("SUTURE_RECORD_CALLS")
   end
 
   def create_a_bunch_of_items
