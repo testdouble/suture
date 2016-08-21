@@ -45,8 +45,7 @@ class DictaphoneAdapterTest < SafeTest
   end
 
   def test_will_succeed_on_identical_observation_with_identical_result
-    subject = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(
-      :name => :foo,
+    subject = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:foo,
       :args => [1,2,3]
     ))
 
