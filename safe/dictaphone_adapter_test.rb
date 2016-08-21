@@ -11,7 +11,7 @@ class DictaphoneAdapterTest < SafeTest
     e = assert_raises(Suture::Error::ObservationConflict) {
       subject.record(:baz)
     }
-    expected_message = <<-MSG.gsub(/^\s{6}/,'')
+    expected_message = <<-MSG.gsub(/^ {6}/,'')
       At suture :foo with inputs `[1, 2, 3]`, the newly-observed return value `:baz`
       conflicts with previously recorded return value `:bar`.
 

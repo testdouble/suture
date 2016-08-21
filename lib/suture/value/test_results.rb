@@ -22,8 +22,12 @@ module Suture::Value
       @results.count { |r| r[:passed] }
     end
 
+    def failed
+      @results.select { |r| !r[:passed] && r[:ran] }
+    end
+
     def failed_count
-      @results.count { |r| !r[:passed] && r[:ran] }
+      failed.size
     end
 
     def errored_count

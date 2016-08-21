@@ -8,7 +8,7 @@ module Suture::Error
     end
 
     def message
-      <<-MSG.gsub(/^\s{8}/,'')
+      <<-MSG.gsub(/^ {8}/,'')
         At suture #{@name.inspect} with inputs `#{@args.inspect}`, the newly-observed return value `#{@new_result.inspect}`
         conflicts with previously recorded return value `#{@old_result.inspect}`.
 
