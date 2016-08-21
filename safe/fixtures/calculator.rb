@@ -1,6 +1,10 @@
 require "suture"
 
 class Calculator
+  def initialize
+    @eww_gross_state = 0
+  end
+
   def add(a,b)
     Suture.create :add,
       :old => method(:old_add),
@@ -15,6 +19,6 @@ class Calculator
   end
 
   def new_add(a,b)
-    b + a
+    (b + a + @eww_gross_state).tap { @eww_gross_state += 1 }
   end
 end
