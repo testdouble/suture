@@ -29,6 +29,7 @@ module Suture
       assert_equal 0, result.errored_count
       assert_equal({
         :observation => observation,
+        :new_result => 6,
         :passed => true,
         :ran => true
       }, result.results.first)
@@ -56,6 +57,7 @@ module Suture
       assert_equal({
         :observation => observation,
         :passed => false,
+        :new_result => 6,
         :ran => true
       }, result.results.first)
     end
@@ -84,11 +86,11 @@ module Suture
       assert_equal({
         :observation => call1,
         :passed => false,
+        :new_result => 6,
         :ran => true
       }, result.results.first)
       assert_equal({
         :observation => call2,
-        :passed => nil,
         :ran => false
       }, result.results.last)
     end
@@ -129,6 +131,7 @@ module Suture
       assert_equal({
         :observation => call2,
         :passed => true,
+        :new_result => 6,
         :ran => true
       }, result.results.last)
     end

@@ -10,7 +10,6 @@ module Suture
         if test_plan.fail_fast && experienced_failure_in_life
           {
             :observation => observation,
-            :passed => nil,
             :ran => false
           }
         else
@@ -25,9 +24,9 @@ module Suture
     def invoke(test_plan, observation)
       {}.tap do |result|
         begin
-          return_value = test_plan.subject.call(*observation.args)
+          result[:new_result] = test_plan.subject.call(*observation.args)
           # TODO: Comparators go here:
-          result[:passed] = return_value == observation.result
+          result[:passed] = result[:new_result] == observation.result
         rescue StandardError => e
           result[:passed] = false
           result[:error] = e
