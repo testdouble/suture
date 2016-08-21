@@ -1,6 +1,7 @@
 module Suture
   class ComparatorTest < Minitest::Test
     def setup
+      super
       @subject = Comparator.new
     end
 
