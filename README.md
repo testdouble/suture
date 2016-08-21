@@ -344,3 +344,98 @@ Since this approach rescues errors, it's possible that errors in the new code
 path will go unnoticed, so it's best used in conjunction with Suture's logging
 feature. Before ultimately deciding to finally delete the legacy code path,
 double-check that the logs aren't full of rescued errors!
+
+## Configuration
+
+Legacy code is, necessarily, complex and hard-to-wrangle. That's why Suture comes
+with a bunch of configuration options to modify its behavior, particularly for
+hard-to-compare objects.
+
+### Setting configuration options
+
+In general, most configuration options can be set in several places:
+
+* Globally, via an environment variable. The flag `record_calls` will translate
+to an expected ENV var named `SUTURE_RECORD_CALLS` and can be set from the
+command line like so: `SUTURE_RECORD_CALLS=true bundle exec rails server`, to
+tell Suture to record all your interactions with your seams without touching the
+source code.
+
+* Globally, via the top-level `Suture.config` method. Most variables can be set
+via this top-level configuration, like
+`Suture.config(:database_path => 'my.db')`. Once set, this will apply to all your
+interactions with Suture for the life of the process until you call
+`Suture.reset!`.
+
+* At a `Suture.create` or `Suture.verify` call-site as part of its options hash.
+If you have several seams, you'll probably want to set most options locally
+where you call Suture, like `Suture.create(:foo, { :comparator => my_thing })`
+
+### Supported options
+
+#### Suture.create
+
+TODO
+
+#### Suture.verify
+
+TODO
+
+### Creating a custom comparator
+
+Out-of-the-box, Suture will do its best to compare your recorded & actual results
+to ensure that things are equivalent to one another, but reality is often less
+tidy than a gem can predict up-front. When the built-in equivalency comparator
+fails you, you can define a custom one—globally or at each `Suture.create` or
+`Suture.verify` call-site.
+
+#### Extending the built-in comparator class
+
+If you have a bunch of value types that require special equivalency checks, it
+makes sense to invest the time to extend built-in one:
+
+``` ruby
+class MyComparator < Suture::Comparator
+  def call(recorded, actual)
+    if recorded.kind_of?(MyType)
+      recorded.data_stuff == actual.data_stuff
+    else
+      super
+    end
+  end
+end
+```
+
+So long as you return `super` for non-special cases, it should be safe to set an
+instance of your custom comparator globally for the life of the process with:
+
+``` ruby
+Suture.config({
+  :comparator => MyComparator.new
+})
+```
+
+#### Creating a one-off comparator
+
+If a particular seam requires a custom comparator and will always return
+sufficiently homogeneous types, it may be good enough to set a custom comparator
+inline at the `Suture.create` or `Suture.verify` call-site, like so:
+
+``` ruby
+Suture.create(:my_type, {
+  :old => method(:old_method),
+  :args => [42],
+  :comparator => ->(recorded, actual){ recorded.data_thing == actual.data_thing }
+})
+```
+
+Just be sure to set it the same way if you want `Suture.verify` to be able to
+test your recorded values!
+
+``` ruby
+Suture.verify(:my_type, {
+  :subject => method(:old_method),
+  :comparator => ->(recorded, actual){ recorded.data_thing == actual.data_thing }
+})
+```
+
