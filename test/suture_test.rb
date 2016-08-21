@@ -24,13 +24,10 @@ class SutureTest < Minitest::Test
     test_results = Suture::Value::TestResults.new([])
     prescribes_test_plan = gimme_next(Suture::PrescribesTestPlan)
     tests_patient = gimme_next(Suture::TestsPatient)
-    interprets_results = gimme_next(Suture::InterpretsResults)
     give(prescribes_test_plan).prescribe(:stuff, options) { test_plan }
     give(tests_patient).test(test_plan) { test_results }
 
     Suture.verify(:stuff, options)
-
-    verify(interprets_results, 0.times).interpret(test_results)
   end
 
   def test_verify_did_fail
