@@ -13,14 +13,25 @@ module Suture
             :ran => false
           }
         else
-          {
+          invoke(test_plan, observation).merge({
             :observation => observation,
-            # TODO: Comparators go here:
-            :passed => test_plan.subject.call(*observation.args) == observation.result,
             :ran => true
-          }.tap { |r| experienced_failure_in_life = true unless r[:passed]}
+          }).tap { |r| experienced_failure_in_life = true unless r[:passed]}
         end
       })
+    end
+
+    def invoke(test_plan, observation)
+      {}.tap do |result|
+        begin
+          return_value = test_plan.subject.call(*observation.args)
+          # TODO: Comparators go here:
+          result[:passed] = return_value == observation.result
+        rescue StandardError => e
+          result[:passed] = false
+          result[:error] = e
+        end
+      end
     end
   end
 end
