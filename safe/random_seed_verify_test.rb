@@ -1,4 +1,3 @@
-require_relative "helper"
 require "suture/error/verification_failed"
 
 class RandomSeedVerifyTest < SafeTest

@@ -1,4 +1,3 @@
-require_relative "helper"
 require "date"
 
 class CustomComparatorTest < SafeTest

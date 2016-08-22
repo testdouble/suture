@@ -1,4 +1,3 @@
-require_relative "helper"
 require "suture/wrap/sqlite"
 
 class SqliteWrapTest < SafeTest

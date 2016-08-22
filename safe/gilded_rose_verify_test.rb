@@ -1,5 +1,4 @@
-require_relative "helper"
-require_relative "fixtures/gilded_rose"
+require "fixtures/gilded_rose"
 
 class GildedRoseVerifyTest < SafeTest
   def setup

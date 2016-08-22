@@ -1,4 +1,3 @@
-require_relative "helper"
 require "suture/adapter/dictaphone"
 
 class DictaphoneAdapterTest < SafeTest
