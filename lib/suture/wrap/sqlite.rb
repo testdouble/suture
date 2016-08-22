@@ -43,7 +43,10 @@ module Suture::Wrap
     end
 
     def self.select(db, table, where_clause, bind_params)
-      db.execute("select * from #{table} #{where_clause}", bind_params)
+      db.execute(
+        "select * from #{table} #{where_clause} order by id asc",
+        bind_params
+      )
     end
 
     def self.delete(db, table, where_clause, bind_params)
