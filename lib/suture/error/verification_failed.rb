@@ -1,7 +1,7 @@
 module Suture::Error
   class VerificationFailed < StandardError
-    def initialize(results)
-      super
+    def initialize(plan, results)
+      @plan = plan
       @results = results
     end
 
@@ -27,6 +27,7 @@ module Suture::Error
     def summarize(results)
       <<-MSG.gsub(/^ {8}/,'')
         # Result Summary
+
           - Passed........#{results.passed_count}
           - Failed........#{results.failed_count}
             - with error..#{results.errored_count}

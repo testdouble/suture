@@ -1,9 +1,12 @@
+require "suture/prescribes_test_plan"
 require "suture/value/test_results"
 
 module Suture::Error
   class VerificationFailedTest < Minitest::Test
     def test_single_failure
-      error = VerificationFailed.new(Suture::Value::TestResults.new([
+      test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets)
+
+      error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
         {
           :observation => Suture::Value::Observation.new(
             42,
@@ -38,6 +41,7 @@ module Suture::Error
            ```
 
         # Result Summary
+
           - Passed........0
           - Failed........1
             - with error..0
@@ -48,7 +52,8 @@ module Suture::Error
     end
 
     def test_the_kitchen_sink
-      error = VerificationFailed.new(Suture::Value::TestResults.new([
+      test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets)
+      error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
         {
           :observation => "blah",
           :passed => true,
@@ -120,6 +125,7 @@ module Suture::Error
            ```
 
         # Result Summary
+
           - Passed........1
           - Failed........2
             - with error..1

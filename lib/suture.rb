@@ -30,7 +30,7 @@ module Suture
     test_plan = Suture::PrescribesTestPlan.new.prescribe(name, options)
     test_results = Suture::TestsPatient.new.test(test_plan)
     if test_results.failed?
-      Suture::InterpretsResults.new.interpret(test_results)
+      Suture::InterpretsResults.new.interpret(test_plan, test_results)
     end
   end
 

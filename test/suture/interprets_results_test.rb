@@ -9,7 +9,7 @@ module Suture
     def test_success_is_a_no_op
       test_results = Value::TestResults.new([])
 
-      result = @subject.interpret(test_results)
+      result = @subject.interpret(Value::TestPlan.new, test_results)
 
       assert_equal nil, result
     end
@@ -18,7 +18,7 @@ module Suture
       test_results = Value::TestResults.new([{:passed => false, :ran => true}])
 
       expected_error = assert_raises(Suture::Error::VerificationFailed) {
-        @subject.interpret(test_results)
+        @subject.interpret(Value::TestPlan.new, test_results)
       }
     end
   end

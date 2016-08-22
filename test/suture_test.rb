@@ -42,7 +42,7 @@ class SutureTest < Minitest::Test
 
     Suture.verify(:stuff, options)
 
-    verify(interprets_results).interpret(test_results)
+    verify(interprets_results).interpret(test_plan, test_results)
   end
 
   def test_config_default
