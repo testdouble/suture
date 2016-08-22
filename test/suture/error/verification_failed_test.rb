@@ -42,6 +42,15 @@ module Suture::Error
              :cat
            ```
 
+           Ideas to fix this:
+             * Is the recording wrong? Delete it! `Suture.delete(42)`
+
+        If any comparison is failing and you believe the results are
+        equivalent, we suggest you look into creating a custom comparator.
+        See more details here:
+
+          https://github.com/testdouble/suture#creating-a-custom-comparator
+
         # Configuration
 
         {
@@ -126,6 +135,9 @@ module Suture::Error
              :cat
            ```
 
+           Ideas to fix this:
+             * Is the recording wrong? Delete it! `Suture.delete(42)`
+
         2.) Recorded call for seam :pets (ID: 43) ran and raised an error.
 
            Arguments: ```
@@ -138,10 +150,19 @@ module Suture::Error
              #<StandardError: Yikes>
            ```
 
+           Ideas to fix this:
+             * Is the recording wrong? Delete it! `Suture.delete(43)`
+
+        If any comparison is failing and you believe the results are
+        equivalent, we suggest you look into creating a custom comparator.
+        See more details here:
+
+          https://github.com/testdouble/suture#creating-a-custom-comparator
+
         # Configuration
 
         {
-          :comparator => Proc (in: `test/suture/error/verification_failed_test.rb:66`),
+          :comparator => Proc (in: `test/suture/error/verification_failed_test.rb:75`),
           :database_path => "lol.db",
           :fail_fast => true
         }

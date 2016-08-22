@@ -73,7 +73,14 @@ module Suture::Error
         "## Failures\n",
         failures.each_with_index.map { |failure, index|
           describe_failure(failure, index)
-        }
+        },
+        <<-MSG.gsub(/^ {10}/,'')
+          If any comparison is failing and you believe the results are
+          equivalent, we suggest you look into creating a custom comparator.
+          See more details here:
+
+            https://github.com/testdouble/suture#creating-a-custom-comparator
+        MSG
       ].join("\n")
     end
 
@@ -96,6 +103,9 @@ module Suture::Error
                end
              }
            ```
+
+           Ideas to fix this:
+             * Is the recording wrong? Delete it! `Suture.delete(#{expected.id})`
       MSG
     end
 
