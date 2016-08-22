@@ -439,3 +439,21 @@ Suture.verify(:my_type, {
 })
 ```
 
+## Troubleshooting
+
+Some ideas if you can't get a particular verification to work or if you keep
+seeing false negatives:
+
+  * There may be a side effect in your code that you haven't found, extracted,
+    replicated, or controlled for. Consider contributing to [this
+    milestone](https://github.com/testdouble/suture/milestone/3), which specifies
+    a side-effect detector to be paired with Suture to make it easier to see
+    when observable database, network, and in-memory changes are made during a
+    Suture operation
+  * Consider writing a [custom comparator](#creating-a-custom-comparator) with
+    a relaxed conception of equivalence between the recorded and observed results
+  * If a recording was made in error, you can always delete it, either by
+    dropping Suture's database (which is, by default, stored in
+    `db/suture.sqlite3`) or by observing the ID of the recording from an error
+    message and invoking `Suture.delete(42)`
+
