@@ -1,4 +1,5 @@
-require "fixtures/calculator"
+require_relative "helper"
+require_relative "fixtures/calculator"
 
 class VerifyTest < SafeTest
   def setup

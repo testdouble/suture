@@ -1,3 +1,4 @@
+require_relative "helper"
 require "suture/builds_plan"
 require "suture/adapter/dictaphone"
 
