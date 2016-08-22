@@ -45,5 +45,9 @@ module Suture::Wrap
     def self.select(db, table, where_clause, bind_params)
       db.execute("select * from #{table} #{where_clause}", bind_params)
     end
+
+    def self.delete(db, table, where_clause, bind_params)
+      db.execute("delete from #{table} #{where_clause}", bind_params)
+    end
   end
 end

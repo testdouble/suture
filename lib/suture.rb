@@ -34,6 +34,11 @@ module Suture
     end
   end
 
+  def self.delete(id, options = {})
+    plan = BuildsPlan.new.build(name, options)
+    Suture::Adapter::Dictaphone.new(plan).delete(id)
+  end
+
   def self.config(config = {})
     @config ||= DEFAULT_OPTIONS.dup
     @config.merge!(config)
