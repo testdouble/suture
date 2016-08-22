@@ -17,7 +17,7 @@ module Suture::Value
 
     def determine_random_seed(attrs)
       if attrs.has_key?(:random_seed)
-        if attrs[:random_seed].nil?
+        if attrs[:random_seed].nil? || attrs[:random_seed] == "nil"
           nil
         else
           attrs[:random_seed].to_i

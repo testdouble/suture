@@ -4,10 +4,8 @@ require "suture/value/test_results"
 module Suture
   class TestsPatient
     def test(test_plan)
-      dictaphone = Suture::Adapter::Dictaphone.new(test_plan)
       experienced_failure_in_life = false
-      rows = dictaphone.play(test_plan.verify_only)
-      Value::TestResults.new(rows.map { |observation|
+      Value::TestResults.new(build_test_cases(test_plan).map { |observation|
         if test_plan.fail_fast && experienced_failure_in_life
           {
             :observation => observation,
@@ -20,6 +18,18 @@ module Suture
           }).tap { |r| experienced_failure_in_life = true unless r[:passed]}
         end
       })
+    end
+
+    private
+
+    def build_test_cases(test_plan)
+      dictaphone = Suture::Adapter::Dictaphone.new(test_plan)
+      rows = dictaphone.play(test_plan.verify_only)
+      if test_plan.random_seed
+        rows.shuffle(:random => Random.new(test_plan.random_seed))
+      else
+        rows
+      end
     end
 
     def invoke(test_plan, observation)

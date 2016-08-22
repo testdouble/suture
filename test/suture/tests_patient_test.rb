@@ -68,7 +68,8 @@ module Suture
       give(dictaphone).play(nil) { [call1, call2] }
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c| a * b * c },
-        :fail_fast => true
+        :fail_fast => true,
+        :random_seed => 45
       )
 
       result = @subject.test(test_plan)
@@ -107,7 +108,8 @@ module Suture
             a * b * c
           end
         },
-        :fail_fast => false
+        :fail_fast => false,
+        :random_seed => 45 #<-- found this by trial and error ¯\_(ツ)_/¯
       )
 
       result = @subject.test(test_plan)

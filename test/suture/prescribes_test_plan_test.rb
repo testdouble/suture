@@ -74,4 +74,12 @@ class PrescribesTestPlanTest < Minitest::Test
     assert_equal nil, result.subject
     assert_kind_of Suture::Comparator, result.comparator
   end
+
+  def test_special_env_vars
+    ENV['SUTURE_RANDOM_SEED'] = 'nil'
+
+    result = @subject.prescribe(:a_name)
+
+    assert_equal nil, result.random_seed
+  end
 end

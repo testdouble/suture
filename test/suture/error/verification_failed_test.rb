@@ -5,7 +5,8 @@ module Suture::Error
   class VerificationFailedTest < Minitest::Test
     def test_single_failure
       test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets, {
-        :fail_fast => false
+        :fail_fast => false,
+        :random_seed => 998
       })
 
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
@@ -46,19 +47,43 @@ module Suture::Error
              * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=42`
              * Is the recording wrong? Delete it! `Suture.delete(42)`
 
+        ### Fixing these failures
+
+        #### Custom comparator
+
         If any comparison is failing and you believe the results are
         equivalent, we suggest you look into creating a custom comparator.
         See more details here:
 
           https://github.com/testdouble/suture#creating-a-custom-comparator
 
+        #### Random seed
+
+        Suture runs all verifications in random order by default. If you're
+        seeing an erratic failure, it's possibly due to order-dependent
+        behavior somewhere in your subject's code.
+
+        To re-run the tests with the same random seed as was used in this run,
+        set the env var `SUTURE_RANDOM_SEED=998` or the config entry
+        `:random_seed => 998`.
+
+        To re-run the tests without added shuffling (that is, in the order the
+        calls were recorded in), then set the random seed explicitly to nil
+        with env var `SUTURE_RANDOM_SEED=nil` or the config entry
+        `:random_seed => nil`.
+
         # Configuration
 
+        This is the configuration used by this test run:
+
+        ```
         {
-          :comparator => Suture::Comparator (in: `lib/suture/comparator.rb:3`),
+          :comparator => Suture::Comparator.new, # (in: `lib/suture/comparator.rb:3`)
           :database_path => "db/suture.sqlite3",
-          :fail_fast => false
+          :fail_fast => false,
+          :random_seed => 998
         }
+        ```
 
         # Result Summary
 
@@ -75,7 +100,8 @@ module Suture::Error
       test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets, {
         :comparator => lambda {|left, right| left == right },
         :database_path => "lol.db",
-        :fail_fast => true
+        :fail_fast => true,
+        :random_seed => nil
       })
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
         {
@@ -156,19 +182,42 @@ module Suture::Error
              * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=43`
              * Is the recording wrong? Delete it! `Suture.delete(43)`
 
+        ### Fixing these failures
+
+        #### Custom comparator
+
         If any comparison is failing and you believe the results are
         equivalent, we suggest you look into creating a custom comparator.
         See more details here:
 
           https://github.com/testdouble/suture#creating-a-custom-comparator
 
+        #### Random seed
+
+        Suture runs all verifications in random order by default. If you're
+        seeing an erratic failure, it's possibly due to order-dependent
+        behavior somewhere in your subject's code.
+
+        This test was run in insertion order (by the primary key of the table
+        that stores calls, ascending). This is sometimes necessary when the
+        code has an order-dependent side effect, but shouldn't be set unless it's
+        clearly necessary, so as not to incidentally encourage _porting over_
+        that temporal side effect to the new code path. To restore random
+        ordering, unset the env var `SUTURE_RANDOM_SEED` and/or the config entry
+        `:random_seed`.
+
         # Configuration
 
+        This is the configuration used by this test run:
+
+        ```
         {
-          :comparator => Proc (in: `test/suture/error/verification_failed_test.rb:76`),
+          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:101`)
           :database_path => "lol.db",
-          :fail_fast => true
+          :fail_fast => true,
+          :random_seed => nil # (insertion order)
         }
+        ```
 
         # Result Summary
 
