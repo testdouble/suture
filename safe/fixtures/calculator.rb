@@ -25,4 +25,8 @@ class Calculator
   def broken_add(a,b)
     (b + a + @eww_gross_state).tap { @eww_gross_state += 1 }
   end
+
+  def really_broken_add(a,b)
+    b + a + 3
+  end
 end

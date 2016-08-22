@@ -27,6 +27,20 @@ class VerifyTest < SafeTest
     }
   end
 
+  def test_verify_only_shows_just_one_failure_instead_of_two
+    @subject.add(1,2)
+    @subject.add(3,4)
+
+    expected_error = assert_raises(Suture::Error::VerificationFailed) {
+      Suture.verify(:add, {
+        :subject => @subject.method(:really_broken_add),
+        :verify_only => 2
+      })
+    }
+    assert_match "- Failed........1", expected_error.message
+    assert_match "- Total calls...1", expected_error.message
+  end
+
   def test_fail_fast_disabled
     @subject.add(1,2)
     @subject.add(3,4)

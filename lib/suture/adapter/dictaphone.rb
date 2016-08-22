@@ -30,8 +30,12 @@ module Suture::Adapter
       end
     end
 
-    def play
-      rows = Suture::Wrap::Sqlite.select(@db, :observations, "where name = ?", [@name.to_s])
+    def play(only_id = nil)
+      rows = if only_id
+        Suture::Wrap::Sqlite.select(@db, :observations, "where name = ? and id = ?", [@name.to_s, only_id])
+      else
+        Suture::Wrap::Sqlite.select(@db, :observations, "where name = ?", [@name.to_s])
+      end
       log_debug("found #{rows.size} recorded calls for seam #{@name.inspect}.")
       rows.map do |row|
         Suture::Value::Observation.new(

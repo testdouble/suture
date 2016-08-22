@@ -43,6 +43,7 @@ module Suture::Error
            ```
 
            Ideas to fix this:
+             * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=42`
              * Is the recording wrong? Delete it! `Suture.delete(42)`
 
         If any comparison is failing and you believe the results are
@@ -136,6 +137,7 @@ module Suture::Error
            ```
 
            Ideas to fix this:
+             * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=42`
              * Is the recording wrong? Delete it! `Suture.delete(42)`
 
         2.) Recorded call for seam :pets (ID: 43) ran and raised an error.
@@ -151,6 +153,7 @@ module Suture::Error
            ```
 
            Ideas to fix this:
+             * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=43`
              * Is the recording wrong? Delete it! `Suture.delete(43)`
 
         If any comparison is failing and you believe the results are
@@ -162,7 +165,7 @@ module Suture::Error
         # Configuration
 
         {
-          :comparator => Proc (in: `test/suture/error/verification_failed_test.rb:75`),
+          :comparator => Proc (in: `test/suture/error/verification_failed_test.rb:76`),
           :database_path => "lol.db",
           :fail_fast => true
         }
