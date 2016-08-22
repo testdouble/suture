@@ -25,5 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry", "~> 0.9.12.6"
   spec.add_development_dependency "minitest", "~> 5.9"
   spec.add_development_dependency "gimme", "~> 0.5"
-  spec.add_development_dependency "m"
+  if Gem.ruby_version > Gem::Version.new("1.9")
+    spec.add_development_dependency "m"
+  end
 end
