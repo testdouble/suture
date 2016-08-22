@@ -3,7 +3,7 @@ require "suture/util/env"
 
 module Suture
   class PrescribesTestPlan
-    UN_ENV_IABLE_OPTIONS = [:name, :subject, :args, :comparator]
+    UN_ENV_IABLE_OPTIONS = [:name, :subject, :comparator]
     DEFAULT_TEST_OPTIONS = {
       :fail_fast => true
     }
