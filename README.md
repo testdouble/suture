@@ -304,8 +304,29 @@ you're yet unsure that your refactor or reimplementation is complete.
 
 While your application's logs aren't affected by Suture, it may be helpful for
 Suture to maintain a separate log file for any errors that are raised by the
-refactored code path. Setting the key `:log` to a path will prompt Suture to
-append any errors to a log at that location.
+refactored code path.
+
+Suture has a handful of process-wide logging settings that can be set at any
+point as your app starts up (if you're using Rails, then your
+environment-specific (e.g. `config/environments/production.rb`) config file
+is a good choice).
+
+``` ruby
+Suture.config({
+  :log_level => "WARN", #<-- defaults to "INFO"
+  :log_stdout => false, #<-- defaults to true
+  :log_file => "log/suture.log" #<-- defaults to nil
+})
+```
+
+When your new code path raises an error with the above settings, it will
+propogate and log the error to the specified file.
+
+### Custom error handlers
+
+Additionally, you may have some idea of what you want to do (i.e. phone home to
+a reporting service) in the event that your new code path fails. To add custom
+error handling before, set the `:on_error` option to a callable.
 
 ``` ruby
 class MyWorker
@@ -314,7 +335,7 @@ class MyWorker
       old: LegacyWorker.new,
       new: NewWorker.new,
       args: [id],
-      log: 'log/my_worker_seam.log'
+      on_error: -> (name, args) { PhonesHome.new.phone(name, args) }
     }))
   end
 end
@@ -323,9 +344,9 @@ end
 ### Retrying failures
 
 Since the legacy code path hasn't been deleted yet, there's no reason to leave
-users hanging if the new code path explodes. By setting the `:retry` entry to
-`true`, Suture will rescue any errors raised from the new code path and attempt
-to invoke the legacy code path instead.
+users hanging if the new code path explodes. By setting the `:fallback_to_old` 
+entry to `true`, Suture will rescue any errors raised from the new code path and 
+attempt to invoke the legacy code path instead.
 
 ``` ruby
 class MyWorker
@@ -334,7 +355,7 @@ class MyWorker
       old: LegacyWorker.new,
       new: NewWorker.new,
       args: [id],
-      retry: true
+      fallback_to_old: true
     }))
   end
 end
