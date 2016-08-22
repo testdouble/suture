@@ -28,10 +28,14 @@ class RandomSeedVerifyTest < SafeTest
       Suture.verify(:order_matters, {
         :subject => MyOrderMatters.new,
         :fail_fast => false,
-        :random_seed => 19215 #<-- trial and error to find this
+        :random_seed => if Gem.ruby_version < Gem::Version.new("2.0")
+          19216 #<-- arrived at via trial-and-error
+        else
+          19215 #<-- this too
+        end
       })
     }
-    assert_match ":random_seed => 19215", expected_error.message
+    assert_match ":random_seed => 1921", expected_error.message
   end
 
   def test_does_not_blow_up_in_another_order
@@ -42,7 +46,11 @@ class RandomSeedVerifyTest < SafeTest
     Suture.verify(:order_matters, {
       :subject => MyOrderMatters.new,
       :fail_fast => false,
-      :random_seed => 73240 #<-- arrived at via trial-and-error
+      :random_seed => if Gem.ruby_version < Gem::Version.new("2.0")
+        73243 #<-- arrived at via trial-and-error
+      else
+        73240 #<-- this too
+      end
     })
   end
 
