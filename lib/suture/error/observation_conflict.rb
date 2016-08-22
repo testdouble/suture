@@ -1,10 +1,11 @@
 module Suture::Error
   class ObservationConflict < StandardError
-    def initialize(name, args_inspect, new_result, old_result)
+    def initialize(name, args_inspect, new_result, old_observation)
       @name = name
       @args_inspect = args_inspect
       @new_result = new_result
-      @old_result = old_result
+      @old_id = old_observation.id
+      @old_result = old_observation.result
     end
 
     def message
@@ -44,10 +45,11 @@ module Suture::Error
            accidentally still enabled and should be turned off for this seam
            (either with SUTURE_RECORD_CALLS=false or :record_calls => false).
 
-        4. If the old recording was made in error, then you may want to delete it
-           Deletion support via the Suture API is tracked here:
-             https://github.com/testdouble/suture/issues/10
+        4. If, after exhausting the possibilities above, you're pretty sure the
+           recorded result is in error, you can delete it from Suture's database
+           with:
 
+             Suture.delete(#{@old_id})
       MSG
     end
   end

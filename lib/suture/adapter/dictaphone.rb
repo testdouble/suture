@@ -22,11 +22,11 @@ module Suture::Adapter
                                   [@name.to_s, @args_dump, Marshal.dump(result)])
       log_info("recorded call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
     rescue SQLite3::ConstraintException => e
-      old_result = known_result
-      if @comparator.call(old_result, result)
+      old_observation = known_observation
+      if @comparator.call(old_observation.result, result)
         log_debug("skipped recording of duplicate call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
       else
-        raise Suture::Error::ObservationConflict.new(@name, @args_inspect, result, old_result)
+        raise Suture::Error::ObservationConflict.new(@name, @args_inspect, result, old_observation)
       end
     end
 
@@ -50,14 +50,22 @@ module Suture::Adapter
 
   private
 
-    def known_result
-      rows = Suture::Wrap::Sqlite.select(
+    def row_to_observation(row)
+      Suture::Value::Observation.new(
+        row[0],
+        row[1].to_sym,
+        Marshal.load(row[2]),
+        Marshal.load(row[3])
+      )
+    end
+
+    def known_observation
+      row_to_observation(Suture::Wrap::Sqlite.select(
         @db,
         :observations,
         "where name = ? and args = ?",
         [@name.to_s, @args_dump]
-      )
-      Marshal.load(rows.first[3])
+      ).first)
     end
   end
 end

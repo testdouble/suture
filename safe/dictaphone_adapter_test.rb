@@ -47,10 +47,11 @@ class DictaphoneAdapterTest < SafeTest
          accidentally still enabled and should be turned off for this seam
          (either with SUTURE_RECORD_CALLS=false or :record_calls => false).
 
-      4. If the old recording was made in error, then you may want to delete it
-         Deletion support via the Suture API is tracked here:
-           https://github.com/testdouble/suture/issues/10
+      4. If, after exhausting the possibilities above, you're pretty sure the
+         recorded result is in error, you can delete it from Suture's database
+         with:
 
+           Suture.delete(1)
     MSG
     assert_equal expected_message, e.message
   end
