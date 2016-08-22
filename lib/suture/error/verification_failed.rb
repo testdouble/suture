@@ -9,6 +9,7 @@ module Suture::Error
       [
         intro,
         describe_failures(@results.failed),
+        configuration(@plan),
         summarize(@results)
       ].join("\n")
     end
@@ -34,6 +35,36 @@ module Suture::Error
           - Skipped.......#{results.skipped_count}
           - Total calls...#{results.total_count}
       MSG
+    end
+
+    def configuration(plan)
+      <<-MSG.gsub(/^ {8}/,'')
+        # Configuration
+
+        {
+          :comparator => #{describe_comparator(plan.comparator)},
+          :database_path => #{plan.database_path.inspect},
+          :fail_fast => #{plan.fail_fast}
+        }
+      MSG
+    end
+
+    def describe_comparator(comparator)
+      if comparator.kind_of?(Proc)
+        "Proc (in: `#{describe_source_location(*comparator.source_location)}`)"
+      else comparator.respond_to?(:method) && comparator.method(:call)
+        "#{comparator.class} (in: `#{describe_source_location(*comparator.method(:call).source_location)}`)"
+      end
+    end
+
+    def describe_source_location(file, line)
+      root = File.join(Dir.getwd, "/")
+      path = if file.start_with?(root)
+        file.gsub(root, '')
+      else
+        file
+      end
+      "#{path}:#{line}"
     end
 
     def describe_failures(failures)

@@ -4,7 +4,9 @@ require "suture/value/test_results"
 module Suture::Error
   class VerificationFailedTest < Minitest::Test
     def test_single_failure
-      test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets)
+      test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets, {
+        :fail_fast => false
+      })
 
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
         {
@@ -40,6 +42,14 @@ module Suture::Error
              :cat
            ```
 
+        # Configuration
+
+        {
+          :comparator => Suture::Comparator (in: `lib/suture/comparator.rb:3`),
+          :database_path => "db/suture.sqlite3",
+          :fail_fast => false
+        }
+
         # Result Summary
 
           - Passed........0
@@ -52,7 +62,11 @@ module Suture::Error
     end
 
     def test_the_kitchen_sink
-      test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets)
+      test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets, {
+        :comparator => lambda {|left, right| left == right },
+        :database_path => "lol.db",
+        :fail_fast => true
+      })
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
         {
           :observation => "blah",
@@ -123,6 +137,14 @@ module Suture::Error
            Error raised: ```
              #<StandardError: Yikes>
            ```
+
+        # Configuration
+
+        {
+          :comparator => Proc (in: `test/suture/error/verification_failed_test.rb:66`),
+          :database_path => "lol.db",
+          :fail_fast => true
+        }
 
         # Result Summary
 
