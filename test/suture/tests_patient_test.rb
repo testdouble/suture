@@ -69,7 +69,7 @@ module Suture
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c| a * b * c },
         :fail_fast => true,
-        :random_seed => 45
+        :random_seed => 48
       )
 
       result = @subject.test(test_plan)
@@ -109,7 +109,7 @@ module Suture
           end
         },
         :fail_fast => false,
-        :random_seed => 45 #<-- found this by trial and error ¯\_(ツ)_/¯
+        :random_seed => 48 #<-- found this by trial and error ¯\_(ツ)_/¯
       )
 
       result = @subject.test(test_plan)

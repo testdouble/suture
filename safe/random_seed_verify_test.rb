@@ -28,11 +28,7 @@ class RandomSeedVerifyTest < SafeTest
       Suture.verify(:order_matters, {
         :subject => MyOrderMatters.new,
         :fail_fast => false,
-        :random_seed => if Gem.ruby_version < Gem::Version.new("2.0")
-          19216 #<-- arrived at via trial-and-error
-        else
-          19215 #<-- this too
-        end
+        :random_seed => 19218
       })
     }
     assert_match ":random_seed => 1921", expected_error.message
@@ -46,11 +42,7 @@ class RandomSeedVerifyTest < SafeTest
     Suture.verify(:order_matters, {
       :subject => MyOrderMatters.new,
       :fail_fast => false,
-      :random_seed => if Gem.ruby_version < Gem::Version.new("2.0")
-        73243 #<-- arrived at via trial-and-error
-      else
-        73240 #<-- this too
-      end
+      :random_seed => 73247
     })
   end
 

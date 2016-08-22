@@ -1,5 +1,6 @@
 require "suture/adapter/dictaphone"
 require "suture/value/test_results"
+require "suture/util/shuffle"
 require "backports/1.9.2/random"
 
 module Suture
@@ -27,7 +28,7 @@ module Suture
       dictaphone = Suture::Adapter::Dictaphone.new(test_plan)
       rows = dictaphone.play(test_plan.verify_only)
       if test_plan.random_seed
-        rows.shuffle(:random => Random.new(test_plan.random_seed))
+        Suture::Util::Shuffle.shuffle(Random.new(test_plan.random_seed), rows)
       else
         rows
       end
