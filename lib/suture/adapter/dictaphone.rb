@@ -11,8 +11,10 @@ module Suture::Adapter
       @db = Suture::Wrap::Sqlite.init(plan.database_path)
       @name = plan.name
       @comparator = plan.comparator
-      @args_inspect = plan.args.inspect
-      @args_dump = Marshal.dump(plan.args)
+      if plan.respond_to?(:args) # does not apply to TestPlan objects
+        @args_inspect = plan.args.inspect
+        @args_dump = Marshal.dump(plan.args)
+      end
     end
 
     def record(result)
