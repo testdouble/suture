@@ -24,7 +24,11 @@ module Suture
     def invoke(test_plan, observation)
       {}.tap do |result|
         begin
-          result[:new_result] = test_plan.subject.call(*observation.args)
+          result[:new_result] = if observation.args
+                                  test_plan.subject.call(*observation.args)
+                                else
+                                  test_plan.subject.call
+                                end
           result[:passed] = test_plan.comparator.call(observation.result, result[:new_result])
         rescue StandardError => e
           result[:passed] = false
