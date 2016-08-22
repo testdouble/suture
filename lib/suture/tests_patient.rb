@@ -1,6 +1,6 @@
 require "suture/adapter/dictaphone"
 require "suture/value/test_results"
-require "backports/random/implementation"
+require "backports/1.9.2/random"
 
 module Suture
   class TestsPatient
