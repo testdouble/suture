@@ -28,10 +28,11 @@ class RandomSeedVerifyTest < SafeTest
     expected_error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:order_matters, {
         :subject => MyOrderMatters.new,
-        :fail_fast => false
+        :fail_fast => false,
+        :random_seed => 19215 #<-- trial and error to find this
       })
     }
-    assert_match ":random_seed => 42", expected_error.message
+    assert_match ":random_seed => 19215", expected_error.message
   end
 
   def test_does_not_blow_up_in_another_order
@@ -41,7 +42,8 @@ class RandomSeedVerifyTest < SafeTest
 
     Suture.verify(:order_matters, {
       :subject => MyOrderMatters.new,
-      :fail_fast => false
+      :fail_fast => false,
+      :random_seed => 73240 #<-- arrived at via trial-and-error
     })
   end
 
@@ -54,10 +56,11 @@ class RandomSeedVerifyTest < SafeTest
 
     expected_error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:order_matters, {
-        :subject => MyOrderMatters.new,
-        :fail_fast => false
+        :subject => lambda { |input| MyOrderMatters.new(input) }, #<-- newing each time will cause it to fail
+        :fail_fast => false,
+        :random_seed => nil
       })
     }
-    assert_match ":random_seed => nil (SELECT order)", expected_error.message
+    assert_match ":random_seed => nil # (insertion order)", expected_error.message
   end
 end
