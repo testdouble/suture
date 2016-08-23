@@ -135,5 +135,24 @@ module Suture
         :ran => true
       }, result.results.last)
     end
+
+    def test_call_limit
+      dictaphone = gimme_next(Suture::Adapter::Dictaphone)
+      give(dictaphone).play(1337) {[
+        Value::Observation.new(1, :limit, [0], 1),
+        Value::Observation.new(2, :limit, [1], 2),
+        Value::Observation.new(3, :limit, [2], 3)
+      ]}
+      call_count = 0
+      test_plan = PrescribesTestPlan.new.prescribe(:multiply,
+        :subject => lambda {|n| call_count += 1; n + 1 },
+        :verify_only => "1337",
+        :call_limit => 2
+      )
+
+      result = @subject.test(test_plan)
+
+      assert_equal 2, call_count
+    end
   end
 end

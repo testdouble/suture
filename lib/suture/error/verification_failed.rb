@@ -48,7 +48,8 @@ module Suture::Error
           :comparator => #{describe_comparator(plan.comparator)}
           :database_path => #{plan.database_path.inspect},
           :fail_fast => #{plan.fail_fast},
-          :random_seed => #{plan.random_seed ? plan.random_seed : "nil # (insertion order)"}
+          :call_limit => #{plan.call_limit.inspect},#{" # (no limit)" if plan.call_limit.nil?}
+          :random_seed => #{plan.random_seed.inspect}#{" # (insertion order)" if plan.random_seed.nil?}
         }
         ```
       MSG

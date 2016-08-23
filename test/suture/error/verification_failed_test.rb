@@ -81,6 +81,7 @@ module Suture::Error
           :comparator => Suture::Comparator.new, # (in: `lib/suture/comparator.rb:3`)
           :database_path => "db/suture.sqlite3",
           :fail_fast => false,
+          :call_limit => nil, # (no limit)
           :random_seed => 998
         }
         ```
@@ -101,6 +102,7 @@ module Suture::Error
         :comparator => lambda {|left, right| left == right },
         :database_path => "lol.db",
         :fail_fast => true,
+        :call_limit => 42,
         :random_seed => nil
       })
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
@@ -212,9 +214,10 @@ module Suture::Error
 
         ```
         {
-          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:101`)
+          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:102`)
           :database_path => "lol.db",
           :fail_fast => true,
+          :call_limit => 42,
           :random_seed => nil # (insertion order)
         }
         ```

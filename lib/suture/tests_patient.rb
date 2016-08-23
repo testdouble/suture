@@ -7,8 +7,10 @@ module Suture
   class TestsPatient
     def test(test_plan)
       experienced_failure_in_life = false
-      Value::TestResults.new(build_test_cases(test_plan).map { |observation|
-        if test_plan.fail_fast && experienced_failure_in_life
+      test_cases = build_test_cases(test_plan)
+      Value::TestResults.new(test_cases.each_with_index.map { |observation, i|
+        if (test_plan.fail_fast && experienced_failure_in_life) ||
+            (test_plan.call_limit && i >= test_plan.call_limit)
           {
             :observation => observation,
             :ran => false
@@ -17,7 +19,7 @@ module Suture
           invoke(test_plan, observation).merge({
             :observation => observation,
             :ran => true
-          }).tap { |r| experienced_failure_in_life = true unless r[:passed]}
+          }).tap { |r| experienced_failure_in_life = true unless r[:passed] }
         end
       })
     end
@@ -26,12 +28,15 @@ module Suture
 
     def build_test_cases(test_plan)
       dictaphone = Suture::Adapter::Dictaphone.new(test_plan)
-      rows = dictaphone.play(test_plan.verify_only)
-      if test_plan.random_seed
-        Suture::Util::Shuffle.shuffle(Random.new(test_plan.random_seed), rows)
-      else
-        rows
-      end
+      shuffle(
+        dictaphone.play(test_plan.verify_only),
+        test_plan.random_seed
+      )
+    end
+
+    def shuffle(rows, random_seed)
+      return rows unless random_seed
+      Suture::Util::Shuffle.shuffle(Random.new(random_seed), rows)
     end
 
     def invoke(test_plan, observation)

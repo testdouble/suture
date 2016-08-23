@@ -13,6 +13,7 @@ class PrescribesTestPlanTest < Minitest::Test
 
     assert_equal :foo, result.name
     assert_equal false, result.fail_fast
+    assert_equal nil, result.call_limit
     assert_equal "db/suture.sqlite3", result.database_path
     assert_kind_of Suture::Comparator, result.comparator
     assert_includes 0..99999, result.random_seed
@@ -40,6 +41,7 @@ class PrescribesTestPlanTest < Minitest::Test
       :database_path => "db",
       :subject => some_subject,
       :fail_fast => true,
+      :call_limit => 11,
       :comparator => :lol_compare,
       :verify_only => 42,
       :random_seed => 1337
@@ -48,6 +50,7 @@ class PrescribesTestPlanTest < Minitest::Test
     assert_equal :foo, result.name
     assert_equal some_subject, result.subject
     assert_equal true, result.fail_fast
+    assert_equal 11, result.call_limit
     assert_equal "db", result.database_path
     assert_equal :lol_compare, result.comparator
     assert_equal 42, result.verify_only
@@ -60,6 +63,7 @@ class PrescribesTestPlanTest < Minitest::Test
     ENV['SUTURE_DATABASE_PATH'] = 'd'
     ENV['SUTURE_COMPARATOR'] = 'e'
     ENV['SUTURE_FAIL_FAST'] = 'true'
+    ENV['SUTURE_CALL_LIMIT'] = '91'
     ENV['SUTURE_VERIFY_ONLY'] = '42'
     ENV['SUTURE_RANDOM_SEED'] = '9922'
 
@@ -67,6 +71,7 @@ class PrescribesTestPlanTest < Minitest::Test
 
     assert_equal "d", result.database_path
     assert_equal true, result.fail_fast
+    assert_equal 91, result.call_limit
     assert_equal 42, result.verify_only
     assert_equal 9922, result.random_seed
     # options that can't be set with ENV vars:
