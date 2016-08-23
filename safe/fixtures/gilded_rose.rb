@@ -2,6 +2,11 @@ require "suture"
 
 module GildedRose
   Item = Struct.new(:name, :sell_in, :quality)
+  class Item
+    def inspect
+      "#{name} (#{quality})"
+    end
+  end
 
   def self.update_quality(items)
     Suture.create(:gilded_rose, {
