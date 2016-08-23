@@ -21,7 +21,7 @@ module Suture::Adapter
       Suture::Wrap::Sqlite.insert(@db, :observations, [:name, :args, :result],
                                   [@name.to_s, @args_dump, Marshal.dump(result)])
       log_info("recorded call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
-    rescue SQLite3::ConstraintException => e
+    rescue SQLite3::ConstraintException
       old_observation = known_observation
       if @comparator.call(old_observation.result, result)
         log_debug("skipped recording of duplicate call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
