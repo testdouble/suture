@@ -35,6 +35,6 @@ task :changelog_commit do
   system cmd
 end
 
-Rake::Task[:release].enhance([:changelog, :changelog_commit])
+Rake::Task["release:source_control_push"].enhance([:changelog, :changelog_commit])
 
 task :default => :everything
