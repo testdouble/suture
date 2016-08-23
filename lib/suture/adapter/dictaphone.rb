@@ -37,7 +37,7 @@ module Suture::Adapter
         [@name.to_s, only_id].compact
       )
       log_debug("found #{rows.size} recorded calls for seam #{@name.inspect}.")
-      rows.map(&self.method(:row_to_observation))
+      rows.map { |row| row_to_observation(row) }
     end
 
     def delete(id)
