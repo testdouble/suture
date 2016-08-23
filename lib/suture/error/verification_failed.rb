@@ -50,6 +50,7 @@ module Suture::Error
           :fail_fast => #{plan.fail_fast},
           :call_limit => #{plan.call_limit.inspect},#{" # (no limit)" if plan.call_limit.nil?}
           :time_limit => #{plan.time_limit.inspect},#{plan.time_limit.nil? ? " # (no limit)" : " # (in seconds)"}
+          :error_message_limit => #{plan.error_message_limit.inspect},#{" # (no limit)" if plan.error_message_limit.nil?}
           :random_seed => #{plan.random_seed.inspect}#{" # (insertion order)" if plan.random_seed.nil?}
         }
         ```
@@ -75,10 +76,11 @@ module Suture::Error
       [
         "## Failures\n",
         failures.each_with_index.map { |failure, index|
-          describe_failure(failure, index)
+          describe_failure(failure, index) if plan.error_message_limit.nil? || index < plan.error_message_limit
         },
+        describe_squelched_failure_messages(failures.size, plan.error_message_limit),
         describe_general_failure_advice(plan)
-      ].join("\n")
+      ].flatten.compact.join("\n")
     end
 
     def describe_failure(failure, index)
@@ -105,6 +107,11 @@ module Suture::Error
              * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=#{expected.id}`
              * Is the recording wrong? Delete it! `Suture.delete(#{expected.id})`
       MSG
+    end
+
+    def describe_squelched_failure_messages(failure_count, error_message_limit)
+      return if error_message_limit.nil? || error_message_limit >= failure_count
+      "(#{failure_count - error_message_limit} more failure messages were hidden because :error_message_limit was set to #{error_message_limit}.)"
     end
 
     def describe_general_failure_advice(plan)
