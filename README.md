@@ -97,7 +97,7 @@ implementations behave the same way.
 First, we tell Suture to start recording calls by setting the environment
 variable `SUTURE_RECORD_CALLS` to something truthy (e.g.
 `SUTURE_RECORD_CALLS=true bundle exec rails s`). So long as this variable is set,
-any calls to our suture will record the arguments passed to the legacy code path
+any calls to our seam will record the arguments passed to the legacy code path
 and the return value.
 
 As you use the application (whether it's a queue system, a web app, or a CLI),
