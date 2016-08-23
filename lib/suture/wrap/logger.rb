@@ -14,10 +14,10 @@ module Suture::Wrap
       end
 
       @logger.level = if options[:log_level]
-        ::Logger.const_get(options[:log_level])
-      else
-        ::Logger::INFO
-      end
+                        ::Logger.const_get(options[:log_level])
+                      else
+                        ::Logger::INFO
+                      end
 
       @logger.formatter = proc { |_, time , _, msg|
         formatted_time = time.strftime("%Y-%m-%dT%H:%M:%S.%6N")

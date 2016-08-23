@@ -12,6 +12,8 @@ engines:
     enabled: true
   rubocop:
     enabled: true
+    exclude_fingerprints:
+      - 38b7eb33937eaa315ada4c12bbeb9243 #<-- long test that has a huge error msg
 ratings:
   paths:
   - "**.inc"

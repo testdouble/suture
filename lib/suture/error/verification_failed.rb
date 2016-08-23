@@ -57,18 +57,14 @@ module Suture::Error
     def describe_comparator(comparator)
       if comparator.kind_of?(Proc)
         "Proc, # (in: `#{describe_source_location(*comparator.source_location)}`)"
-      else comparator.respond_to?(:method) && comparator.method(:call)
+      elsif comparator.respond_to?(:method) && comparator.method(:call)
         "#{comparator.class}.new, # (in: `#{describe_source_location(*comparator.method(:call).source_location)}`)"
       end
     end
 
     def describe_source_location(file, line)
       root = File.join(Dir.getwd, "/")
-      path = if file.start_with?(root)
-        file.gsub(root, '')
-      else
-        file
-      end
+      path = file.start_with?(root) ? file.gsub(root, '') : file
       "#{path}:#{line}"
     end
 

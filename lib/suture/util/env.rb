@@ -5,7 +5,7 @@ module Suture::Util
         ENV.keys.
             select { |k| k.start_with?("SUTURE_") }.
             map { |k| [to_sym(k), sanitize_value(ENV[k])] }
-      ].reject { |(k,v)| excludes.include?(k) }
+      ].reject { |(k,_)| excludes.include?(k) }
     end
 
     # private

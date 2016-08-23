@@ -6,7 +6,7 @@ class RandomSeedVerifyTest < SafeTest
       @call_count = 0
     end
 
-    def call(thing_i_will_ignore)
+    def call(*args_i_will_ignore)
       @call_count += 1
     end
   end
