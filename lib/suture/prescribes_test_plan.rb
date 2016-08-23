@@ -5,7 +5,7 @@ module Suture
   class PrescribesTestPlan
     UN_ENV_IABLE_OPTIONS = [:name, :subject, :comparator]
     DEFAULT_TEST_OPTIONS = {
-      :fail_fast => true
+      :fail_fast => false
     }
 
     def prescribe(name, options = {})

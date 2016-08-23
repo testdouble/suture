@@ -15,8 +15,13 @@ module Suture::Util
     end
 
     def self.sanitize_value(value)
-      return false if value == "false"
-      value
+      if value == "false"
+        false
+      elsif value == "true"
+        true
+      else
+        value
+      end
     end
   end
 end
