@@ -31,11 +31,11 @@ module Suture::Adapter
     end
 
     def play(only_id = nil)
-      rows = if only_id
-        Suture::Wrap::Sqlite.select(@db, :observations, "where name = ? and id = ?", [@name.to_s, only_id])
-      else
-        Suture::Wrap::Sqlite.select(@db, :observations, "where name = ?", [@name.to_s])
-      end
+      rows = Suture::Wrap::Sqlite.select(
+        @db, :observations,
+        "where name = ? #{"and id = ?" if only_id}",
+        [@name.to_s, only_id].compact
+      )
       log_debug("found #{rows.size} recorded calls for seam #{@name.inspect}.")
       rows.map(&self.method(:row_to_observation))
     end
