@@ -37,14 +37,7 @@ module Suture::Adapter
         Suture::Wrap::Sqlite.select(@db, :observations, "where name = ?", [@name.to_s])
       end
       log_debug("found #{rows.size} recorded calls for seam #{@name.inspect}.")
-      rows.map do |row|
-        Suture::Value::Observation.new(
-          row[0],
-          row[1].to_sym,
-          Marshal.load(row[2]),
-          Marshal.load(row[3])
-        )
-      end
+      rows.map(&self.method(:row_to_observation))
     end
 
     def delete(id)
