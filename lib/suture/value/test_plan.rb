@@ -10,6 +10,7 @@ module Suture::Value
       @verify_only = attrs[:verify_only].to_i if attrs[:verify_only]
       @fail_fast = attrs[:fail_fast]
       @call_limit = attrs[:call_limit].to_i if attrs[:call_limit]
+      @time_limit = attrs[:time_limit].to_i if attrs[:time_limit]
       @random_seed = determine_random_seed(attrs)
       @comparator = attrs[:comparator]
       @database_path = attrs[:database_path]

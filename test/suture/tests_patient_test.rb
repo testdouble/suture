@@ -138,7 +138,7 @@ module Suture
 
     def test_call_limit
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
-      give(dictaphone).play(1337) {[
+      give(dictaphone).play(nil) {[
         Value::Observation.new(1, :limit, [0], 1),
         Value::Observation.new(2, :limit, [1], 2),
         Value::Observation.new(3, :limit, [2], 3)
@@ -146,13 +146,40 @@ module Suture
       call_count = 0
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|n| call_count += 1; n + 1 },
-        :verify_only => "1337",
         :call_limit => 2
       )
 
       result = @subject.test(test_plan)
 
       assert_equal 2, call_count
+      assert_equal 2, result.passed_count
+      assert_equal 1, result.skipped_count
+    end
+
+    def test_time_limit
+      dictaphone = gimme_next(Suture::Adapter::Dictaphone)
+      timer = gimme_next(Suture::Util::Timer)
+      give(dictaphone).play(nil) {[
+        Value::Observation.new(1, :limit, [0], 1),
+        Value::Observation.new(2, :limit, [1], 2),
+        Value::Observation.new(3, :limit, [2], 3)
+      ]}
+      test_plan = PrescribesTestPlan.new.prescribe(:multiply,
+        :subject => lambda {|n|
+          if n == 1
+            give(timer).time_up? { true }
+          end
+          n + 1
+        },
+        :random_seed => nil,
+        :time_limit => 10 #<-- seconds
+      )
+
+      result = @subject.test(test_plan)
+
+      verify!(timer).initialize(10)
+      assert_equal 2, result.passed_count
+      assert_equal 1, result.skipped_count
     end
   end
 end

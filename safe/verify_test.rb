@@ -70,4 +70,33 @@ class VerifyTest < SafeTest
     assert_match "- Failed........1", error.message
     assert_match "- Skipped.......1", error.message
   end
+
+  def test_verify_with_call_limit
+    @subject.add(1,2)
+    @subject.add(3,4)
+
+    expected_error = assert_raises(Suture::Error::VerificationFailed) {
+      Suture.verify(:add, {
+        :subject => @subject.method(:really_broken_add),
+        :call_limit => 1
+      })
+    }
+    assert_match "- Failed........1", expected_error.message
+    assert_match "- Skipped.......1", expected_error.message
+    assert_match "- Total calls...2", expected_error.message
+  end
+
+  def test_verify_with_time_ample_limit_bc_no_sleep_for_me
+    @subject.add(1,2)
+    @subject.add(3,4)
+
+    expected_error = assert_raises(Suture::Error::VerificationFailed) {
+      Suture.verify(:add, {
+        :subject => @subject.method(:really_broken_add),
+        :time_limit => 20
+      })
+    }
+    assert_match "- Failed........2", expected_error.message
+    assert_match "- Total calls...2", expected_error.message
+  end
 end

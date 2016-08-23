@@ -6,7 +6,8 @@ module Suture::Error
     def test_single_failure
       test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets, {
         :fail_fast => false,
-        :random_seed => 998
+        :random_seed => 998,
+        :time_limit => 30
       })
 
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
@@ -82,6 +83,7 @@ module Suture::Error
           :database_path => "db/suture.sqlite3",
           :fail_fast => false,
           :call_limit => nil, # (no limit)
+          :time_limit => 30, # (in seconds)
           :random_seed => 998
         }
         ```
@@ -214,10 +216,11 @@ module Suture::Error
 
         ```
         {
-          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:102`)
+          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:104`)
           :database_path => "lol.db",
           :fail_fast => true,
           :call_limit => 42,
+          :time_limit => nil, # (no limit)
           :random_seed => nil # (insertion order)
         }
         ```

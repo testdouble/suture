@@ -49,6 +49,7 @@ module Suture::Error
           :database_path => #{plan.database_path.inspect},
           :fail_fast => #{plan.fail_fast},
           :call_limit => #{plan.call_limit.inspect},#{" # (no limit)" if plan.call_limit.nil?}
+          :time_limit => #{plan.time_limit.inspect},#{plan.time_limit.nil? ? " # (no limit)" : " # (in seconds)"}
           :random_seed => #{plan.random_seed.inspect}#{" # (insertion order)" if plan.random_seed.nil?}
         }
         ```

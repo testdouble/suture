@@ -1,5 +1,6 @@
 require "suture/adapter/dictaphone"
 require "suture/value/test_results"
+require "suture/util/timer"
 require "suture/util/shuffle"
 require "backports/1.9.2/random"
 
@@ -7,10 +8,12 @@ module Suture
   class TestsPatient
     def test(test_plan)
       experienced_failure_in_life = false
+      timer = Suture::Util::Timer.new(test_plan.time_limit) unless test_plan.time_limit.nil?
       test_cases = build_test_cases(test_plan)
       Value::TestResults.new(test_cases.each_with_index.map { |observation, i|
         if (test_plan.fail_fast && experienced_failure_in_life) ||
-            (test_plan.call_limit && i >= test_plan.call_limit)
+            (test_plan.call_limit && i >= test_plan.call_limit) ||
+            (timer && timer.time_up?)
           {
             :observation => observation,
             :ran => false
