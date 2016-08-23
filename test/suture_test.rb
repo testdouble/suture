@@ -2,6 +2,11 @@ require "suture/value/test_plan"
 require "suture/value/test_results"
 
 class SutureTest < Minitest::Test
+  def setup
+    super
+    Suture.reset!
+  end
+
   def test_create
     builds_plan = gimme_next(Suture::BuildsPlan)
     chooses_surgeon = gimme_next(Suture::ChoosesSurgeon)
