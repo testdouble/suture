@@ -27,11 +27,14 @@ Rake::TestTask.new(:everything) do |t|
 end
 
 require 'github_changelog_generator/task'
-
-GitHubChangelogGenerator::RakeTask.new :changelog do |config|
-  config.since_tag = '0.1.14'
-  config.future_release = '0.2.0'
+GitHubChangelogGenerator::RakeTask.new :changelog
+task :changelog_commit do
+  require "suture"
+  cmd = "git commit -m \"Changelog for #{Suture::VERSION}\" -- CHANGELOG.md"
+  puts "-------> #{cmd}"
+  system cmd
 end
-task :release => :changelog
+
+task :release => [:changelog, :changelog_commit, :release]
 
 task :default => :everything
