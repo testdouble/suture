@@ -2,21 +2,29 @@ module Suture::Value
   class TestPlan
     attr_accessor :name, :subject,
                   :verify_only, :fail_fast, :call_limit, :time_limit,
-                  :random_seed,
+                  :error_message_limit, :random_seed,
                   :comparator, :database_path
     def initialize(attrs = {})
-      @name = attrs[:name]
-      @subject = attrs[:subject]
-      @verify_only = attrs[:verify_only].to_i if attrs[:verify_only]
-      @fail_fast = attrs[:fail_fast]
-      @call_limit = attrs[:call_limit].to_i if attrs[:call_limit]
-      @time_limit = attrs[:time_limit].to_i if attrs[:time_limit]
+      assign_simple_ivars!(attrs, :name, :subject, :fail_fast, :comparator, :database_path)
+      assign_integral_ivars(attrs, :verify_only, :call_limit, :time_limit, :error_message_limit)
       @random_seed = determine_random_seed(attrs)
-      @comparator = attrs[:comparator]
-      @database_path = attrs[:database_path]
     end
 
     private
+
+    def assign_simple_ivars!(attrs, *names)
+      names.each do |name|
+        instance_variable_set("@#{name}", attrs[name])
+      end
+    end
+
+    def assign_integral_ivars(attrs, *names)
+      assign_simple_ivars!(
+        Hash[attrs.select {|(k,_)| names.include?(k) }.
+                   map { |(k,v)| [k, v.nil? ? nil : v.to_i]}],
+        *names
+      )
+    end
 
     def determine_random_seed(attrs)
       if attrs.has_key?(:random_seed)
