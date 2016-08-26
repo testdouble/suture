@@ -13,4 +13,8 @@ module Suture
     @config ||= DEFAULT_OPTIONS.dup
     @config.merge!(config)
   end
+
+  def self.config_reset!
+    @config = DEFAULT_OPTIONS.dup
+  end
 end

@@ -2,12 +2,7 @@ module Suture
   class ConfigTest < Minitest::Test
     def setup
       super
-      Suture.reset!
-    end
-
-    def teardown
-      super
-      Suture.reset!
+      Suture.config_reset!
     end
 
     def test_config_default
@@ -22,6 +17,14 @@ module Suture
       expected = Suture::DEFAULT_OPTIONS.merge(:pants => true)
       assert_equal expected, result
       assert_equal expected, Suture.config
+    end
+
+    def test_config_reset!
+      Suture.config(:foo => "bar")
+
+      result = Suture.config_reset!
+
+      assert_equal Suture::DEFAULT_OPTIONS, result
     end
   end
 end
