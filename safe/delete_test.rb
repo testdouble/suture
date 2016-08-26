@@ -1,4 +1,4 @@
-require "suture/builds_plan"
+require "suture/create/builds_plan"
 require "suture/adapter/dictaphone"
 
 class DeleteTest < SafeTest

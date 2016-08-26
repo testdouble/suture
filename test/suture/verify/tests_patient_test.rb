@@ -1,10 +1,11 @@
-require "suture/tests_patient"
-require "suture/prescribes_test_plan"
+require "suture/verify/tests_patient"
+require "suture/verify/prescribes_test_plan"
 require "suture/value/observation"
 
 module Suture
   class TestsPatientTest < Minitest::Test
     def setup
+      super
       @subject = TestsPatient.new
     end
 

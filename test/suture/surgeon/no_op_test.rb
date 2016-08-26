@@ -1,6 +1,7 @@
 module Suture::Surgeon
   class NoOpTest < Minitest::Test
     def setup
+      super
       @subject = NoOp.new
     end
 

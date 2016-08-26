@@ -1,8 +1,9 @@
-require "suture/interprets_results"
+require "suture/verify/interprets_results"
 
 module Suture
   class InterpretsResultsTest < Minitest::Test
     def setup
+      super
       @subject = InterpretsResults.new
     end
 

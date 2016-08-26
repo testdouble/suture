@@ -1,6 +1,9 @@
+require "suture/create/builds_plan"
+
 module Suture
   class BuildsPlanTest < Minitest::Test
     def teardown
+      super
       ENV.delete_if { |(k,v)| k.start_with?("SUTURE_") }
       Suture.reset!
     end

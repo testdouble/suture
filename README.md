@@ -128,6 +128,7 @@ We could write a test like this:
 ``` ruby
 class MyWorkerCharacterizationTest < Minitest::Test
   def setup
+    super
     # Load the test data needed to resemble the environment when recording
   end
 
@@ -192,6 +193,7 @@ interactions:
 ``` ruby
 class MyWorkerCharacterizationTest < Minitest::Test
   def setup
+    super
     # Load the test data needed to resemble the environment when recording
   end
 

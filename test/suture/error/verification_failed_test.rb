@@ -1,4 +1,4 @@
-require "suture/prescribes_test_plan"
+require "suture/verify/prescribes_test_plan"
 require "suture/value/test_results"
 
 module Suture::Error

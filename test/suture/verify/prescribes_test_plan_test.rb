@@ -1,9 +1,13 @@
+require "suture/verify/prescribes_test_plan"
+
 class PrescribesTestPlanTest < Minitest::Test
   def setup
+    super
     @subject = Suture::PrescribesTestPlan.new
   end
 
   def teardown
+    super
     ENV.delete_if { |(k,v)| k.start_with?("SUTURE_") }
     Suture.reset!
   end

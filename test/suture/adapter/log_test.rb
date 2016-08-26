@@ -15,6 +15,7 @@
 #     end
 
 #     def teardown
+#       super
 #       Suture.reset!
 #     end
 

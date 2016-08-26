@@ -37,6 +37,7 @@ class SqliteWrapTest < SafeTest
   end
 
   def teardown
+    super
     Suture::Wrap::Sqlite.send(:remove_const, "SCHEMA_VERSION")
     Suture::Wrap::Sqlite.const_set("SCHEMA_VERSION", ACTUAL)
   end

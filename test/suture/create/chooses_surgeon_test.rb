@@ -1,6 +1,9 @@
+require "suture/create/chooses_surgeon"
+
 module Suture
   class ChoosesSurgeonTest < Minitest::Test
     def setup
+      super
       @subject = ChoosesSurgeon.new
     end
 
