@@ -1,8 +1,12 @@
 require "suture/verify/prescribes_test_plan"
 require "suture/value/test_results"
 
+require "support/assertions"
+
 module Suture::Error
   class VerificationFailedTest < Minitest::Test
+    include Support::Assertions
+
     def test_single_failure
       test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets, {
         :fail_fast => false,
@@ -217,7 +221,7 @@ module Suture::Error
 
         ```
         {
-          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:105`)
+          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:109`)
           :database_path => "lol.db",
           :fail_fast => true,
           :call_limit => 42,
@@ -261,8 +265,7 @@ module Suture::Error
       assert_match "1.)", error.message
       assert_match "(ID: 1)", error.message
       assert_match "2.)", error.message
-      # TODO is there a "right way" to do assert_not_match?
-      assert_raises(Minitest::Assertion) { assert_match "3.)", error.message }
+      assert_not_match "3.)", error.message
       assert_match "(18 more failure messages were hidden because :error_message_limit was set to 2.)", error.message
       assert_match ":error_message_limit => 2,", error.message
       assert_match "- Failed........20", error.message
