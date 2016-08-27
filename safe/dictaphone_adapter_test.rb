@@ -51,7 +51,7 @@ class DictaphoneAdapterTest < SafeTest
          recorded result is in error, you can delete it from Suture's database
          with:
 
-           Suture.delete(1)
+           Suture.delete!(1)
     MSG
     assert_equal expected_message, e.message
   end

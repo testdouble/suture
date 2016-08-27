@@ -6,10 +6,10 @@ module Suture
       plan = Value::Plan.new
       give(builds_plan).build(anything, :some_options) { plan }
 
-      Suture.delete(129, :some_options)
+      Suture.delete!(129, :some_options)
 
       verify!(dictaphone).initialize(plan)
-      verify(dictaphone).delete(129)
+      verify(dictaphone).delete!(129)
     end
   end
 end

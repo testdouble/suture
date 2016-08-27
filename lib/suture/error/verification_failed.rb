@@ -105,7 +105,7 @@ module Suture::Error
 
            Ideas to fix this:
              * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=#{expected.id}`
-             * Is the recording wrong? Delete it! `Suture.delete(#{expected.id})`
+             * Is the recording wrong? Delete it! `Suture.delete!(#{expected.id})`
       MSG
     end
 

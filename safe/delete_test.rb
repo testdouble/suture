@@ -12,7 +12,7 @@ class DeleteTest < SafeTest
       :database_path => "db/lol.db"
     })).play
 
-    Suture.delete(rows.first.id, {
+    Suture.delete!(rows.first.id, {
       :database_path => "db/lol.db"
     })
 

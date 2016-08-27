@@ -40,7 +40,7 @@ module Suture::Adapter
       rows.map { |row| row_to_observation(row) }
     end
 
-    def delete(id)
+    def delete!(id)
       log_info("deleting call with ID: #{id}")
       Suture::Wrap::Sqlite.delete(@db, :observations, "where id = ?", [id])
     end

@@ -49,7 +49,7 @@ module Suture::Error
            recorded result is in error, you can delete it from Suture's database
            with:
 
-             Suture.delete(#{@old_id})
+             Suture.delete!(#{@old_id})
       MSG
     end
   end

@@ -50,7 +50,7 @@ module Suture::Error
 
            Ideas to fix this:
              * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=42`
-             * Is the recording wrong? Delete it! `Suture.delete(42)`
+             * Is the recording wrong? Delete it! `Suture.delete!(42)`
 
         ### Fixing these failures
 
@@ -173,7 +173,7 @@ module Suture::Error
 
            Ideas to fix this:
              * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=42`
-             * Is the recording wrong? Delete it! `Suture.delete(42)`
+             * Is the recording wrong? Delete it! `Suture.delete!(42)`
 
         2.) Recorded call for seam :pets (ID: 43) ran and raised an error.
 
@@ -189,7 +189,7 @@ module Suture::Error
 
            Ideas to fix this:
              * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=43`
-             * Is the recording wrong? Delete it! `Suture.delete(43)`
+             * Is the recording wrong? Delete it! `Suture.delete!(43)`
 
         ### Fixing these failures
 

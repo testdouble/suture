@@ -478,5 +478,5 @@ seeing false negatives:
   * If a recording was made in error, you can always delete it, either by
     dropping Suture's database (which is, by default, stored in
     `db/suture.sqlite3`) or by observing the ID of the recording from an error
-    message and invoking `Suture.delete(42)`
+    message and invoking `Suture.delete!(42)`
 
