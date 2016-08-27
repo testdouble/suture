@@ -13,6 +13,10 @@ module Suture
 
     def test_valid_plan
       plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [])
+
+      result = @subject.validate(plan)
+
+      assert_equal plan, result
     end
 
     # 1. Required fields missing
@@ -55,16 +59,37 @@ module Suture
 
     # 2. Arguments are invalid
 
-    def test_raise_when_old_is_not_callable
+    def test_raise_when_name_is_longer_than_255
+      plan = Value::Plan.new(:name => "a" * 256, :old => ->{}, :args => [])
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match "* :name - must be less than 256 characters", error.message
     end
 
-    def test_raise_when_name_is_longer_than_255
+    def test_raise_when_old_is_not_callable
+      plan = Value::Plan.new(:name => :pants, :old => Object, :args => [])
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match "* :old - must respond to `call` (e.g. `dog.method(:bark)` or `->(*args){ dog.bark(*args) }`)", error.message
     end
 
     def test_raise_when_new_is_defined_and_not_callable
+      plan = Value::Plan.new(:name => :a, :old => ->{}, :args => [], :new => "")
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match "* :new - must respond to `call` (e.g. `dog.method(:bark)` or `->(*args){ dog.bark(*args) }`)", error.message
     end
 
     def test_raise_when_comparator_is_defined_and_not_callable
+      plan = Value::Plan.new(:name => :a, :old => ->{}, :args => [],
+                             :comparator => "Object#method")
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match "* :comparator - must respond to `call` (e.g. `MyComparator.new` or `->(recorded, actual) { recorded == actual }`)", error.message
     end
 
     # 3. Invalid combinations
