@@ -24,16 +24,26 @@ module Suture
     }
 
     def validate(plan)
-      if (missing = REQUIREMENTS.select {|(name, _)| !plan.send(name) }).any?
+      if (missing = missing_attrs(plan)).any?
         raise Error::InvalidPlan.missing_requirements(missing)
-      elsif (invalids = VALIDATIONS.select { |name, rule|
-              next unless attr = plan.send(name)
-              !rule[:test].call(attr)
-            }).any?
+      elsif (invalids = invalid_attrs(plan)).any?
         raise Error::InvalidPlan.invalid_options(invalids)
       else
         plan
       end
+    end
+
+    def missing_attrs(plan)
+      REQUIREMENTS.select { |(name, _)|
+        !plan.send(name)
+      }
+    end
+
+    def invalid_attrs(plan)
+      VALIDATIONS.select { |name, rule|
+        next unless attr = plan.send(name)
+        !rule[:test].call(attr)
+      }
     end
   end
 end
