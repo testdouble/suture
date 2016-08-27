@@ -64,6 +64,7 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
+      assert_spacey_match "The following options were invalid:", error.message
       assert_spacey_match "* :name - must be less than 256 characters", error.message
     end
 
