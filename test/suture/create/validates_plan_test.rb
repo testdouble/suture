@@ -3,9 +3,7 @@ require "suture/create/validates_plan"
 require "support/assertions"
 
 module Suture
-  class ValidatesPlanTest < Minitest::Test
-    include Support::Assertions
-
+  class ValidatesPlanTest < UnitTest
     def setup
       super
       @subject = ValidatesPlan.new

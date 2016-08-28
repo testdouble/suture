@@ -6,7 +6,7 @@ require "suture/value/test_plan"
 require "suture/value/test_results"
 
 module Suture
-  class VerifyTest < Minitest::Test
+  class VerifyTest < UnitTest
     def test_verify_did_not_fail
       options = {:biz => :baz}
       test_plan = Suture::Value::TestPlan.new

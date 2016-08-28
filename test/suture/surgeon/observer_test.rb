@@ -1,7 +1,7 @@
 require "suture/adapter/dictaphone"
 
 module Suture::Surgeon
-  class ObserverTest < Minitest::Test
+  class ObserverTest < UnitTest
     def setup
       super
       @subject = Observer.new

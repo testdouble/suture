@@ -1,7 +1,7 @@
 require "suture/create/performs_surgery"
 
 module Suture
-  class PerformsSurgeryTest < Minitest::Test
+  class PerformsSurgeryTest < UnitTest
     def setup
       super
       @subject = PerformsSurgery.new

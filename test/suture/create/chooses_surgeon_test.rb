@@ -1,7 +1,7 @@
 require "suture/create/chooses_surgeon"
 
 module Suture
-  class ChoosesSurgeonTest < Minitest::Test
+  class ChoosesSurgeonTest < UnitTest
     def setup
       super
       @subject = ChoosesSurgeon.new

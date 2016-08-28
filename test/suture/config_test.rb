@@ -1,5 +1,5 @@
 module Suture
-  class ConfigTest < Minitest::Test
+  class ConfigTest < UnitTest
     def setup
       super
       Suture.config_reset!

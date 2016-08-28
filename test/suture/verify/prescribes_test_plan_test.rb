@@ -1,6 +1,6 @@
 require "suture/verify/prescribes_test_plan"
 
-class PrescribesTestPlanTest < Minitest::Test
+class PrescribesTestPlanTest < UnitTest
   def setup
     super
     @subject = Suture::PrescribesTestPlan.new

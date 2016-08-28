@@ -1,5 +1,5 @@
 module Suture
-  class DeleteTest < Minitest::Test
+  class DeleteTest < UnitTest
     def test_delete
       builds_plan = gimme_next(BuildsPlan)
       dictaphone = gimme_next(Adapter::Dictaphone)

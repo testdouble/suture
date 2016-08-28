@@ -4,9 +4,7 @@ require "suture/value/test_results"
 require "support/assertions"
 
 module Suture::Error
-  class VerificationFailedTest < Minitest::Test
-    include Support::Assertions
-
+  class VerificationFailedTest < UnitTest
     def test_single_failure
       test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets, {
         :fail_fast => false,
@@ -221,7 +219,7 @@ module Suture::Error
 
         ```
         {
-          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:109`)
+          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:107`)
           :database_path => "lol.db",
           :fail_fast => true,
           :call_limit => 42,
@@ -272,4 +270,3 @@ module Suture::Error
     end
   end
 end
-

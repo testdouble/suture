@@ -3,7 +3,7 @@ require "suture/verify/prescribes_test_plan"
 require "suture/value/observation"
 
 module Suture
-  class TestsPatientTest < Minitest::Test
+  class TestsPatientTest < UnitTest
     def setup
       super
       @subject = TestsPatient.new

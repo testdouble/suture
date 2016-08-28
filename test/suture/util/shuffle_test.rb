@@ -1,7 +1,7 @@
 require "suture/util/shuffle"
 
 module Suture::Util
-  class ShuffleTest < Minitest::Test
+  class ShuffleTest < UnitTest
     def test_randomness_is_randomish_pre_2_0
       random = Random.new(202020)
       array = [1,2,3,4,5,6,7,8,9,10]

@@ -1,5 +1,5 @@
 module Suture
-  class ResetTest < Minitest::Test
+  class ResetTest < UnitTest
     def teardown
       Gimme.reset
     end

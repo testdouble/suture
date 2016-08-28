@@ -4,7 +4,7 @@ require "suture/create/chooses_surgeon"
 require "suture/create/performs_surgery"
 
 module Suture
-  class CreateTest < Minitest::Test
+  class CreateTest < UnitTest
     def test_create
       builds_plan = gimme_next(Suture::BuildsPlan)
       validates_plan = gimme_next(Suture::ValidatesPlan)

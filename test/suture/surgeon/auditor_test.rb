@@ -2,12 +2,9 @@ require "suture/surgeon/auditor"
 require "suture/create/builds_plan"
 
 module Suture::Surgeon
-  class AuditorTest < Minitest::Test
+  class AuditorTest < UnitTest
     def setup
       super
-      # TODO: the following is necessary everywhere we log until we have a common test parent
-      Suture.config(:log_stdout => false)
-      Suture::Adapter::Log.reset!
       @subject = Auditor.new
     end
 

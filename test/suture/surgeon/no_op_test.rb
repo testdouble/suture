@@ -1,5 +1,5 @@
 module Suture::Surgeon
-  class NoOpTest < Minitest::Test
+  class NoOpTest < UnitTest
     def setup
       super
       @subject = NoOp.new

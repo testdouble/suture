@@ -1,7 +1,7 @@
 require "suture/util/timer"
 
 module Suture::Util
-  class TimerTest < Minitest::Test
+  class TimerTest < UnitTest
     def test_timer_is_not_immediately_up
       subject = Timer.new(0.001)
 

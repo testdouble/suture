@@ -2,7 +2,7 @@ require "suture/util/scalpel"
 require "suture/create/builds_plan"
 
 module Suture::Util
-  class ScalpelTest < Minitest::Test
+  class ScalpelTest < UnitTest
     def setup
       super
       @subject = Scalpel.new

@@ -3,7 +3,7 @@
 # require "suture/adapter/log"
 
 # module Suture::Adapter
-#   class LogTest < Minitest::Test
+#   class LogTest < UnitTest
 #     class FakeThing
 #       include Suture::Adapter::Log
 
