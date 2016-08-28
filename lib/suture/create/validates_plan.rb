@@ -10,7 +10,7 @@ module Suture
 
     VALIDATIONS = {
       :name => {
-        :test => lambda { |name| name.size < 256 },
+        :test => lambda { |name| name.to_s.size < 256 },
         :message => "must be less than 256 characters"
       },
       :old => CALLABLE_VALIDATION = ({
