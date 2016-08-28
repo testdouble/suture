@@ -12,7 +12,7 @@ module Suture
     end
 
     def test_valid_plan
-      plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [])
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [])
 
       result = @subject.validate(plan)
 
@@ -22,7 +22,7 @@ module Suture
     # 1. Required fields missing
 
     def test_raise_when_no_name
-      plan = Value::Plan.new(:old => ->{}, :args => [])
+      plan = Value::Plan.new(:old => lambda {}, :args => [])
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -40,7 +40,7 @@ module Suture
     end
 
     def test_raise_when_args_are_not_set
-      plan = Value::Plan.new(:name => :pants, :old => ->{})
+      plan = Value::Plan.new(:name => :pants, :old => lambda {})
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -60,7 +60,7 @@ module Suture
     # 2. Arguments are invalid
 
     def test_raise_when_name_is_longer_than_255
-      plan = Value::Plan.new(:name => "a" * 256, :old => ->{}, :args => [])
+      plan = Value::Plan.new(:name => "a" * 256, :old => lambda {}, :args => [])
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -77,7 +77,7 @@ module Suture
     end
 
     def test_raise_when_new_is_defined_and_not_callable
-      plan = Value::Plan.new(:name => :a, :old => ->{}, :args => [], :new => "")
+      plan = Value::Plan.new(:name => :a, :old => lambda {}, :args => [], :new => "")
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -85,7 +85,7 @@ module Suture
     end
 
     def test_raise_when_comparator_is_defined_and_not_callable
-      plan = Value::Plan.new(:name => :a, :old => ->{}, :args => [],
+      plan = Value::Plan.new(:name => :a, :old => lambda {}, :args => [],
                              :comparator => "Object#method")
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
@@ -96,7 +96,7 @@ module Suture
     # 3. Invalid combinations
 
     def test_raise_when_record_calls_and_nil_database_path
-      plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [],
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
                              :record_calls => true, :database_path => nil)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
@@ -106,7 +106,7 @@ module Suture
     end
 
     def test_raise_when_record_calls_and_call_both_are_both_set
-      plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [],
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
                              :record_calls => true, :database_path => true,
                              :call_both => true)
 
@@ -116,7 +116,7 @@ module Suture
     end
 
     def test_raise_when_record_calls_and_call_old_on_error_are_both_set
-      plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [],
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
                              :record_calls => true, :database_path => true,
                              :call_old_on_error => true)
 
@@ -126,7 +126,7 @@ module Suture
     end
 
     def test_raise_when_call_both_and_call_old_on_error_are_both_set
-      plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [],
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
                              :call_both => true, :call_old_on_error => true)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
