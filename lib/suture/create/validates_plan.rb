@@ -31,7 +31,7 @@ module Suture
       },
       lambda { |plan|
         if plan.record_calls && plan.call_both
-          "* :record_calls & :call_both are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :call_both will invoke the new path and the old to compare their results after development of the new code path is initially complete (typically in a pre-production environment to validate the behavior of the new code path is consistent with the old). If you're still actively developing the new code path and need more recordings to feed Suture.verify, disable :call_both; otherwise, it's likely time to turn off :record_calls on this seam."
+          ":record_calls & :call_both are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :call_both will invoke the new path and the old to compare their results after development of the new code path is initially complete (typically in a pre-production environment to validate the behavior of the new code path is consistent with the old). If you're still actively developing the new code path and need more recordings to feed Suture.verify, disable :call_both; otherwise, it's likely time to turn off :record_calls on this seam."
         end
       },
       lambda { |plan|
@@ -41,7 +41,12 @@ module Suture
       },
       lambda { |plan|
         if plan.call_both && plan.call_old_on_error
-          "* :call_both & :call_old_on_error are both enabled and conflict with one another. :call_both is designed for pre-production environments and will call both the old and new code paths to compare their results, whereas :call_old_on_error is designed for production environments where it is safe to call the old code path in the event that the new code path fails unexpectedly"
+          ":call_both & :call_old_on_error are both enabled and conflict with one another. :call_both is designed for pre-production environments and will call both the old and new code paths to compare their results, whereas :call_old_on_error is designed for production environments where it is safe to call the old code path in the event that the new code path fails unexpectedly"
+        end
+      },
+      lambda { |plan|
+        if plan.call_both && !plan.new.respond_to?(:call)
+          ":call_both is set but :new is either not set or is not callable. In order to call both code paths, both :old and :new must be set and callable."
         end
       }
     ]

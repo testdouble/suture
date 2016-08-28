@@ -134,5 +134,14 @@ module Suture
       assert_spacey_match "* :call_both & :call_old_on_error are both enabled and conflict with one another. :call_both is designed for pre-production environments and will call both the old and new code paths to compare their results, whereas :call_old_on_error is designed for production environments where it is safe to call the old code path in the event that the new code path fails unexpectedly", error.message
     end
 
+    def test_raise_when_call_both_does_not_have_both_paths
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
+                             :call_both => true)
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match "* :call_both is set but :new is either not set or is not callable. In order to call both code paths, both :old and :new must be set and callable.", error.message
+    end
+
   end
 end
