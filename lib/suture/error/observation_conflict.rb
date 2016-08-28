@@ -19,7 +19,6 @@ module Suture::Error
         Previously-observed return value: ```
           #{@old_result.inspect}
         ```
-
         Newly-observed return value: ```
           #{@new_result.inspect}
         ```

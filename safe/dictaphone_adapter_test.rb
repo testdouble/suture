@@ -21,7 +21,6 @@ class DictaphoneAdapterTest < SafeTest
       Previously-observed return value: ```
         :bar
       ```
-
       Newly-observed return value: ```
         :baz
       ```
