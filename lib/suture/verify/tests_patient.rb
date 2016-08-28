@@ -1,11 +1,16 @@
 require "suture/adapter/dictaphone"
 require "suture/value/test_results"
-require "suture/util/timer"
+require "suture/util/scalpel"
 require "suture/util/shuffle"
+require "suture/util/timer"
 require "backports/1.9.2/random"
 
 module Suture
   class TestsPatient
+    def initialize
+      @scalpel = Suture::Util::Scalpel.new
+    end
+
     def test(test_plan)
       experienced_failure_in_life = false
       timer = Suture::Util::Timer.new(test_plan.time_limit) unless test_plan.time_limit.nil?
@@ -45,11 +50,7 @@ module Suture
     def invoke(test_plan, observation)
       {}.tap do |result|
         begin
-          result[:new_result] = if observation.args
-                                  test_plan.subject.call(*observation.args)
-                                else
-                                  test_plan.subject.call
-                                end
+          result[:new_result] = @scalpel.cut(test_plan, :subject, observation.args)
           result[:passed] = test_plan.comparator.call(observation.result, result[:new_result])
         rescue StandardError => e
           result[:passed] = false

@@ -42,6 +42,7 @@ class PrescribesTestPlanTest < Minitest::Test
 
   def test_options
     some_subject = lambda {}
+    some_after_subject = lambda {}
 
     result = @subject.prescribe(:foo,
       :database_path => "db",
@@ -52,7 +53,8 @@ class PrescribesTestPlanTest < Minitest::Test
       :error_message_limit => 83,
       :comparator => :lol_compare,
       :verify_only => 42,
-      :random_seed => 1337
+      :random_seed => 1337,
+      :after_subject => some_after_subject
     )
 
     assert_equal :foo, result.name
@@ -65,6 +67,7 @@ class PrescribesTestPlanTest < Minitest::Test
     assert_equal :lol_compare, result.comparator
     assert_equal 42, result.verify_only
     assert_equal 1337, result.random_seed
+    assert_equal some_after_subject, result.after_subject
   end
 
   def test_env_vars
@@ -78,6 +81,7 @@ class PrescribesTestPlanTest < Minitest::Test
     ENV['SUTURE_ERROR_MESSAGE_LIMIT'] = '999'
     ENV['SUTURE_VERIFY_ONLY'] = '42'
     ENV['SUTURE_RANDOM_SEED'] = '9922'
+    ENV['SUTURE_AFTER_SUBJECT'] = 'lol'
 
     result = @subject.prescribe(:a_name)
 
@@ -92,6 +96,7 @@ class PrescribesTestPlanTest < Minitest::Test
     assert_equal :a_name, result.name
     assert_equal nil, result.subject
     assert_kind_of Suture::Comparator, result.comparator
+    assert_equal nil, result.after_subject
   end
 
   def test_special_env_vars

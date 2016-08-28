@@ -30,11 +30,11 @@ module Suture::Wrap
     end
 
     class NullLogger
-      def formatter=; end
-      def level=; end
-      def debug; end
-      def info; end
-      def warn; end
+      def formatter=(*args); end
+      def level=(*args); end
+      def debug(*args); end
+      def info(*args); end
+      def warn(*args); end
     end
   end
 end

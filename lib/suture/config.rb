@@ -6,7 +6,8 @@ module Suture
     :comparator => Comparator.new,
     :log_level => "INFO",
     :log_file => nil,
-    :log_stdout => true
+    :log_stdout => true,
+    :raise_on_result_mismatch => true
   }
 
   def self.config(config = {})

@@ -13,6 +13,9 @@ module Suture
 
       assert_equal "db/suture.sqlite3", result.database_path
       assert_kind_of Suture::Comparator, result.comparator
+      assert_equal false, result.call_both
+      assert_equal true, result.raise_on_result_mismatch
+      assert_equal false, result.call_old_on_error
       assert_equal :foo, result.name
     end
 
@@ -31,6 +34,8 @@ module Suture
       some_new_callable = lambda { "hi" }
       some_args = [1,2,3]
       some_comparator = :some_compare
+      some_after_new = lambda {}
+      some_after_old = lambda {}
 
       result = BuildsPlan.new.build(:some_name, {
         :old => some_callable,
@@ -38,7 +43,10 @@ module Suture
         :args => some_args,
         :record_calls => :panda,
         :comparator => some_comparator,
-        :database_path => "blah.db"
+        :database_path => "blah.db",
+        :raise_on_result_mismatch => false,
+        :after_new => some_after_new,
+        :after_old => some_after_old
       })
 
       assert_equal :some_name, result.name
@@ -48,6 +56,9 @@ module Suture
       assert_equal true, result.record_calls
       assert_equal some_comparator, result.comparator
       assert_equal "blah.db", result.database_path
+      assert_equal false, result.raise_on_result_mismatch
+      assert_equal some_after_new, result.after_new
+      assert_equal some_after_old, result.after_old
     end
 
     def test_build_with_env_vars
@@ -58,6 +69,9 @@ module Suture
       ENV['SUTURE_ARGS'] = 'c'
       ENV['SUTURE_COMPARATOR'] = 'e'
       ENV['SUTURE_DATABASE_PATH'] = 'd'
+      ENV['SUTURE_RAISE_ON_RESULT_MISMATCH'] = 'false'
+      ENV['SUTURE_AFTER_OLD'] = 'f'
+      ENV['SUTURE_AFTER_NEW'] = 'g'
 
       result = BuildsPlan.new.build(:a_name)
 
@@ -69,6 +83,9 @@ module Suture
       assert_equal nil, result.new
       assert_equal nil, result.args
       assert_equal Suture::DEFAULT_OPTIONS[:comparator], result.comparator
+      assert_equal false, result.raise_on_result_mismatch
+      assert_equal nil, result.after_old
+      assert_equal nil, result.after_new
     end
 
     def test_build_with_falsey_env_var
@@ -77,6 +94,7 @@ module Suture
       result = BuildsPlan.new.build(:something)
 
       assert_equal false, result.record_calls
+      assert_equal true, result.raise_on_result_mismatch
     end
 
     def test_build_with_false_string_env_var

@@ -1,5 +1,6 @@
 require "suture/adapter/log"
 require "suture/surgeon/observer"
+require "suture/surgeon/auditor"
 require "suture/surgeon/no_op"
 
 module Suture
@@ -16,6 +17,8 @@ module Suture
           MSG
         end
         Surgeon::Observer.new
+      elsif plan.call_both
+        Surgeon::Auditor.new
       else
         Surgeon::NoOp.new
       end

@@ -8,12 +8,16 @@ class VerifyTest < SafeTest
   end
 
   def test_calculator_add_verify_on_old
+    called_after_subject = false
     @subject.add(1,2)
     @subject.add(3,4)
 
     Suture.verify(:add, {
-      :subject => @subject.method(:old_add)
+      :subject => @subject.method(:old_add),
+      :after_subject => lambda { |*args| called_after_subject = true }
     })
+
+    assert_equal true, called_after_subject
   end
 
   def test_calculator_add_verify_on_new

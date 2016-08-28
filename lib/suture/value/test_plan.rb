@@ -3,9 +3,9 @@ module Suture::Value
     attr_accessor :name, :subject,
                   :verify_only, :fail_fast, :call_limit, :time_limit,
                   :error_message_limit, :random_seed,
-                  :comparator, :database_path
+                  :comparator, :database_path, :after_subject
     def initialize(attrs = {})
-      assign_simple_ivars!(attrs, :name, :subject, :fail_fast, :comparator, :database_path)
+      assign_simple_ivars!(attrs, :name, :subject, :fail_fast, :comparator, :database_path, :after_subject)
       assign_integral_ivars(attrs, :verify_only, :call_limit, :time_limit, :error_message_limit)
       @random_seed = determine_random_seed(attrs)
     end
