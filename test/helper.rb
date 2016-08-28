@@ -2,10 +2,8 @@ require "minitest/autorun"
 require "gimme"
 require "pry"
 
-require "suture"
-
+require "suture/config"
 require "support/assertions"
-
 class UnitTest < Minitest::Test
   include Support::Assertions
 

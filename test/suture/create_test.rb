@@ -1,7 +1,4 @@
-require "suture/create/builds_plan"
-require "suture/create/validates_plan"
-require "suture/create/chooses_surgeon"
-require "suture/create/performs_surgery"
+require "suture/create"
 
 module Suture
   class CreateTest < UnitTest

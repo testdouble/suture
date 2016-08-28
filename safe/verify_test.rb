@@ -1,3 +1,4 @@
+require "suture/verify"
 require "fixtures/calculator"
 
 class VerifyTest < SafeTest

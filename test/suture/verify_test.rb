@@ -1,9 +1,4 @@
-require "suture/verify/prescribes_test_plan"
-require "suture/verify/tests_patient"
-require "suture/verify/interprets_results"
-
-require "suture/value/test_plan"
-require "suture/value/test_results"
+require "suture/verify"
 
 module Suture
   class VerifyTest < UnitTest

@@ -1,3 +1,4 @@
+require "suture/reset"
 require "suture/verify/prescribes_test_plan"
 
 class PrescribesTestPlanTest < UnitTest

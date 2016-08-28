@@ -1,3 +1,5 @@
+require "suture/delete"
+
 module Suture
   class DeleteTest < UnitTest
     def test_delete

@@ -1,3 +1,4 @@
+require "suture/delete"
 require "suture/create/builds_plan"
 require "suture/adapter/dictaphone"
 
