@@ -28,6 +28,7 @@ class CustomComparatorTest < SafeTest
         #   created_at values on MyType objects)
         Suture.create(:time_goes_on, {
           :old => @subject,
+          :args => [],
           :record_calls => true
         })
       end
@@ -42,6 +43,7 @@ class CustomComparatorTest < SafeTest
       #   instances will always be in the future.
       Suture.create(:time_goes_on, {
         :old => @subject,
+        :args => [],
         :record_calls => true,
         :comparator => lambda { |recorded, actual| recorded.created_at < actual.created_at }
       })
@@ -59,6 +61,7 @@ class CustomComparatorTest < SafeTest
     #   and don't need the custom comparator to avoid ObservationConflict errors
     Suture.create(:time_goes_on, {
       :old => @subject,
+      :args => [],
       :record_calls => true
     })
 
@@ -89,11 +92,13 @@ class CustomComparatorTest < SafeTest
       #   instances will always be in the future.
       Suture.create(:time_goes_on, {
         :old => @subject,
+        :args => [],
         :record_calls => true,
         :comparator => MyComparator.new
       })
       Suture.create(:just_returns_an_array, {
         :old => lambda { [1,2,3] },
+        :args => [],
         :record_calls => true,
         :comparator => MyComparator.new
       })

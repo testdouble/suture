@@ -25,5 +25,17 @@ module Suture::Error
             }.join("\n  ")}
       MSG
     end
+
+    def self.conflicting_options(conflicts)
+      new <<-MSG.gsub(/^ {8}/,'')
+        #{HEADER}
+
+        Suture isn't sure how to best handle the combination of options passed:
+
+          #{conflicts.map {|message|
+              "* #{message}"
+            }.join("\n  ")}
+      MSG
+    end
   end
 end

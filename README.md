@@ -272,7 +272,7 @@ arguments and broader state.
 Suture gives users a way to experiment with risky refactors by deploying them to
 a staging environment and running both the original and new code paths
 side-by-side, raising an error in the event they don't return the same value.
-This is governed by the `:run_both` to `true`:
+This is governed by the `:call_both` to `true`:
 
 ``` ruby
 class MyWorker
@@ -281,7 +281,7 @@ class MyWorker
       old: LegacyWorker.new,
       new: NewWorker.new,
       args: [id],
-      run_both: true
+      call_both: true
     }))
   end
 end
@@ -346,7 +346,7 @@ end
 ### Retrying failures
 
 Since the legacy code path hasn't been deleted yet, there's no reason to leave
-users hanging if the new code path explodes. By setting the `:fallback_to_old`
+users hanging if the new code path explodes. By setting the `:call_old_on_error`
 entry to `true`, Suture will rescue any errors raised from the new code path and
 attempt to invoke the legacy code path instead.
 
@@ -357,7 +357,7 @@ class MyWorker
       old: LegacyWorker.new,
       new: NewWorker.new,
       args: [id],
-      fallback_to_old: true
+      call_old_on_error: true
     }))
   end
 end

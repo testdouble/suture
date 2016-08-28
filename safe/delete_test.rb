@@ -5,6 +5,7 @@ class DeleteTest < SafeTest
   def test_delete
     Suture.create(:foo, {
       :old => lambda { 'hi' },
+      :args => [],
       :record_calls => true,
       :database_path => "db/lol.db"
     })

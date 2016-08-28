@@ -44,7 +44,7 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :args - in order to differentiate recorded calls (if the code you're changing doesn't take arguments, consider creating a seam inside of it which can--consult the README for more advice)", error.message
+      assert_spacey_match "in order to differentiate recorded calls (if the code you're changing doesn't take arguments, you can set :args to `[]` but should probably consider creating a seam inside of it which can--consult the README for more advice)", error.message
     end
 
     def test_raise_with_multiple_missing_required_params
@@ -96,15 +96,42 @@ module Suture
     # 3. Invalid combinations
 
     def test_raise_when_record_calls_and_nil_database_path
+      plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [],
+                             :record_calls => true, :database_path => nil)
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match "Suture isn't sure how to best handle the combination of options passed", error.message
+      assert_spacey_match "* :record_calls is enabled, but :database_path is nil, so Suture doesn't know where to record calls to the seam.", error.message
     end
 
-    def test_raise_when_record_calls_and_run_both_are_both_set
+    def test_raise_when_record_calls_and_call_both_are_both_set
+      plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [],
+                             :record_calls => true, :database_path => true,
+                             :call_both => true)
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match "* :record_calls & :call_both are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :call_both will invoke the new path and the old to compare their results after development of the new code path is initially complete (typically in a pre-production environment to validate the behavior of the new code path is consistent with the old). If you're still actively developing the new code path and need more recordings to feed Suture.verify, disable :call_both; otherwise, it's likely time to turn off :record_calls on this seam.", error.message
     end
 
-    def test_raise_when_record_calls_and_fallback_on_error_are_both_set
+    def test_raise_when_record_calls_and_call_old_on_error_are_both_set
+      plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [],
+                             :record_calls => true, :database_path => true,
+                             :call_old_on_error => true)
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match "* :record_calls & :call_old_on_error are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :call_old_on_error will call the new code path unless an error is raised, in which case it will fall back on the old code path.", error.message
     end
 
-    def test_raise_when_run_both_and_fallback_on_error_are_both_set
+    def test_raise_when_call_both_and_call_old_on_error_are_both_set
+      plan = Value::Plan.new(:name => :pants, :old => ->{}, :args => [],
+                             :call_both => true, :call_old_on_error => true)
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match "* :call_both & :call_old_on_error are both enabled and conflict with one another. :call_both is designed for pre-production environments and will call both the old and new code paths to compare their results, whereas :call_old_on_error is designed for production environments where it is safe to call the old code path in the event that the new code path fails unexpectedly", error.message
     end
 
   end
