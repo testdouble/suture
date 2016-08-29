@@ -1,7 +1,7 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
 
-Rake::TestTask.new(:test) do |t|
+Rake::TestTask.new(:unit) do |t|
   t.libs << "test"
   t.libs << "lib"
   t.test_files = FileList['test/helper.rb', 'test/**/*_test.rb']
@@ -13,7 +13,7 @@ Rake::TestTask.new(:safe) do |t|
   t.test_files = FileList['safe/helper.rb', 'safe/**/*_test.rb']
 end
 
-Rake::TestTask.new(:everything) do |t|
+Rake::TestTask.new(:test) do |t|
   t.libs << "test"
   t.libs << "safe"
   t.libs << "lib"
@@ -39,4 +39,4 @@ if Gem.ruby_version >= Gem::Version.new("2.2.2")
 end
 
 
-task :default => :everything
+task :default => :test
