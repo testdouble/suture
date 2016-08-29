@@ -182,5 +182,24 @@ module Suture
       assert_equal 2, result.passed_count
       assert_equal 1, result.skipped_count
     end
+
+    def test_no_calls
+      dictaphone = gimme_next(Suture::Adapter::Dictaphone)
+      test_plan = PrescribesTestPlan.new.prescribe(:multiply,
+        :subject => lambda {|a,b,c| a * b * c }
+      )
+      give(dictaphone).play(nil) { [] }
+
+      result = @subject.test(test_plan)
+
+      assert_equal false, result.failed?
+      assert_equal true, result.ran_all_tests?
+      assert_equal 0, result.total_count
+      assert_equal 0, result.passed_count
+      assert_equal 0, result.failed_count
+      assert_equal 0, result.skipped_count
+      assert_equal 0, result.errored_count
+      assert_equal [], result.results
+    end
   end
 end

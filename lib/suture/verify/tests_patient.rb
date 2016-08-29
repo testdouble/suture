@@ -1,3 +1,4 @@
+require "suture/adapter/log"
 require "suture/adapter/dictaphone"
 require "suture/value/test_results"
 require "suture/util/scalpel"
@@ -7,6 +8,8 @@ require "backports/1.9.2/random"
 
 module Suture
   class TestsPatient
+    include Suture::Adapter::Log
+
     def initialize
       @scalpel = Suture::Util::Scalpel.new
     end
@@ -43,7 +46,14 @@ module Suture
       shuffle(
         dictaphone.play(test_plan.verify_only),
         test_plan.random_seed
-      )
+      ).tap do |test_cases|
+        next if test_cases.size > 0
+        log_warn <<-MSG.gsub(/^ {10}/,'')
+          Suture.verify found no recorded calls for seam #{test_plan.name.inspect}.
+          As a result, verify will have no effect and cannot provide any assurance
+          that the subject is working as expected.
+        MSG
+      end
     end
 
     def shuffle(rows, random_seed)

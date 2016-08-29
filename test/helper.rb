@@ -9,7 +9,7 @@ class UnitTest < Minitest::Test
 
   def setup
     super
-    Suture.config(:log_stdout => false)
+    Suture.config(:log_level => "DEBUG", :log_stdout => false, :log_file => "log/unit.log")
     Suture::Adapter::Log.reset!
   end
 end
