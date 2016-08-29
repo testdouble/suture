@@ -25,6 +25,7 @@ class PrescribesTestPlanTest < UnitTest
     assert_kind_of Suture::Comparator, result.comparator
     assert_includes 0..99999, result.random_seed
     assert_equal nil, result.verify_only
+    assert_equal [], result.expected_error_types
   end
 
   def test_global_overrides
@@ -44,6 +45,7 @@ class PrescribesTestPlanTest < UnitTest
   def test_options
     some_subject = lambda {}
     some_after_subject = lambda {}
+    some_on_subject_error = lambda {}
 
     result = @subject.prescribe(:foo,
       :database_path => "db",
@@ -55,7 +57,9 @@ class PrescribesTestPlanTest < UnitTest
       :comparator => :lol_compare,
       :verify_only => 42,
       :random_seed => 1337,
-      :after_subject => some_after_subject
+      :after_subject => some_after_subject,
+      :on_subject_error => some_on_subject_error,
+      :expected_error_types => [ZeroDivisionError]
     )
 
     assert_equal :foo, result.name
@@ -69,6 +73,8 @@ class PrescribesTestPlanTest < UnitTest
     assert_equal 42, result.verify_only
     assert_equal 1337, result.random_seed
     assert_equal some_after_subject, result.after_subject
+    assert_equal some_on_subject_error, result.on_subject_error
+    assert_equal [ZeroDivisionError], result.expected_error_types
   end
 
   def test_env_vars
@@ -83,6 +89,8 @@ class PrescribesTestPlanTest < UnitTest
     ENV['SUTURE_VERIFY_ONLY'] = '42'
     ENV['SUTURE_RANDOM_SEED'] = '9922'
     ENV['SUTURE_AFTER_SUBJECT'] = 'lol'
+    ENV['SUTURE_ON_SUBJECT_ERROR'] = 'lol'
+    ENV['SUTURE_EXPECTED_ERROR_TYPES'] = 'nai'
 
     result = @subject.prescribe(:a_name)
 
@@ -98,6 +106,8 @@ class PrescribesTestPlanTest < UnitTest
     assert_equal nil, result.subject
     assert_kind_of Suture::Comparator, result.comparator
     assert_equal nil, result.after_subject
+    assert_equal nil, result.on_subject_error
+    assert_equal [], result.expected_error_types
   end
 
   def test_special_env_vars

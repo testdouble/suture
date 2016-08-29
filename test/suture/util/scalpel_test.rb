@@ -32,7 +32,6 @@ module Suture::Util
       assert_equal :old_result, result
       assert_equal [
         :my_seam,
-        :old,
         [:a, :b],
         :old_result
       ], after_old_args
@@ -47,6 +46,38 @@ module Suture::Util
       result = @subject.cut(plan, :old)
 
       assert_equal :old_result, result
+    end
+
+    def test_invokes_on_new_error_when_defined
+      on_new_error_args = nil
+      some_error = StandardError.new("LOLOLOL")
+      plan = Suture::BuildsPlan.new.build(:my_seam,
+        :new => lambda { |a,b| raise some_error },
+        :on_new_error => lambda { |*args| on_new_error_args = args },
+        :args => [:c, :d]
+      )
+
+      assert_raises(StandardError) { @subject.cut(plan, :new) }
+
+      assert_equal [
+        :my_seam,
+        [:c, :d],
+        some_error
+      ], on_new_error_args
+    end
+
+    def test_doesnt_invoke_on_new_error_when_expected_error
+      on_new_error_called = false
+      plan = Suture::BuildsPlan.new.build(:my_seam,
+        :old => lambda { raise ZeroDivisionError.new },
+        :on_old_error => lambda { |*args| on_new_error_called = true },
+        :args => [],
+        :expected_error_types => [ZeroDivisionError]
+      )
+
+      assert_raises(ZeroDivisionError) { @subject.cut(plan, :old) }
+
+      assert_equal false, on_new_error_called
     end
   end
 end

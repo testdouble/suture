@@ -36,7 +36,7 @@ module Suture
       },
       lambda { |plan|
         if plan.record_calls && plan.call_old_on_error
-          "* :record_calls & :call_old_on_error are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :call_old_on_error will call the new code path unless an error is raised, in which case it will fall back on the old code path."
+          ":record_calls & :call_old_on_error are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :call_old_on_error will call the new code path unless an error is raised, in which case it will fall back on the old code path."
         end
       },
       lambda { |plan|
@@ -47,6 +47,11 @@ module Suture
       lambda { |plan|
         if plan.call_both && !plan.new.respond_to?(:call)
           ":call_both is set but :new is either not set or is not callable. In order to call both code paths, both :old and :new must be set and callable."
+        end
+      },
+      lambda { |plan|
+        if plan.call_old_on_error && !plan.new.respond_to?(:call)
+          ":call_old_on_error is set but :new is either not set or is not callable. This mode is designed for after the :new code path has been developed and run in production-like environments, where :old is only kept around as a fallback to retry in the event that :new raises an unexpected error. Either specify a :new code path or disable :call_old_on_error."
         end
       }
     ]

@@ -21,6 +21,21 @@ class VerifyTest < SafeTest
     assert_equal true, called_after_subject
   end
 
+  def test_calls_on_subject_error_hook
+    passed_error = nil
+    some_error = StandardError.new("LOL")
+    @subject.add(1,2)
+
+    assert_raises(Suture::Error::VerificationFailed) {
+      Suture.verify(:add, {
+        :subject => lambda {|*args| raise some_error },
+        :on_subject_error => lambda { |_,_,e| passed_error = e }
+      })
+    }
+
+    assert_equal some_error, passed_error
+  end
+
   def test_calculator_add_verify_on_new
     @subject.add(1,2)
     @subject.add(3,4)

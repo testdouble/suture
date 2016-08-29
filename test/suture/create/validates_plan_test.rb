@@ -134,11 +134,11 @@ module Suture
 
     def test_raise_when_call_both_does_not_have_both_paths
       plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
-                             :call_both => true)
+                             :call_old_on_error => true)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :call_both is set but :new is either not set or is not callable. In order to call both code paths, both :old and :new must be set and callable.", error.message
+      assert_spacey_match "* :call_old_on_error is set but :new is either not set or is not callable. This mode is designed for after the :new code path has been developed and run in production-like environments, where :old is only kept around as a fallback to retry in the event that :new raises an unexpected error. Either specify a :new code path or disable :call_old_on_error.", error.message
     end
 
   end

@@ -30,5 +30,13 @@ module Suture
 
       assert_kind_of Surgeon::Auditor, result
     end
+
+    def test_call_old_on_error
+      plan = Value::Plan.new(:call_old_on_error => true)
+
+      result = @subject.choose(plan)
+
+      assert_kind_of Surgeon::Remediator, result
+    end
   end
 end
