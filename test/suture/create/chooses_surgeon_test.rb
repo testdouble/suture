@@ -38,5 +38,13 @@ module Suture
 
       assert_kind_of Surgeon::Remediator, result
     end
+
+    def test_disable_flag
+      plan = Value::Plan.new(:disable => true, :call_old_on_error => true)
+
+      result = @subject.choose(plan)
+
+      assert_kind_of Surgeon::NoOp, result
+    end
   end
 end

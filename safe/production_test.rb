@@ -32,5 +32,20 @@ class ProductionTest < SafeTest
     assert_equal :new_result, result
     assert_equal false, old_called
   end
+
+  def test_call_old_on_error_but_disabled_it
+    called_new = false
+
+    result = Suture.create(:thing,
+      :old => lambda { :old_result },
+      :new => lambda { called_new = true; raise "HELL" },
+      :args => [],
+      :call_old_on_error => true,
+      :disable => true
+    )
+
+    assert_equal :old_result, result
+    assert_equal false, called_new
+  end
 end
 

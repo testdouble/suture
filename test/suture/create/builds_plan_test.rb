@@ -16,6 +16,7 @@ module Suture
       assert_equal false, result.call_both
       assert_equal true, result.raise_on_result_mismatch
       assert_equal [], result.expected_error_types
+      assert_equal false, result.disable
     end
 
     def test_global_overrides
@@ -50,7 +51,8 @@ module Suture
         :after_old => some_after_old,
         :on_new_error => some_on_new_error,
         :on_old_error => some_on_old_error,
-        :expected_error_types => [ZeroDivisionError]
+        :expected_error_types => [ZeroDivisionError],
+        :disable => true
       })
 
       assert_equal :some_name, result.name
@@ -66,6 +68,7 @@ module Suture
       assert_equal some_on_new_error, result.on_new_error
       assert_equal some_on_old_error, result.on_old_error
       assert_equal [ZeroDivisionError], result.expected_error_types
+      assert_equal true, result.disable
     end
 
     def test_build_with_env_vars
@@ -82,6 +85,7 @@ module Suture
       ENV['SUTURE_ON_NEW_ERROR'] = 'i'
       ENV['SUTURE_ON_OLD_ERROR'] = 'j'
       ENV['SUTURE_EXPECTED_ERROR_TYPES'] = 'h'
+      ENV['SUTURE_DISABLE'] = 'yes'
 
       result = BuildsPlan.new.build(:a_name)
 
@@ -99,6 +103,7 @@ module Suture
       assert_equal nil, result.on_new_error
       assert_equal nil, result.on_old_error
       assert_equal [], result.expected_error_types
+      assert_equal true, result.disable
     end
 
     def test_build_with_falsey_env_var

@@ -9,6 +9,7 @@ module Suture
     include Suture::Adapter::Log
 
     def choose(plan)
+      return Surgeon::NoOp.new if plan.disable
       if plan.record_calls
         if plan.new
           log_warn <<-MSG.gsub(/^ {12}/,'')
