@@ -1,5 +1,27 @@
 # Change Log
 
+## [Unreleased](https://github.com/testdouble/suture/tree/HEAD)
+
+[Full Changelog](https://github.com/testdouble/suture/compare/v0.3.3...HEAD)
+
+**Closed issues:**
+
+- common test parent for unit tests [\#49](https://github.com/testdouble/suture/issues/49)
+- rake test -\> rake unit w/ test as default [\#48](https://github.com/testdouble/suture/issues/48)
+- Override flag to disable the seam / revert to old path [\#47](https://github.com/testdouble/suture/issues/47)
+- Suture.verify :after\_subject hook [\#46](https://github.com/testdouble/suture/issues/46)
+- Suture.create :call\_old\_on\_error flag [\#43](https://github.com/testdouble/suture/issues/43)
+- Suture.create :on\_{new,old,subject}\_error handler [\#42](https://github.com/testdouble/suture/issues/42)
+- Implement Suture.create :call\_both [\#41](https://github.com/testdouble/suture/issues/41)
+- Suture.create :after\_old and :after\_new hooks [\#40](https://github.com/testdouble/suture/issues/40)
+- Suture.create :raise\_on\_result\_mismatch [\#39](https://github.com/testdouble/suture/issues/39)
+- Add code coverage / code climate [\#38](https://github.com/testdouble/suture/issues/38)
+- implement changelog generator [\#37](https://github.com/testdouble/suture/issues/37)
+- Validate plans [\#15](https://github.com/testdouble/suture/issues/15)
+
+## [v0.3.3](https://github.com/testdouble/suture/tree/v0.3.3) (2016-08-23)
+[Full Changelog](https://github.com/testdouble/suture/compare/v0.3.2...v0.3.3)
+
 ## [v0.3.2](https://github.com/testdouble/suture/tree/v0.3.2) (2016-08-23)
 [Full Changelog](https://github.com/testdouble/suture/compare/v0.3.1...v0.3.2)
 
