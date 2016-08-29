@@ -10,7 +10,7 @@ module Suture::Value
       assign_simple_ivars!(attrs, :name, :subject, :fail_fast, :comparator,
                                   :database_path, :after_subject,
                                   :on_subject_error)
-      assign_integral_ivars(attrs, :verify_only, :call_limit, :time_limit,
+      assign_integral_ivars!(attrs, :verify_only, :call_limit, :time_limit,
                                    :error_message_limit)
       @expected_error_types = attrs[:expected_error_types] || []
       @random_seed = determine_random_seed(attrs)
@@ -24,12 +24,15 @@ module Suture::Value
       end
     end
 
-    def assign_integral_ivars(attrs, *names)
-      assign_simple_ivars!(
-        Hash[attrs.select {|(k,_)| names.include?(k) }.
-                   map { |(k,v)| [k, v.nil? ? nil : v.to_i]}],
-        *names
-      )
+    def assign_integral_ivars!(attrs, *names)
+      assign_simple_ivars!(massage_values(attrs, names) {|v| v.to_i }, *names)
+    end
+
+    def massage_values(attrs, names, &blk)
+      Hash[
+        attrs.select {|(k,_)| names.include?(k) }.
+              map { |(k,v)| [k, v.nil? ? nil : blk.call(v) ]}
+      ]
     end
 
     def determine_random_seed(attrs)
