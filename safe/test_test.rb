@@ -1,7 +1,7 @@
 require "suture/verify"
 require "fixtures/calculator"
 
-class VerifyTest < SafeTest
+class TestTest < SafeTest
   def setup
     super
     ENV["SUTURE_RECORD_CALLS"] = "true"
