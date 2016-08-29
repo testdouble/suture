@@ -5,13 +5,9 @@ module Suture
   class PrescribesTestPlan
     UN_ENV_IABLE_OPTIONS = [:name, :subject, :comparator, :after_subject,
                             :on_subject_error, :expected_error_types]
-    DEFAULT_TEST_OPTIONS = {
-      :fail_fast => false
-    }
 
     def prescribe(name, options = {})
-      Value::TestPlan.new(DEFAULT_TEST_OPTIONS.
-                          merge(Suture.config).
+      Value::TestPlan.new(Suture.config.
                           merge(options).
                           merge(:name => name).
                           merge(Suture::Util::Env.to_map(UN_ENV_IABLE_OPTIONS)))
