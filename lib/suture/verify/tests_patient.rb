@@ -16,9 +16,7 @@ module Suture
       timer = Suture::Util::Timer.new(test_plan.time_limit) unless test_plan.time_limit.nil?
       test_cases = build_test_cases(test_plan)
       Value::TestResults.new(test_cases.each_with_index.map { |observation, i|
-        if (test_plan.fail_fast && experienced_failure_in_life) ||
-            (test_plan.call_limit && i >= test_plan.call_limit) ||
-            (timer && timer.time_up?)
+        if should_skip?(test_plan, experienced_failure_in_life, i, timer)
           {
             :observation => observation,
             :ran => false
@@ -33,6 +31,12 @@ module Suture
     end
 
     private
+
+    def should_skip?(test_plan, failed_fast, call_count, timer)
+      (test_plan.fail_fast && failed_fast) ||
+        (test_plan.call_limit && call_count >= test_plan.call_limit) ||
+        (timer && timer.time_up?)
+    end
 
     def build_test_cases(test_plan)
       dictaphone = Suture::Adapter::Dictaphone.new(test_plan)
