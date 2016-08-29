@@ -317,6 +317,7 @@ is a good choice).
 Suture.config({
   :log_level => "WARN", #<-- defaults to "INFO"
   :log_stdout => false, #<-- defaults to true
+  :log_io => StringIO.new,      #<-- defaults to nil
   :log_file => "log/suture.log" #<-- defaults to nil
 })
 ```

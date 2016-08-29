@@ -11,6 +11,7 @@ class SafeTest < Minitest::Test
     ENV.delete_if { |(k,_)| k.start_with?("SUTURE_") }
     Suture.reset!
     Suture.config(:log_level => "DEBUG", :log_stdout => false, :log_file => "log/safe.log")
+    Suture::Adapter::Log.reset!
   end
 
 private

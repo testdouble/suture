@@ -3,14 +3,12 @@ require "logger"
 module Suture::Wrap
   module Logger
     def self.init(options)
-      if options[:log_file]
+      @logger = if options[:log_file]
         full_path = File.join(Dir.getwd, options[:log_file])
         FileUtils.mkdir_p(File.dirname(full_path))
-        @logger = ::Logger.new(full_path)
-      elsif options[:log_stdout]
-        @logger = ::Logger.new(STDOUT)
+        ::Logger.new(full_path)
       else
-        @logger = NullLogger.new
+        ::Logger.new(NullIO.new)
       end
 
       @logger.level = if options[:log_level]
@@ -22,19 +20,24 @@ module Suture::Wrap
       @logger.formatter = proc { |_, time , _, msg|
         formatted_time = time.strftime("%Y-%m-%dT%H:%M:%S.%6N")
         "[#{formatted_time}] Suture: #{msg}\n".tap { |out|
-          puts out if options[:log_file] && options[:log_stdout]
+          puts out if options[:log_stdout]
+          options[:log_io].write(out) if options[:log_io]
         }
       }
 
       return @logger
     end
 
-    class NullLogger
-      def formatter=(*args); end
-      def level=(*args); end
-      def debug(*args); end
-      def info(*args); end
-      def warn(*args); end
+    class NullIO
+      def gets; end
+      def each; end
+      def read(count=nil,buffer=nil); (count && count > 0) ? nil : ""; end
+      def rewind; 0; end
+      def close; end
+      def size; 0; end
+      def sync=(*args); end
+      def puts(*args); end
+      def write(*args); end
     end
   end
 end

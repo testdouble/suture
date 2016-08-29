@@ -5,8 +5,9 @@ module Suture
     :database_path => "db/suture.sqlite3",
     :comparator => Comparator.new,
     :log_level => "INFO",
-    :log_file => nil,
     :log_stdout => true,
+    :log_io => nil,
+    :log_file => nil,
     :raise_on_result_mismatch => true
   }
 

@@ -27,5 +27,9 @@ module Suture::Adapter
     def log_warn(*args, &blk)
       Log.logger.warn(*args, &blk)
     end
+
+    def log_error(*args, &blk)
+      Log.logger.error(*args, &blk)
+    end
   end
 end
