@@ -1,4 +1,4 @@
-class CallBothTest < SafeTest
+class StagingTest < SafeTest
   def test_call_both
     old_called = false
     new_called = true
