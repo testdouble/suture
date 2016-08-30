@@ -121,7 +121,6 @@ class TestTest < SafeTest
   end
 
   def test_verify_expected_error_good
-    skip
     assert_raises(ZeroDivisionError) do
       Suture.create(:boom,
         :old => lambda { raise ZeroDivisionError.new("hi") },
@@ -132,8 +131,7 @@ class TestTest < SafeTest
     end
 
     Suture.verify(:boom, {
-      :subject => lambda { raise ZeroDivisionError.new("hi") }#,
-      #:expected_error_types => [ZeroDivisionError]
+      :subject => lambda { raise ZeroDivisionError.new("hi") }
     })
   end
 
@@ -147,10 +145,9 @@ class TestTest < SafeTest
       )
     end
 
-    assert_raises(Suture::Error::VerificationFailed) {
+    error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:boom, {
-        :subject => lambda { raise ZeroDivisionError.new("¡bye!") }#,
-        #:expected_error_types => [ZeroDivisionError]
+        :subject => lambda { raise ZeroDivisionError.new("¡bye!") }
       })
     }
   end
@@ -167,8 +164,7 @@ class TestTest < SafeTest
 
     assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:boom, {
-        :subject => lambda { raise StandardError.new("hi") }#,
-        #:expected_error_types => [ZeroDivisionError]
+        :subject => lambda { raise StandardError.new("hi") }
       })
     }
   end
