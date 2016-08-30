@@ -16,8 +16,16 @@ module Suture
           :new_result => result,
           :passed => compares_results.compare(observation.result, result)
         }
-      rescue StandardError => e
-        { :passed => false, :error => e }
+      rescue StandardError => error
+        if observation.result.errored?
+          result = Value::Result.errored(error)
+          {
+            :new_result => result,
+            :passed => compares_results.compare(observation.result, result)
+          }
+        else
+          { :error => error, :passed => false }
+        end
       end
     end
   end

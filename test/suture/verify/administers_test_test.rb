@@ -53,7 +53,39 @@ module Suture
       }, result)
     end
 
-    def test_expected_error
+    def test_expected_error_that_matches
+      some_error = ZeroDivisionError.new("HEYY")
+      plan = Value::TestPlan.new(
+        :subject => lambda { raise some_error },
+        :args => [],
+        :expected_error_types => [ZeroDivisionError]
+      )
+      observation = Value::Observation.new(:args => [], :error => some_error)
+
+      result = @subject.administer(plan, observation)
+
+      assert_equal({
+        :new_result => Value::Result.errored(some_error),
+        :passed => true
+      }, result)
+    end
+
+    def test_expected_error_that_does_not_match
+      expected_error = ZeroDivisionError.new("HEYY")
+      actual_error = ZeroDivisionError.new("BYYYYEEEE")
+      plan = Value::TestPlan.new(
+        :subject => lambda { raise actual_error },
+        :args => [],
+        :expected_error_types => [ZeroDivisionError]
+      )
+      observation = Value::Observation.new(:args => [], :error => expected_error)
+
+      result = @subject.administer(plan, observation)
+
+      assert_equal({
+        :new_result => Value::Result.errored(actual_error),
+        :passed => false
+      }, result)
     end
   end
 end
