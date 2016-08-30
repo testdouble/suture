@@ -33,6 +33,26 @@ class DevelopmentTest < SafeTest
     assert_equal true, called_after_old
   end
 
+  def test_record_expected_error
+    dictaphone = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:divide))
+
+    assert_raises(ZeroDivisionError) do
+      Suture.create :divide,
+        :old => lambda {|a| raise ZeroDivisionError.new("input: #{a}") },
+        :args => [5],
+        :record_calls => true,
+        :expected_error_types => [ZeroDivisionError]
+    end
+
+    observation = dictaphone.play.first
+    assert_equal 1, observation.id
+    assert_equal :divide, observation.name
+    assert_equal [5], observation.args
+    assert_equal nil, observation.result
+    assert_kind_of ZeroDivisionError, observation.error
+    assert_equal "input: 5", observation.error.message
+  end
+
   def test_record_dumps_args_prior_to_mutation
     dictaphone = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:add))
 

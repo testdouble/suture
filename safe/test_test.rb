@@ -119,4 +119,58 @@ class TestTest < SafeTest
     assert_match "- Failed........2", expected_error.message
     assert_match "- Total calls...2", expected_error.message
   end
+
+  def test_verify_expected_error_good
+    puts "ignoring for now"
+    return
+    assert_raises(ZeroDivisionError) do
+      Suture.create(:boom,
+        :old => lambda { raise ZeroDivisionError.new("hi") },
+        :args => [],
+        :record_calls => true,
+        :expected_error_types => [ZeroDivisionError]
+      )
+    end
+
+    Suture.verify(:boom, {
+      :subject => lambda { raise ZeroDivisionError.new("hi") }#,
+      #:expected_error_types => [ZeroDivisionError]
+    })
+  end
+
+  def test_verify_expected_error_bad_message
+    assert_raises(ZeroDivisionError) do
+      Suture.create(:boom,
+        :old => lambda { raise ZeroDivisionError.new("hi") },
+        :args => [],
+        :record_calls => true,
+        :expected_error_types => [ZeroDivisionError]
+      )
+    end
+
+    assert_raises(Suture::Error::VerificationFailed) {
+      Suture.verify(:boom, {
+        :subject => lambda { raise ZeroDivisionError.new("¡bye!") }#,
+        #:expected_error_types => [ZeroDivisionError]
+      })
+    }
+  end
+
+  def test_verify_expected_error_bad_type
+    assert_raises(ZeroDivisionError) do
+      Suture.create(:boom,
+        :old => lambda { raise ZeroDivisionError.new("hi") },
+        :args => [],
+        :record_calls => true,
+        :expected_error_types => [ZeroDivisionError]
+      )
+    end
+
+    assert_raises(Suture::Error::VerificationFailed) {
+      Suture.verify(:boom, {
+        :subject => lambda { raise StandardError.new("hi") }#,
+        #:expected_error_types => [ZeroDivisionError]
+      })
+    }
+  end
 end

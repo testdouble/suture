@@ -4,7 +4,7 @@ require "suture/error/schema_version"
 
 module Suture::Wrap
   module Sqlite
-    SCHEMA_VERSION=1
+    SCHEMA_VERSION=2
     def self.init(location)
       full_path = File.join(Dir.getwd, location)
       FileUtils.mkdir_p(File.dirname(full_path))
@@ -23,9 +23,10 @@ module Suture::Wrap
         db.execute <<-SQL
           create table if not exists observations (
             id integer primary key,
-            name varchar(255),
-            args clob,
+            name varchar(255) not null,
+            args clob not null,
             result clob,
+            error clob,
             unique(name, args)
           );
         SQL

@@ -17,8 +17,8 @@ module Suture::Adapter
       end
     end
 
-    def record(result)
-      Suture::Wrap::Sqlite.insert(@db, :observations, [:name, :args, :result],
+    def record(result, column = :result)
+      Suture::Wrap::Sqlite.insert(@db, :observations, [:name, :args, column],
                                   [@name.to_s, @args_dump, Marshal.dump(result)])
       log_info("recorded call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
     rescue SQLite3::ConstraintException
@@ -28,6 +28,10 @@ module Suture::Adapter
       else
         raise Suture::Error::ObservationConflict.new(@name, @args_inspect, result, old_observation)
       end
+    end
+
+    def record_error(error)
+      record(error, :error)
     end
 
     def play(only_id = nil)
@@ -49,10 +53,11 @@ module Suture::Adapter
 
     def row_to_observation(row)
       Suture::Value::Observation.new(
-        row[0],
-        row[1].to_sym,
-        Marshal.load(row[2]),
-        Marshal.load(row[3])
+        row[0],                              #<- id
+        row[1].to_sym,                       #<- name
+        Marshal.load(row[2]),                #<- args
+        row[3] ? Marshal.load(row[3]) : nil, #<- result
+        row[4] ? Marshal.load(row[4]) : nil  #<- error
       )
     end
 

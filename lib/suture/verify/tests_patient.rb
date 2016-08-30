@@ -1,7 +1,7 @@
+require "suture/verify/administers_test"
 require "suture/adapter/log"
 require "suture/adapter/dictaphone"
 require "suture/value/test_results"
-require "suture/util/scalpel"
 require "suture/util/shuffle"
 require "suture/util/timer"
 require "backports/1.9.2/random"
@@ -11,7 +11,7 @@ module Suture
     include Suture::Adapter::Log
 
     def initialize
-      @scalpel = Suture::Util::Scalpel.new
+      @administers_test = AdministersTest.new
     end
 
     def test(test_plan)
@@ -25,7 +25,7 @@ module Suture
             :ran => false
           }
         else
-          invoke(test_plan, observation).merge({
+          @administers_test.administer(test_plan, observation).merge({
             :observation => observation,
             :ran => true
           }).tap { |r| experienced_failure_in_life = true unless r[:passed] }
@@ -59,18 +59,6 @@ module Suture
     def shuffle(rows, random_seed)
       return rows unless random_seed
       Suture::Util::Shuffle.shuffle(Random.new(random_seed), rows)
-    end
-
-    def invoke(test_plan, observation)
-      {}.tap do |result|
-        begin
-          result[:new_result] = @scalpel.cut(test_plan, :subject, observation.args)
-          result[:passed] = test_plan.comparator.call(observation.result, result[:new_result])
-        rescue StandardError => e
-          result[:passed] = false
-          result[:error] = e
-        end
-      end
     end
   end
 end
