@@ -9,9 +9,18 @@ module Suture
       @subject = TestsPatient.new
     end
 
+    def observe(args, result)
+      Value::Observation.new(
+        :id => -1, #<- subject shouldn't care
+        :name => :multiply,
+        :args => args,
+        :result => result
+      )
+    end
+
     def test_single_successful_call
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
-      observation = Value::Observation.new(1, :multiply, [1,2,3], 6)
+      observation = observe([1,2,3], 6)
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c| a * b * c },
         :verify_only => "1337"
@@ -38,7 +47,7 @@ module Suture
 
     def test_single_failing_call
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
-      observation = Value::Observation.new(1, :multiply, [1,2,3], "this isn't 6 at all!!!")
+      observation = observe([1,2,3], "this isn't 6 at all!!!")
       give(dictaphone).play(nil) { [observation] }
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c| a * b * c }
@@ -64,8 +73,8 @@ module Suture
 
     def test_fail_fast
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
-      call1 = Value::Observation.new(1, :multiply, [1,2,3], "this isn't 6 at all!!!")
-      call2 = Value::Observation.new(1, :multiply, [1,2,3], 6)
+      call1 = observe([1,2,3], "this isn't 6 at all!!!")
+      call2 = observe([1,2,3], 6)
       give(dictaphone).play(nil) { [call1, call2] }
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c| a * b * c },
@@ -98,8 +107,8 @@ module Suture
     def test_with_errors
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       some_error = StandardError.new
-      call1 = Value::Observation.new(1, :multiply, [2,3,4], 24)
-      call2 = Value::Observation.new(1, :multiply, [1,2,3], 6)
+      call1 = observe([2,3,4], 24)
+      call2 = observe([1,2,3], 6)
       give(dictaphone).play(nil) { [call1, call2] }
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a,b,c|
@@ -140,9 +149,9 @@ module Suture
     def test_call_limit
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       give(dictaphone).play(nil) {[
-        Value::Observation.new(1, :limit, [0], 1),
-        Value::Observation.new(2, :limit, [1], 2),
-        Value::Observation.new(3, :limit, [2], 3)
+        observe([0], 1),
+        observe([1], 2),
+        observe([2], 3)
       ]}
       call_count = 0
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
@@ -161,9 +170,9 @@ module Suture
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       timer = gimme_next(Suture::Util::Timer)
       give(dictaphone).play(nil) {[
-        Value::Observation.new(1, :limit, [0], 1),
-        Value::Observation.new(2, :limit, [1], 2),
-        Value::Observation.new(3, :limit, [2], 3)
+        observe([0], 1),
+        observe([1], 2),
+        observe([2], 3)
       ]}
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|n|

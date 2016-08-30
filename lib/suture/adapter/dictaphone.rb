@@ -53,11 +53,11 @@ module Suture::Adapter
 
     def row_to_observation(row)
       Suture::Value::Observation.new(
-        row[0],                              #<- id
-        row[1].to_sym,                       #<- name
-        Marshal.load(row[2]),                #<- args
-        row[3] ? Marshal.load(row[3]) : nil, #<- result
-        row[4] ? Marshal.load(row[4]) : nil  #<- error
+        :id => row[0],
+        :name => row[1].to_sym,
+        :args => Marshal.load(row[2]),
+        :result => row[3] ? Marshal.load(row[3]) : nil,
+        :error => row[4] ? Marshal.load(row[4]) : nil
       )
     end
 

@@ -11,7 +11,7 @@ module Suture
         :args => [],
         :comparator => Suture::Comparator.new
       )
-      observation = Value::Observation.new(nil, nil, [], 5)
+      observation = Value::Observation.new(:args => [], :result => 5)
 
       result = @subject.administer(plan, observation)
 
@@ -27,7 +27,7 @@ module Suture
         :args => [],
         :comparator => Suture::Comparator.new
       )
-      observation = Value::Observation.new(nil, nil, [], 5)
+      observation = Value::Observation.new(:args => [], :result => 5)
 
       result = @subject.administer(plan, observation)
 
@@ -43,7 +43,7 @@ module Suture
         :subject => lambda { raise some_error },
         :args => []
       )
-      observation = Value::Observation.new(nil, nil, [], 5)
+      observation = Value::Observation.new(:args => [], :result => 5)
 
       result = @subject.administer(plan, observation)
 

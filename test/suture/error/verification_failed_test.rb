@@ -15,10 +15,10 @@ module Suture::Error
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
         {
           :observation => Suture::Value::Observation.new(
-            42,
-            :pets,
-            ["Molly"],
-            :dog
+            :id => 42,
+            :name => :pets,
+            :args => ["Molly"],
+            :result => :dog
           ),
           :new_result => :cat,
           :passed => false,
@@ -118,10 +118,10 @@ module Suture::Error
         },
         {
           :observation => Suture::Value::Observation.new(
-            42,
-            :pets,
-            ["Molly"],
-            :dog
+            :id => 42,
+            :name => :pets,
+            :args => ["Molly"],
+            :result => :dog
           ),
           :new_result => :cat,
           :passed => false,
@@ -129,10 +129,10 @@ module Suture::Error
         },
         {
           :observation => Suture::Value::Observation.new(
-            43,
-            :pets,
-            ["Jill"],
-            :turtle
+            :id => 43,
+            :name => :pets,
+            :args => ["Jill"],
+            :result => :turtle
           ),
           :error => StandardError.new("Yikes"),
           :passed => false,
@@ -140,10 +140,10 @@ module Suture::Error
         },
         {
           :observation => Suture::Value::Observation.new(
-            44,
-            :pets,
-            ["Joey"],
-            :parrot
+            :id => 44,
+            :name => :pets,
+            :args => ["Joey"],
+            :result => :parrot
           ),
           :ran => false
         }
@@ -248,10 +248,10 @@ module Suture::Error
         20.times.map { |i|
           {
             :observation => Suture::Value::Observation.new(
-              i,
-              :blah,
-              ["blaw"],
-              :blog
+              :id => i,
+              :name => :blah,
+              :args => ["blaw"],
+              :result => :blog
             ),
             :new_result => :blech,
             :passed => false,
