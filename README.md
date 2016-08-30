@@ -34,7 +34,7 @@ you'd like to change. A good seam is:
 
 * easy to invoke in isolation
 * takes arguments, returns a value
-* eliminates (or at least minimizes) side effects
+* eliminates (or at least minimizes) side effects (for more on side effects, see [this tutorial](https://semaphoreci.com/community/tutorials/isolate-side-effects-in-ruby))
 
 Then, to create a seam, typically we create a new unit to house the code that we
 excise from its original site, and then we call it. This adds a level of
@@ -479,4 +479,3 @@ seeing false negatives:
     dropping Suture's database (which is, by default, stored in
     `db/suture.sqlite3`) or by observing the ID of the recording from an error
     message and invoking `Suture.delete!(42)`
-
