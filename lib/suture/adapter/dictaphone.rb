@@ -1,6 +1,7 @@
 require "suture/wrap/sqlite"
 require "suture/adapter/log"
 require "suture/value/observation"
+require "suture/value/result"
 require "suture/error/observation_conflict"
 
 module Suture::Adapter
@@ -17,21 +18,13 @@ module Suture::Adapter
       end
     end
 
-    def record(result, column = :result)
-      Suture::Wrap::Sqlite.insert(@db, :observations, [:name, :args, column],
-                                  [@name.to_s, @args_dump, Marshal.dump(result)])
-      log_info("recorded call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
-    rescue SQLite3::ConstraintException
-      old_observation = known_observation
-      if @comparator.call(old_observation.result, result)
-        log_debug("skipped recording of duplicate call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.inspect}`")
-      else
-        raise Suture::Error::ObservationConflict.new(@name, @args_inspect, result, old_observation)
-      end
+
+    def record(returned_value)
+      record_result(Suture::Value::Result.returned(returned_value))
     end
 
     def record_error(error)
-      record(error, :error)
+      record_result(Suture::Value::Result.errored(error))
     end
 
     def play(only_id = nil)
@@ -51,12 +44,37 @@ module Suture::Adapter
 
   private
 
+    def record_result(result)
+      Suture::Wrap::Sqlite.insert(
+        @db,
+        :observations,
+        [:name, :args, result.errored? ? :error : :result],
+        [@name.to_s, @args_dump, Marshal.dump(result.value)]
+      )
+      log_info("recorded call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.value.inspect}`")
+    rescue SQLite3::ConstraintException
+      old_observation = known_observation
+      if results_match?(old_observation.result, result)
+        log_debug("skipped recording of duplicate call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.value.inspect}`")
+      else
+        raise Suture::Error::ObservationConflict.new(@name, @args_inspect, result, old_observation)
+      end
+    end
+
+    def results_match?(old, new)
+      if old.errored?
+        raise "FIXME: write a test for this"
+      else
+        @comparator.call(old.value, new.value)
+      end
+    end
+
     def row_to_observation(row)
       Suture::Value::Observation.new(
         :id => row[0],
         :name => row[1].to_sym,
         :args => Marshal.load(row[2]),
-        :result => row[3] ? Marshal.load(row[3]) : nil,
+        :return => row[3] ? Marshal.load(row[3]) : nil,
         :error => row[4] ? Marshal.load(row[4]) : nil
       )
     end

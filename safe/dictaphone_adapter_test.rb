@@ -77,6 +77,6 @@ class DictaphoneAdapterTest < SafeTest
     })).play(1) # <-- where one assumes 1 is the ID of pants
     assert_equal 1, rows.size
     assert_equal [:pants], rows.first.args
-    assert_equal :shirt, rows.first.result
+    assert_equal Suture::Value::Result.returned(:shirt), rows.first.result
   end
 end

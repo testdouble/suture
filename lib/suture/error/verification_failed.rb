@@ -92,13 +92,13 @@ module Suture::Error
              #{expected.args.inspect}
            ```
            Expected result: ```
-             #{expected.result.inspect}
+             #{expected.result.value.inspect}
            ```
            #{failure[:error] ? "Error raised" : "Actual result"}: ```
              #{if failure[:error]
                  stringify_error(failure[:error])
                else
-                 failure[:new_result].inspect
+                 failure[:new_result].value.inspect
                end
              }
            ```

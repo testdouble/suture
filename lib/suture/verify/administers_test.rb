@@ -7,14 +7,14 @@ module Suture
     end
 
     def administer(test_plan, observation)
-      {}.tap do |result|
-        begin
-          result[:new_result] = @scalpel.cut(test_plan, :subject, observation.args)
-          result[:passed] = test_plan.comparator.call(observation.result, result[:new_result])
-        rescue StandardError => e
-          result[:passed] = false
-          result[:error] = e
-        end
+      begin
+        result = Suture::Value::Result.returned(@scalpel.cut(test_plan, :subject, observation.args))
+        {
+          :new_result => result,
+          :passed => test_plan.comparator.call(observation.result.value, result.value)
+        }
+      rescue StandardError => e
+        { :passed => false, :error => e }
       end
     end
   end

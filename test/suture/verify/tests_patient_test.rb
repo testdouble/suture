@@ -9,12 +9,12 @@ module Suture
       @subject = TestsPatient.new
     end
 
-    def observe(args, result)
+    def observe(args, return_value)
       Value::Observation.new(
         :id => -1, #<- subject shouldn't care
         :name => :multiply,
         :args => args,
-        :result => result
+        :return => return_value
       )
     end
 
@@ -39,7 +39,7 @@ module Suture
       assert_equal 0, result.errored_count
       assert_equal({
         :observation => observation,
-        :new_result => 6,
+        :new_result => Value::Result.returned(6),
         :passed => true,
         :ran => true
       }, result.results.first)
@@ -66,7 +66,7 @@ module Suture
       assert_equal({
         :observation => observation,
         :passed => false,
-        :new_result => 6,
+        :new_result => Value::Result.returned(6),
         :ran => true
       }, result.results.first)
     end
@@ -95,7 +95,7 @@ module Suture
       assert_equal({
         :observation => call1,
         :passed => false,
-        :new_result => 6,
+        :new_result => Value::Result.returned(6),
         :ran => true
       }, result.results.first)
       assert_equal({
@@ -141,7 +141,7 @@ module Suture
       assert_equal({
         :observation => call2,
         :passed => true,
-        :new_result => 6,
+        :new_result => Value::Result.returned(6),
         :ran => true
       }, result.results.last)
     end

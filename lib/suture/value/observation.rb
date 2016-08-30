@@ -1,19 +1,19 @@
+require "suture/value/result"
+
 module Suture::Value
   class Observation
-    attr_reader :id, :name, :args, :result, :error
+    attr_reader :id, :name, :args
+
     def initialize(attrs)
       @id = attrs[:id]
       @name = attrs[:name]
       @args = attrs[:args]
-      @result = attrs[:result]
+      @return_value = attrs[:return]
       @error = attrs[:error]
     end
 
-    def expectation
-      {
-        :outcome => attrs[:error] || attrs[:result],
-        :means => attrs[:error] ? :raised : :returned
-      }
+    def result
+      @expectation ||= @error ? Result.errored(@error) : Result.returned(@return_value)
     end
   end
 end

@@ -18,9 +18,9 @@ module Suture::Error
             :id => 42,
             :name => :pets,
             :args => ["Molly"],
-            :result => :dog
+            :return => :dog
           ),
-          :new_result => :cat,
+          :new_result => Suture::Value::Result.returned(:cat),
           :passed => false,
           :ran => true
         }
@@ -121,9 +121,9 @@ module Suture::Error
             :id => 42,
             :name => :pets,
             :args => ["Molly"],
-            :result => :dog
+            :return => :dog
           ),
-          :new_result => :cat,
+          :new_result => Suture::Value::Result.returned(:cat),
           :passed => false,
           :ran => true
         },
@@ -132,7 +132,7 @@ module Suture::Error
             :id => 43,
             :name => :pets,
             :args => ["Jill"],
-            :result => :turtle
+            :return => :turtle
           ),
           :error => StandardError.new("Yikes"),
           :passed => false,
@@ -143,7 +143,7 @@ module Suture::Error
             :id => 44,
             :name => :pets,
             :args => ["Joey"],
-            :result => :parrot
+            :return => :parrot
           ),
           :ran => false
         }
@@ -251,9 +251,9 @@ module Suture::Error
               :id => i,
               :name => :blah,
               :args => ["blaw"],
-              :result => :blog
+              :return => :blog
             ),
-            :new_result => :blech,
+            :new_result => Suture::Value::Result.returned(:blech),
             :passed => false,
             :ran => true
           }

@@ -10,12 +10,12 @@ module Suture::Wrap
       FileUtils.mkdir_p(File.dirname(full_path))
       SQLite3::Database.new(full_path).tap do |db|
         db.execute <<-SQL
-          create table if not exists schema_info (
+          create table if not exists suture_schema_info (
             version integer unique
           );
         SQL
-        db.execute("insert or ignore into schema_info values (?)", [SCHEMA_VERSION])
-        actual_schema_version = db.execute("select * from schema_info").first[0]
+        db.execute("insert or ignore into suture_schema_info values (?)", [SCHEMA_VERSION])
+        actual_schema_version = db.execute("select * from suture_schema_info").first[0]
         if SCHEMA_VERSION != actual_schema_version
           raise Suture::Error::SchemaVersion.new(SCHEMA_VERSION, actual_schema_version)
         end

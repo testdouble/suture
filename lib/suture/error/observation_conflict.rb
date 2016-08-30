@@ -17,10 +17,10 @@ module Suture::Error
           #{@args_inspect}
         ```
         Previously-observed return value: ```
-          #{@old_result.inspect}
+          #{@old_result.value.inspect}
         ```
         Newly-observed return value: ```
-          #{@new_result.inspect}
+          #{@new_result.value.inspect}
         ```
 
         That's not good! Here are a few ideas of what may have happened:

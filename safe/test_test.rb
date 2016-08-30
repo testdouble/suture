@@ -121,8 +121,7 @@ class TestTest < SafeTest
   end
 
   def test_verify_expected_error_good
-    puts "ignoring for now"
-    return
+    skip
     assert_raises(ZeroDivisionError) do
       Suture.create(:boom,
         :old => lambda { raise ZeroDivisionError.new("hi") },

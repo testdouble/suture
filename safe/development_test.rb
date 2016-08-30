@@ -29,7 +29,8 @@ class DevelopmentTest < SafeTest
     assert_equal 1, observation.id
     assert_equal :add, observation.name
     assert_equal [1,2,3], observation.args
-    assert_equal 6, observation.result
+    assert_equal false, observation.result.errored?
+    assert_equal 6, observation.result.value
     assert_equal true, called_after_old
   end
 
@@ -48,9 +49,9 @@ class DevelopmentTest < SafeTest
     assert_equal 1, observation.id
     assert_equal :divide, observation.name
     assert_equal [5], observation.args
-    assert_equal nil, observation.result
-    assert_kind_of ZeroDivisionError, observation.error
-    assert_equal "input: 5", observation.error.message
+    assert_equal true, observation.result.errored?
+    assert_kind_of ZeroDivisionError, observation.result.value
+    assert_equal "input: 5", observation.result.value.message
   end
 
   def test_record_dumps_args_prior_to_mutation
@@ -67,6 +68,6 @@ class DevelopmentTest < SafeTest
     assert_equal 1, observations.size
     observation = observations.first
     assert_equal [{:yo => "ho"}], observation.args
-    assert_equal({:yo => "ho", "key #2" => "troll"}, observation.result)
+    assert_equal({:yo => "ho", "key #2" => "troll"}, observation.result.value)
   end
 end

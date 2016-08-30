@@ -11,12 +11,12 @@ module Suture
         :args => [],
         :comparator => Suture::Comparator.new
       )
-      observation = Value::Observation.new(:args => [], :result => 5)
+      observation = Value::Observation.new(:args => [], :return => 5)
 
       result = @subject.administer(plan, observation)
 
       assert_equal({
-        :new_result => 5,
+        :new_result => Value::Result.returned(5),
         :passed => true
       }, result)
     end
@@ -27,12 +27,12 @@ module Suture
         :args => [],
         :comparator => Suture::Comparator.new
       )
-      observation = Value::Observation.new(:args => [], :result => 5)
+      observation = Value::Observation.new(:args => [], :return => 5)
 
       result = @subject.administer(plan, observation)
 
       assert_equal({
-        :new_result => "this is not 5",
+        :new_result => Value::Result.returned("this is not 5"),
         :passed => false
       }, result)
     end
@@ -43,7 +43,7 @@ module Suture
         :subject => lambda { raise some_error },
         :args => []
       )
-      observation = Value::Observation.new(:args => [], :result => 5)
+      observation = Value::Observation.new(:args => [], :return => 5)
 
       result = @subject.administer(plan, observation)
 
