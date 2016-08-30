@@ -1,17 +1,20 @@
+require "suture/util/compares_results"
 require "suture/util/scalpel"
+require "suture/value/result"
 
 module Suture
   class AdministersTest
     def initialize
-      @scalpel = Suture::Util::Scalpel.new
+      @scalpel = Util::Scalpel.new
     end
 
     def administer(test_plan, observation)
+      compares_results = Util::ComparesResults.new(test_plan.comparator)
       begin
-        result = Suture::Value::Result.returned(@scalpel.cut(test_plan, :subject, observation.args))
+        result = Value::Result.returned(@scalpel.cut(test_plan, :subject, observation.args))
         {
           :new_result => result,
-          :passed => test_plan.comparator.call(observation.result.value, result.value)
+          :passed => compares_results.compare(observation.result, result)
         }
       rescue StandardError => e
         { :passed => false, :error => e }

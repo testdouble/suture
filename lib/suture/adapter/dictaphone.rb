@@ -3,6 +3,7 @@ require "suture/adapter/log"
 require "suture/value/observation"
 require "suture/value/result"
 require "suture/error/observation_conflict"
+require "suture/util/compares_results"
 
 module Suture::Adapter
   class Dictaphone
@@ -11,7 +12,7 @@ module Suture::Adapter
     def initialize(plan)
       @db = Suture::Wrap::Sqlite.init(plan.database_path)
       @name = plan.name
-      @comparator = plan.comparator
+      @compares_results = Suture::Util::ComparesResults.new(plan.comparator)
       if plan.respond_to?(:args) # does not apply to TestPlan objects
         @args_inspect = plan.args.inspect
         @args_dump = Marshal.dump(plan.args)
@@ -54,18 +55,10 @@ module Suture::Adapter
       log_info("recorded call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.value.inspect}`")
     rescue SQLite3::ConstraintException
       old_observation = known_observation
-      if results_match?(old_observation.result, result)
+      if @compares_results.compare(old_observation.result, result)
         log_debug("skipped recording of duplicate call for seam #{@name.inspect} with args `#{@args_inspect}` and result `#{result.value.inspect}`")
       else
         raise Suture::Error::ObservationConflict.new(@name, @args_inspect, result, old_observation)
-      end
-    end
-
-    def results_match?(old, new)
-      if old.errored?
-        raise "FIXME: write a test for this"
-      else
-        @comparator.call(old.value, new.value)
       end
     end
 
