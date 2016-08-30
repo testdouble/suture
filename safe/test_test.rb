@@ -147,7 +147,7 @@ class TestTest < SafeTest
 
     error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:boom, {
-        :subject => lambda { raise ZeroDivisionError.new("¡bye!") }
+        :subject => lambda { raise ZeroDivisionError.new("bye!") }
       })
     }
   end
