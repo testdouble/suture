@@ -36,19 +36,19 @@ module Suture::Error
 
         1.) Recorded call for seam :pets (ID: 42) ran and failed comparison.
 
-           Arguments: ```
-             ["Molly"]
-           ```
-           Expected result: ```
-             :dog
-           ```
-           Actual result: ```
-             :cat
-           ```
+          Arguments: ```
+            ["Molly"]
+          ```
+          Expected returned value: ```
+            :dog
+          ```
+          Actual returned value: ```
+            :cat
+          ```
 
-           Ideas to fix this:
-             * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=42`
-             * Is the recording wrong? Delete it! `Suture.delete!(42)`
+          Ideas to fix this:
+            * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=42`
+            * Is the recording wrong? Delete it! `Suture.delete!(42)`
 
         ### Fixing these failures
 
@@ -159,35 +159,35 @@ module Suture::Error
 
         1.) Recorded call for seam :pets (ID: 42) ran and failed comparison.
 
-           Arguments: ```
-             ["Molly"]
-           ```
-           Expected result: ```
-             :dog
-           ```
-           Actual result: ```
-             :cat
-           ```
+          Arguments: ```
+            ["Molly"]
+          ```
+          Expected returned value: ```
+            :dog
+          ```
+          Actual returned value: ```
+            :cat
+          ```
 
-           Ideas to fix this:
-             * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=42`
-             * Is the recording wrong? Delete it! `Suture.delete!(42)`
+          Ideas to fix this:
+            * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=42`
+            * Is the recording wrong? Delete it! `Suture.delete!(42)`
 
         2.) Recorded call for seam :pets (ID: 43) ran and raised an error.
 
-           Arguments: ```
-             ["Jill"]
-           ```
-           Expected result: ```
-             :turtle
-           ```
-           Error raised: ```
-             #<StandardError: Yikes>
-           ```
+          Arguments: ```
+            ["Jill"]
+          ```
+          Expected returned value: ```
+            :turtle
+          ```
+          Actual error raised: ```
+            #<StandardError: Yikes>
+          ```
 
-           Ideas to fix this:
-             * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=43`
-             * Is the recording wrong? Delete it! `Suture.delete!(43)`
+          Ideas to fix this:
+            * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=43`
+            * Is the recording wrong? Delete it! `Suture.delete!(43)`
 
         ### Fixing these failures
 

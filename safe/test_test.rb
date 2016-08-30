@@ -150,6 +150,41 @@ class TestTest < SafeTest
         :subject => lambda { raise ZeroDivisionError.new("bye!") }
       })
     }
+    expected_message = <<-MSG.gsub(/^ {4}/,'')
+      Expected error raised: ```
+        #<ZeroDivisionError: hi>
+      ```
+      Actual error raised: ```
+        #<ZeroDivisionError: bye!>
+      ```
+    MSG
+    assert_match expected_message, error.message
+  end
+
+  def test_verify_expected_error_but_returned_same_error_instead
+    assert_raises(ZeroDivisionError) do
+      Suture.create(:boom,
+        :old => lambda { raise ZeroDivisionError.new("hi") },
+        :args => [],
+        :record_calls => true,
+        :expected_error_types => [ZeroDivisionError]
+      )
+    end
+
+    error = assert_raises(Suture::Error::VerificationFailed) {
+      Suture.verify(:boom, {
+        :subject => lambda { return ZeroDivisionError.new("hi") }
+      })
+    }
+    expected_message = <<-MSG.gsub(/^ {4}/,'')
+      Expected error raised: ```
+        #<ZeroDivisionError: hi>
+      ```
+      Actual returned value: ```
+        #<ZeroDivisionError: hi>
+      ```
+    MSG
+    assert_match expected_message, error.message
   end
 
   def test_verify_expected_error_bad_type
@@ -162,10 +197,19 @@ class TestTest < SafeTest
       )
     end
 
-    assert_raises(Suture::Error::VerificationFailed) {
+    error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:boom, {
         :subject => lambda { raise StandardError.new("hi") }
       })
     }
+    expected_message = <<-MSG.gsub(/^ {4}/,'')
+      Expected error raised: ```
+        #<ZeroDivisionError: hi>
+      ```
+      Actual error raised: ```
+        #<StandardError: hi>
+      ```
+    MSG
+    assert_match expected_message, error.message
   end
 end

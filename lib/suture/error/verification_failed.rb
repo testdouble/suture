@@ -88,24 +88,24 @@ module Suture::Error
       return <<-MSG.gsub(/^ {8}/,'')
         #{index + 1}.) Recorded call for seam #{expected.name.inspect} (ID: #{expected.id}) ran and #{failure[:error] ? "raised an error" : "failed comparison"}.
 
-           Arguments: ```
-             #{expected.args.inspect}
-           ```
-           Expected result: ```
-             #{expected.result.value.inspect}
-           ```
-           #{failure[:error] ? "Error raised" : "Actual result"}: ```
-             #{if failure[:error]
-                 stringify_error(failure[:error])
-               else
-                 failure[:new_result].value.inspect
-               end
-             }
-           ```
+          Arguments: ```
+            #{expected.args.inspect}
+          ```
+          Expected #{expected.result.errored? ? "error raised" : "returned value"}: ```
+            #{expected.result.value.inspect}
+          ```
+          Actual #{(failure[:error] || failure[:new_result].errored?) ? "error raised" : "returned value"}: ```
+            #{if failure[:error]
+                stringify_error(failure[:error])
+              else
+                failure[:new_result].value.inspect
+              end
+            }
+          ```
 
-           Ideas to fix this:
-             * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=#{expected.id}`
-             * Is the recording wrong? Delete it! `Suture.delete!(#{expected.id})`
+          Ideas to fix this:
+            * Focus on this test by setting ENV var `SUTURE_VERIFY_ONLY=#{expected.id}`
+            * Is the recording wrong? Delete it! `Suture.delete!(#{expected.id})`
       MSG
     end
 
