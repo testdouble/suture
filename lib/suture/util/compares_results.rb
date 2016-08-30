@@ -5,7 +5,9 @@ module Suture::Util
     end
 
     def compare(expected, actual)
-      if expected.errored?
+      if expected.errored? != actual.errored?
+        false
+      elsif expected.errored?
         actual.value.kind_of?(expected.value.class) &&
           expected.value.message == actual.value.message
       else
