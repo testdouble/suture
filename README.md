@@ -150,8 +150,8 @@ the test environment has the data needed to behave the same way as when it was
 recorded (it may be appropriate to take a snapshot of the database before you
 start recording and load it before you run your tests)
 
-* by generating a code coverage report (
-  [simplecov](https://github.com/colszowka/simplecov) is a good one to start
+* by generating a code coverage report
+  ([simplecov](https://github.com/colszowka/simplecov) is a good one to start
   with) from running this test in isolation, we can see what `LegacyWorker` is
   actually calling, in an attempt to do two things:
   * maximize coverage for code in the LegacyWorker (and for code that's
