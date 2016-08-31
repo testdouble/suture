@@ -98,6 +98,14 @@ module Suture::Error
             - with error..0
           - Skipped.......0
           - Total calls...1
+
+        ## Progress
+
+        Here's what your progress to initial completion looks like so far:
+
+        [◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌]
+
+        Of 1 recorded interactions, 0 are currently passing.
       MSG
       assert_equal expected_message, error.message
     end
@@ -219,7 +227,7 @@ module Suture::Error
 
         ```
         {
-          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:107`)
+          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:115`)
           :database_path => "lol.db",
           :fail_fast => true,
           :call_limit => 42,

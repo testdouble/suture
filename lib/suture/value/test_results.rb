@@ -24,6 +24,10 @@ module Suture::Value
       @results
     end
 
+    def passed
+      @results.select { |r| r[:passed] }
+    end
+
     def failed
       @results.select { |r| !r[:passed] && r[:ran] }
     end

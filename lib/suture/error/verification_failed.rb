@@ -1,3 +1,5 @@
+require "suture/adapter/progress_bar"
+
 module Suture::Error
   class VerificationFailed < StandardError
     def initialize(plan, results)
@@ -10,8 +12,10 @@ module Suture::Error
         intro,
         describe_failures(@results.failed, @plan),
         configuration(@plan),
-        summarize(@results)
-      ].join("\n")
+        summarize(@results),
+        progress(@plan, @results)
+      ].compact.join("\n").tap do
+      end
     end
 
     private
@@ -34,6 +38,23 @@ module Suture::Error
             - with error..#{results.errored_count}
           - Skipped.......#{results.skipped_count}
           - Total calls...#{results.total_count}
+      MSG
+    end
+
+    def progress(plan, results)
+      return if plan.fail_fast
+      bar = Suture::Adapter::ProgressBar.new.progress(
+        results.passed.size,
+        results.all.size
+      )
+      <<-MSG.gsub(/^ {8}/,'')
+        ## Progress
+
+        Here's what your progress to initial completion looks like so far:
+
+        #{bar}
+
+        Of #{results.all.size} recorded interactions, #{results.passed.size} are currently passing.
       MSG
     end
 
