@@ -1,7 +1,5 @@
 module Suture::Value
   class TestResults
-    attr_reader :results
-
     def initialize(results)
       @results = results
     end
@@ -20,6 +18,10 @@ module Suture::Value
 
     def passed_count
       @results.count { |r| r[:passed] }
+    end
+
+    def all
+      @results
     end
 
     def failed

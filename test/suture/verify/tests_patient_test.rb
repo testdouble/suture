@@ -42,7 +42,7 @@ module Suture
         :new_result => Value::Result.returned(6),
         :passed => true,
         :ran => true
-      }, result.results.first)
+      }, result.all.first)
     end
 
     def test_single_failing_call
@@ -68,7 +68,7 @@ module Suture
         :passed => false,
         :new_result => Value::Result.returned(6),
         :ran => true
-      }, result.results.first)
+      }, result.all.first)
     end
 
     def test_fail_fast
@@ -97,11 +97,11 @@ module Suture
         :passed => false,
         :new_result => Value::Result.returned(6),
         :ran => true
-      }, result.results.first)
+      }, result.all.first)
       assert_equal({
         :observation => call2,
         :ran => false
-      }, result.results.last)
+      }, result.all.last)
     end
 
     def test_with_errors
@@ -137,13 +137,13 @@ module Suture
         :passed => false,
         :error => some_error,
         :ran => true
-      }, result.results.first)
+      }, result.all.first)
       assert_equal({
         :observation => call2,
         :passed => true,
         :new_result => Value::Result.returned(6),
         :ran => true
-      }, result.results.last)
+      }, result.all.last)
     end
 
     def test_call_limit
@@ -208,7 +208,7 @@ module Suture
       assert_equal 0, result.failed_count
       assert_equal 0, result.skipped_count
       assert_equal 0, result.errored_count
-      assert_equal [], result.results
+      assert_equal [], result.all
     end
   end
 end
