@@ -17,7 +17,7 @@ class PrescribesTestPlanTest < UnitTest
     result = @subject.prescribe(:foo)
 
     assert_equal :foo, result.name
-    assert_equal nil, result.fail_fast
+    assert_equal false, result.fail_fast
     assert_equal nil, result.call_limit
     assert_equal nil, result.time_limit
     assert_equal nil, result.error_message_limit
