@@ -12,6 +12,16 @@ class DevelopmentTest < SafeTest
     assert_equal true, called_after_old
   end
 
+  def test_no_record_prefers_new
+    called_after_old = false
+    result = Suture.create :add,
+      :old => lambda {|c,d| raise "No thanks!" },
+      :new => lambda {|c,d| c + d },
+      :args => [5,9]
+
+    assert_equal 14, result
+  end
+
   def test_record_does_record
     called_after_old = false
     dictaphone = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:add))
