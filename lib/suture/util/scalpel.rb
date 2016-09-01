@@ -21,7 +21,7 @@ module Suture::Util
 
     def call_after_hook(plan, location, args, result)
       return unless after_hook = try(plan, "after_#{location}")
-      after_hook.call(plan.name, args, result)
+      after_hook.call(args, result)
     end
 
     def log_error_details(plan, location, args, error)
