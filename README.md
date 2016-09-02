@@ -369,6 +369,15 @@ path will go unnoticed, so it's best used in conjunction with Suture's logging
 feature. Before ultimately deciding to finally delete the legacy code path,
 double-check that the logs aren't full of rescued errors!
 
+## Public API Summary
+
+* `Suture.create(name, opts)` - Creates a seam in your production source code
+* `Suture.verify(name, opts)` - Verifies a callable subject can recreate recorded calls
+* `Suture.config(config)` - Sets logging options, as well global defaults for other properties
+* `Suture.reset!` - Resets all Suture configuration
+* `Suture.delete!(id)` - Deletes a recorded call by `id`
+* `Suture.delete_all!(name)` - Deletes all recorded calls for a given seam `name`
+
 ## Configuration
 
 Legacy code is, necessarily, complex and hard-to-wrangle. That's why Suture comes
