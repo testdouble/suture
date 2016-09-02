@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require "suture/verify/prescribes_test_plan"
 require "suture/value/test_results"
 
@@ -227,7 +229,7 @@ module Suture::Error
 
         ```
         {
-          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:115`)
+          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:117`)
           :database_path => "lol.db",
           :fail_fast => true,
           :call_limit => 42,
