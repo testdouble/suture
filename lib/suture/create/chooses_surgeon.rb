@@ -21,7 +21,7 @@ module Suture
         Surgeon::Observer.new
       elsif plan.call_both
         Surgeon::Auditor.new
-      elsif plan.call_old_on_error
+      elsif plan.fallback_on_error
         Surgeon::Remediator.new
       else
         Surgeon::NoOp.new

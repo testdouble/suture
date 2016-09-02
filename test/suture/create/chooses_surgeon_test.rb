@@ -31,8 +31,8 @@ module Suture
       assert_kind_of Surgeon::Auditor, result
     end
 
-    def test_call_old_on_error
-      plan = Value::Plan.new(:call_old_on_error => true)
+    def test_fallback_on_error
+      plan = Value::Plan.new(:fallback_on_error => true)
 
       result = @subject.choose(plan)
 
@@ -40,7 +40,7 @@ module Suture
     end
 
     def test_disable_flag
-      plan = Value::Plan.new(:disable => true, :call_old_on_error => true)
+      plan = Value::Plan.new(:disable => true, :fallback_on_error => true)
 
       result = @subject.choose(plan)
 

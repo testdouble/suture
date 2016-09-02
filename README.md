@@ -347,7 +347,7 @@ end
 ### Retrying failures
 
 Since the legacy code path hasn't been deleted yet, there's no reason to leave
-users hanging if the new code path explodes. By setting the `:call_old_on_error`
+users hanging if the new code path explodes. By setting the `:fallback_on_error`
 entry to `true`, Suture will rescue any errors raised from the new code path and
 attempt to invoke the legacy code path instead.
 
@@ -358,7 +358,7 @@ class MyWorker
       old: LegacyWorker.new,
       new: NewWorker.new,
       args: [id],
-      call_old_on_error: true
+      fallback_on_error: true
     }))
   end
 end

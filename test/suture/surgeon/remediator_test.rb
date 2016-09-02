@@ -13,7 +13,7 @@ module Suture::Surgeon
         :old => lambda { :old_result },
         :new => lambda { raise "Hell" },
         :args => [],
-        :call_old_on_error => true
+        :fallback_on_error => true
       )
 
       result = @subject.operate(plan)
@@ -27,7 +27,7 @@ module Suture::Surgeon
         :old => lambda { old_called = true; :old_result },
         :new => lambda { :new_result },
         :args => [],
-        :call_old_on_error => true
+        :fallback_on_error => true
       )
 
       result = @subject.operate(plan)
@@ -42,7 +42,7 @@ module Suture::Surgeon
         :old => lambda { old_called = true; :old_result },
         :new => lambda { 5 / 0 },
         :args => [],
-        :call_old_on_error => true,
+        :fallback_on_error => true,
         :expected_error_types => [ZeroDivisionError]
       )
 
