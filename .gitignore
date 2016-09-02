@@ -10,3 +10,4 @@
 /db/
 /log/
 /ignore/
+.ruby-version
