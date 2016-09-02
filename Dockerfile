@@ -1,13 +1,15 @@
 FROM ruby:2.2
 
-RUN mkdir -p /usr/app/src
+RUN mkdir -p /usr/src/app
 
-COPY ./Gemfile /usr/app/src
-COPY ./suture.gemspec /usr/app/src
-COPY ./lib/suture/version.rb /usr/app/src/lib/suture/
+COPY ./Gemfile /usr/src/app
+COPY ./suture.gemspec /usr/src/app
+COPY ./lib/suture/version.rb /usr/src/app/lib/suture/
 
-WORKDIR /usr/app/src
+WORKDIR /usr/src/app
 
 RUN bundle install
+
+COPY . /usr/src/app/
 
 CMD ["rake"]
