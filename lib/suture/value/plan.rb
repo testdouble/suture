@@ -3,7 +3,7 @@ module Suture::Value
     attr_reader :name, :old, :new, :args, :after_new, :after_old, :on_new_error,
                 :on_old_error, :database_path, :record_calls, :comparator,
                 :call_both, :raise_on_result_mismatch, :call_old_on_error,
-                :expected_error_types, :disable
+                :expected_error_types, :disable, :dup_args
 
     def initialize(attrs = {})
       @name = attrs[:name]
@@ -22,6 +22,7 @@ module Suture::Value
       @call_old_on_error = !!attrs[:call_old_on_error]
       @expected_error_types = attrs[:expected_error_types] || []
       @disable = !!attrs[:disable]
+      @dup_args = !!attrs[:dup_args]
     end
   end
 end

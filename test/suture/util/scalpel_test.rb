@@ -102,7 +102,6 @@ module Suture::Util
     def test_does_not_log_errors_when_expected
       Suture.config(:log_io => log_io = StringIO.new)
       Suture::Adapter::Log.reset!
-
       plan = Suture::BuildsPlan.new.build(:my_seam,
         :old => lambda { |a,b| 100 / 0 },
         :args => [1, 2],
@@ -110,7 +109,21 @@ module Suture::Util
       )
 
       assert_raises(ZeroDivisionError) { @subject.cut(plan, :old) }
+
       assert_equal "", log_io.tap(&:rewind).read
+    end
+
+    def test_deep_dup_args_when_set
+      arg = [[{:a => 1}]]
+      plan = Suture::BuildsPlan.new.build(:my_seam,
+        :old => lambda { |a| a[0][0][:a] = :trollface },
+        :args => [arg],
+        :dup_args => true
+      )
+
+      @subject.cut(plan, :old)
+
+      assert_equal [[{:a => 1}]], arg
     end
   end
 end

@@ -14,6 +14,7 @@ module Suture
       assert_equal "db/suture.sqlite3", result.database_path
       assert_kind_of Suture::Comparator, result.comparator
       assert_equal false, result.call_both
+      assert_equal false, result.dup_args
       assert_equal true, result.raise_on_result_mismatch
       assert_equal [], result.expected_error_types
       assert_equal false, result.disable
@@ -52,7 +53,8 @@ module Suture
         :on_new_error => some_on_new_error,
         :on_old_error => some_on_old_error,
         :expected_error_types => [ZeroDivisionError],
-        :disable => true
+        :disable => true,
+        :dup_args => true
       })
 
       assert_equal :some_name, result.name
@@ -69,6 +71,7 @@ module Suture
       assert_equal some_on_old_error, result.on_old_error
       assert_equal [ZeroDivisionError], result.expected_error_types
       assert_equal true, result.disable
+      assert_equal true, result.dup_args
     end
 
     def test_build_with_env_vars
@@ -86,6 +89,7 @@ module Suture
       ENV['SUTURE_ON_OLD_ERROR'] = 'j'
       ENV['SUTURE_EXPECTED_ERROR_TYPES'] = 'h'
       ENV['SUTURE_DISABLE'] = 'yes'
+      ENV['SUTURE_DUP_ARGS'] = 'yay'
 
       result = BuildsPlan.new.build(:a_name)
 
@@ -104,6 +108,7 @@ module Suture
       assert_equal nil, result.on_old_error
       assert_equal [], result.expected_error_types
       assert_equal true, result.disable
+      assert_equal true, result.dup_args
     end
 
     def test_build_with_falsey_env_var

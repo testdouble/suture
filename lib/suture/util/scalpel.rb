@@ -5,7 +5,7 @@ module Suture::Util
     include Suture::Adapter::Log
 
     def cut(plan, location, args_override = nil)
-      args = args(plan, args_override)
+      args = args_for(plan, args_override)
       begin
         plan.send(location).call(*args).tap do |result|
           call_after_hook(plan, location, args, result)
@@ -46,7 +46,12 @@ module Suture::Util
       plan.expected_error_types.any? {|e| error.kind_of?(e) }
     end
 
-    def args(plan, args_override)
+    def args_for(plan, args_override)
+      args = pick_args(plan, args_override)
+      try(plan, :dup_args) ? Marshal.load(Marshal.dump(args)) : args
+    end
+
+    def pick_args(plan, args_override)
       return args_override if args_override
       if plan.respond_to?(:args)
         plan.args
