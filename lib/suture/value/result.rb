@@ -22,6 +22,8 @@ module Suture::Value
       other.kind_of?(self.class) && other.state == state
     end
 
+    alias_method :eql?, :==
+
     def hash
       state.hash
     end

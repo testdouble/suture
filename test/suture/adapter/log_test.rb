@@ -52,6 +52,17 @@ module Suture::Adapter
       assert_match "Suture: an error", read_log
     end
 
+    def test_default_level
+      config_log(:log_level => nil)
+
+      subject = FakeThing.new.stuff
+
+      assert_not_match "Suture: an debug", read_log
+      assert_match "Suture: an info", read_log
+      assert_match "Suture: an warn", read_log
+      assert_match "Suture: an error", read_log
+    end
+
     private
 
     def config_log(attrs)
