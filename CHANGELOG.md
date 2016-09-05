@@ -2,7 +2,28 @@
 
 ## [Unreleased](https://github.com/testdouble/suture/tree/HEAD)
 
-[Full Changelog](https://github.com/testdouble/suture/compare/v0.3.3...HEAD)
+[Full Changelog](https://github.com/testdouble/suture/compare/v0.4.0...HEAD)
+
+**Implemented enhancements:**
+
+- API to delete a seam's recordings from the database [\#32](https://github.com/testdouble/suture/issues/32)
+
+**Closed issues:**
+
+- Justification for building a custom Docker image instead of using the canonical Ruby one [\#57](https://github.com/testdouble/suture/issues/57)
+- staging/prod: dup arguments [\#56](https://github.com/testdouble/suture/issues/56)
+- Add progress bar [\#54](https://github.com/testdouble/suture/issues/54)
+- warn if no calls are found for the provided seam name [\#51](https://github.com/testdouble/suture/issues/51)
+- Log out an error every time a suture raises [\#50](https://github.com/testdouble/suture/issues/50)
+- Validate test plans [\#28](https://github.com/testdouble/suture/issues/28)
+- Support permitted error types [\#24](https://github.com/testdouble/suture/issues/24)
+
+**Merged pull requests:**
+
+- Remove an unnecessary space \[ci skip\] [\#52](https://github.com/testdouble/suture/pull/52) ([JuanitoFatas](https://github.com/JuanitoFatas))
+
+## [v0.4.0](https://github.com/testdouble/suture/tree/v0.4.0) (2016-08-29)
+[Full Changelog](https://github.com/testdouble/suture/compare/v0.3.3...v0.4.0)
 
 **Closed issues:**
 
