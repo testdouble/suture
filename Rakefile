@@ -29,9 +29,8 @@ end
 task :example do
   Dir.chdir("example/rails_app") do
     passed = system <<-SH
-      export BUNDLE_GEMFILE="Gemfile"
-      bundle install --quiet
-      bundle exec rake suture
+      BUNDLE_GEMFILE="$PWD/Gemfile" bundle install --quiet
+      BUNDLE_GEMFILE="$PWD/Gemfile" bundle exec rake suture
     SH
     if !passed
       raise StandardError.new("Rails example failed!")
