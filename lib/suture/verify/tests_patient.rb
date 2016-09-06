@@ -4,6 +4,7 @@ require "suture/adapter/dictaphone"
 require "suture/value/test_results"
 require "suture/util/shuffle"
 require "suture/util/timer"
+require "suture/error/invalid_test_plan"
 require "backports/1.9.2/random"
 
 module Suture
@@ -15,6 +16,7 @@ module Suture
     end
 
     def test(test_plan)
+      validate_test_plan!(test_plan)
       experienced_failure_in_life = false
       timer = Suture::Util::Timer.new(test_plan.time_limit) unless test_plan.time_limit.nil?
       test_cases = build_test_cases(test_plan)
@@ -34,6 +36,12 @@ module Suture
     end
 
     private
+
+    def validate_test_plan!(test_plan)
+      if !test_plan.subject || !test_plan.subject.respond_to?(:call)
+        raise Suture::Error::InvalidTestPlan.new
+      end
+    end
 
     def should_skip?(test_plan, failed_fast, call_count, timer)
       (test_plan.fail_fast && failed_fast) ||

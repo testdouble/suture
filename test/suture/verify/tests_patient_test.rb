@@ -210,5 +210,25 @@ module Suture
       assert_equal 0, result.errored_count
       assert_equal [], result.all
     end
+
+    def test_invalid_plan_missing_subject
+      test_plan = PrescribesTestPlan.new.prescribe(:thing, {})
+
+      error = assert_raises(Suture::Error::InvalidTestPlan) do
+        @subject.test(test_plan)
+      end
+
+      assert_equal "Suture.verify requires a `:subject` that responds to `:call`.", error.message
+    end
+
+    def test_invalid_plan_subject_not_callable
+      test_plan = PrescribesTestPlan.new.prescribe(:multiply,
+        :subject => "not callable!"
+      )
+
+      assert_raises(Suture::Error::InvalidTestPlan) do
+        @subject.test(test_plan)
+      end
+    end
   end
 end
