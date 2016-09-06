@@ -3,7 +3,7 @@ cache: bundler
 sudo: false
 before_install:
   - gem install bundler
-  - cd example/rails_app && bundle install && cd ../..
+  - cd example/rails_app && BUNDLE_GEMFILE="$PWD/Gemfile" bundle install && cd ../..
 rvm:
   - 1.8.7
   - 1.9
