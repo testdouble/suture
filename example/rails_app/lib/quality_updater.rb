@@ -79,8 +79,8 @@ class QualityUpdater
   ]
 
   def updater_for(item)
-    pair = UPDATERS.detect { |re, handler| re =~ item.name }
-    handler = pair ? pair[1] : standard_updater
+    pair = UPDATERS.detect { |re, _| re =~ item.name }
+    pair ? pair[1] : standard_updater
   end
 
   def standard_updater
