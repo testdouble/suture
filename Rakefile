@@ -26,6 +26,19 @@ Rake::TestTask.new(:test) do |t|
   ]
 end
 
+task :example do
+  Dir.chdir("example/rails_app") do
+    passed = system <<-SH
+      export BUNDLE_GEMFILE="Gemfile"
+      bundle install --quiet
+      bundle exec rake suture
+    SH
+    if !passed
+      raise StandardError.new("Rails example failed!")
+    end
+  end
+end
+
 if Gem.ruby_version >= Gem::Version.new("2.2.2")
   require 'github_changelog_generator/task'
   GitHubChangelogGenerator::RakeTask.new :changelog
@@ -39,4 +52,4 @@ if Gem.ruby_version >= Gem::Version.new("2.2.2")
 end
 
 
-task :default => :test
+task :default => [:test, :example]
