@@ -4,7 +4,7 @@ require "suture/util/env"
 module Suture::Adapter
   module Log
     def self.logger
-      if !@setup
+      if !defined?(@setup) || !@setup
         @logger = Suture::Wrap::Logger.init(Suture.config.merge(Suture::Util::Env.to_map))
         @setup = true
       end
