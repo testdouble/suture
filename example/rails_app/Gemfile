@@ -5,3 +5,5 @@ gem 'rails', '3.2.22.4'
 gem 'sqlite3'
 
 gem 'suture', :path => '../..'
+
+gem 'minitest', :group => :test

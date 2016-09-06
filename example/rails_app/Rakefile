@@ -5,3 +5,12 @@
 require File.expand_path('../config/application', __FILE__)
 
 RailsApp::Application.load_tasks
+
+require "rake/testtask"
+Rake::TestTask.new(:suture) do |t|
+  t.libs << "lib"
+  t.libs << "config"
+  t.libs << "app"
+  t.libs << "test"
+  t.test_files = FileList['test/suture/**/*_test.rb']
+end
