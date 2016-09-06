@@ -10,3 +10,5 @@ gem 'minitest', :group => :test
 
 # 1.8.7 support
 gem 'rake', '~> 10.0'
+gem 'i18n', '~> 0.6.0'
+
