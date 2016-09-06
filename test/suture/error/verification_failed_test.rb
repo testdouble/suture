@@ -107,7 +107,7 @@ module Suture::Error
 
         [◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌◌]
 
-        Of 1 recorded interactions, 0 are currently passing.
+        Of 1 recorded interactions, 0 are currently passing. That's 0%!
       MSG
       assert_equal expected_message, error.message
     end

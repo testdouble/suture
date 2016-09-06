@@ -1,4 +1,5 @@
 require "suture/adapter/progress_bar"
+require "suture/util/numbers"
 
 module Suture::Error
   class VerificationFailed < StandardError
@@ -47,6 +48,7 @@ module Suture::Error
         results.passed.size,
         results.all.size
       )
+      percent = Suture::Util::Numbers.percent(results.passed.size, results.all.size)
       <<-MSG.gsub(/^ {8}/,'')
         ## Progress
 
@@ -54,7 +56,7 @@ module Suture::Error
 
         #{bar}
 
-        Of #{results.all.size} recorded interactions, #{results.passed.size} are currently passing.
+        Of #{results.all.size} recorded interactions, #{results.passed.size} are currently passing. That's #{percent}%!
       MSG
     end
 
