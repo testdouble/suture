@@ -11,3 +11,5 @@
 /log/
 /ignore/
 .ruby-version
+
+/example/rails_app/Gemfile.lock
