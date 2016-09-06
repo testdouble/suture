@@ -21,7 +21,8 @@ class ItemsController < ApplicationController
           item.update_quality!
           item
         },
-        :args => [item]
+        :args => [item],
+        :record_calls => true
     end
     redirect_to items_path
   end
