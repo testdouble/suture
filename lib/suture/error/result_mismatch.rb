@@ -7,7 +7,7 @@ module Suture::Error
     end
 
     def message
-      expected_message = <<-MSG.gsub(/^ {8}/,'')
+      <<-MSG.gsub(/^ {8}/,'')
         The results from the old & new code paths did not match for the seam
         #{@plan.name.inspect} and Suture is raising this error because the `:call_both`
         option is enabled, because both code paths are expected to return the
@@ -52,7 +52,6 @@ module Suture::Error
         too disruptive and logging is sufficient for monitoring results, you may
         disable this error by setting `:raise_on_result_mismatch` to false.
       MSG
-
     end
   end
 end
