@@ -57,8 +57,7 @@ module Suture
       some_error = ZeroDivisionError.new("HEYY")
       plan = Value::TestPlan.new(
         :subject => lambda { raise some_error },
-        :args => [],
-        :expected_error_types => [ZeroDivisionError]
+        :args => []
       )
       observation = Value::Observation.new(:args => [], :error => some_error)
 
@@ -75,8 +74,7 @@ module Suture
       actual_error = ZeroDivisionError.new("BYYYYEEEE")
       plan = Value::TestPlan.new(
         :subject => lambda { raise actual_error },
-        :args => [],
-        :expected_error_types => [ZeroDivisionError]
+        :args => []
       )
       observation = Value::Observation.new(:args => [], :error => expected_error)
 
