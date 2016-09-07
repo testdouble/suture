@@ -510,6 +510,12 @@ attributes listed above will be ignored when comparing with recorded results.
 In all of the above cases, `:comparator` can be set on both `Suture.create` and
 `Suture.verify` and typically ought to be symmetrical for most seams.
 
+## Examples
+
+This repository contains these examples available for your perusal:
+
+* [A Rails app of the Gilded Rose kata](example/rails_app)
+
 ## Troubleshooting
 
 Some ideas if you can't get a particular verification to work or if you keep

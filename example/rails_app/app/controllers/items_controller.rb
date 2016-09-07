@@ -21,8 +21,8 @@ class ItemsController < ApplicationController
           item.update_quality!
           item
         },
-        :args => [item],
-        :record_calls => true
+        :args => [item] #, # Uncomment to record calls to db/suture.sqlite3:
+        # :record_calls => true
     end
     redirect_to items_path
   end
