@@ -2,7 +2,25 @@
 
 ## [Unreleased](https://github.com/testdouble/suture/tree/HEAD)
 
-[Full Changelog](https://github.com/testdouble/suture/compare/v0.4.0...HEAD)
+[Full Changelog](https://github.com/testdouble/suture/compare/v0.5.0...HEAD)
+
+**Implemented enhancements:**
+
+- API to drop Suture's database [\#31](https://github.com/testdouble/suture/issues/31)
+
+**Closed issues:**
+
+- Document expected\_error\_types feature [\#55](https://github.com/testdouble/suture/issues/55)
+- Document rails env-specific settings [\#44](https://github.com/testdouble/suture/issues/44)
+- Rails project [\#35](https://github.com/testdouble/suture/issues/35)
+- Add sensible defaults to active record objects [\#30](https://github.com/testdouble/suture/issues/30)
+- Document how to use Coverage  [\#26](https://github.com/testdouble/suture/issues/26)
+- Support awesome\_print [\#23](https://github.com/testdouble/suture/issues/23)
+- Document Value-ifying methods with side effects [\#18](https://github.com/testdouble/suture/issues/18)
+- Document configuration  [\#17](https://github.com/testdouble/suture/issues/17)
+
+## [v0.5.0](https://github.com/testdouble/suture/tree/v0.5.0) (2016-09-05)
+[Full Changelog](https://github.com/testdouble/suture/compare/v0.4.0...v0.5.0)
 
 **Implemented enhancements:**
 
