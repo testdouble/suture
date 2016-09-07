@@ -410,13 +410,16 @@ where you call Suture, like `Suture.create(:foo, { :comparator => my_thing })`
 
 `Suture.create(name, [options hash])`
 
-* _name_ (required) - a unique name for the seam, by which any recordings will be
+* _name_ (Required) - a unique name for the seam, by which any recordings will be
 identified. This should match the name used for any calls to `Suture.verify` by
 your automated tests
 
-* _old_ - something that responds to `call` for the provided `args` of the seam
-and either is the legacy code path (e.g. `OldCode.new.method(:old_path)`) or
-invokes it (inside an anonymous Proc or lambda)
+* _old_ - (Required) - something that responds to `call` for the provided `args`
+of the seam and either is the legacy code path (e.g.
+`OldCode.new.method(:old_path)`) or invokes it (inside an anonymous Proc or
+lambda)
+
+* _args_ - (Required) - an array of arguments to be passed to the `old` or `new`
 
 * _new_ - like old, but either references or invokes the code path designed to
 replace the `old` legacy code path. When set, Suture will default to invoking
@@ -496,7 +499,64 @@ unexpected error (see `expected_error_types`).
 
 #### Suture.verify
 
-TODO
+Many of the settings for `Suture.verify` are analogous to the same settings in
+`Suture.create` and are generally expected to be configured in the same way, as
+if symmetrically with the `Suture.create` call of the seam under test:
+
+* _name_ - (Required) - should be the same name as a seam for which some number
+of recorded calls exist
+
+* _subject_ - (Required) - a `call`-able that will be invoked with each recorded
+set of `args` and have its result compared to that of each recording. This is
+used in lieu of `old` or `new`, since the subject of a `Suture.verify` test might
+be either (or neither!)
+
+* _verify_only_ - (Default: nil) - when set to an ID, Suture.verify` will only
+run against recorded calls for the matching ID. This option is meant to be used
+to focus work on resolving a single verification failure
+
+* _fail_fast_ - (Default: false) - `Suture.verify` will, by default, run against
+every single recording, aggregating and reporting on all errors (just like, say,
+RSpec or Minitest would). However, if the seam is slow to invoke or if you
+confidently expect all of the recordings to pass verification, `fail_fast` is an
+appropriate option to set.
+
+* _call_limit_ - (Default: nil) - when set to a number, Suture will only verify
+up to the set number of recorded calls. Because Suture randomizes the order of
+verifications by default, you can see this as setting Suture.verify to sample a
+random smattering of `call_limit` recordings as a smell test. Potentially useful
+when a seam is very slow
+
+* _time_limit_ - (Default: nil) - when set to a number (in seconds), Suture will
+stop running verifications against recordings once `time_limit` seconds has
+elapsed. Useful when a seam is very slow to invoke
+
+* _error_message_limit_ - (Default: nil) - when set to a number, Suture will only
+print up to `error_message_limit` failure messages. That way, if you currently
+have hundreds of verifications failing, your console isn't overwhelmed by them on
+each run of `Suture.verify`
+
+* _random_seed_ - (Default: it's random!) - a randomized seed used to shuffle
+the recordings before verifying them against the `subject` code path. If set to
+`nil`, the recordings will be invoked in insertion-order. If set to a specific
+number, that number will be used as the random seed (useful when re-running a
+particular verification failure that can't be reproduced otherwise)
+
+* _comparator_ - (Default: `Suture::Comparator`) - If a custom comparator is used
+by the seam in `Suture.create`, then the same comparator should probably be
+used by `Suture.verify` to ensure the results are comparable. [Read
+more](#creating-a-custom-comparator) on creating custom comparators
+)
+
+* _database_path_ - (Default: `"db/suture.sqlite3"`) - as with `Suture.create`, a
+custom database path can be set for almost any invocation of Suture, and
+`Suture.verify is no exception`
+
+* _after_subject_ - a `call`-able hook that runs after `subject` is invoked. If
+`subject` raises an error, it is not invoked
+
+* _on_new_subject_ - a `call`-able hook that is invoked after `subject` raises an
+unexpected error (see `expected_error_types`)
 
 ### Creating a custom comparator
 
