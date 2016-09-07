@@ -3,14 +3,21 @@ module Suture
     DEFAULT_ACTIVE_RECORD_EXCLUDED_ATTRIBUTES = [:updated_at, :created_at]
 
     def initialize(options = {})
-      @active_record_excluded_attributes =
-        (options[:active_record_excluded_attributes] ||
-         DEFAULT_ACTIVE_RECORD_EXCLUDED_ATTRIBUTES).map(&:to_s)
+      @options = {
+        :active_record_excluded_attributes => (
+          options[:active_record_excluded_attributes] ||
+            DEFAULT_ACTIVE_RECORD_EXCLUDED_ATTRIBUTES
+        ).map(&:to_s)
+      }
     end
 
     def call(recorded, actual)
       is_equalivalent?(recorded, actual) ||
         Marshal.dump(recorded) == Marshal.dump(actual)
+    end
+
+    def inspect
+      "#{self.class}.new(#{@options.inspect})"
     end
 
     protected
@@ -25,7 +32,7 @@ module Suture
 
     def without_excluded_attrs(hash)
       hash.reject do |k, v|
-        @active_record_excluded_attributes.include?(k.to_s)
+        @options[:active_record_excluded_attributes].include?(k.to_s)
       end
     end
 

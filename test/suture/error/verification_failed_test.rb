@@ -83,13 +83,13 @@ module Suture::Error
 
         ```
         {
-          :comparator => Suture::Comparator.new, # (in: `lib/suture/comparator.rb:11`)
           :database_path => "db/suture.sqlite3",
           :fail_fast => false,
           :call_limit => nil, # (no limit)
           :time_limit => 30, # (in seconds)
           :error_message_limit => nil, # (no limit)
-          :random_seed => 998
+          :random_seed => 998,
+          :comparator => Suture::Comparator.new({:active_record_excluded_attributes=>[\"updated_at\", \"created_at\"]}).new, # (in: `lib/suture/comparator.rb:14`)
         }
         ```
 
@@ -229,13 +229,13 @@ module Suture::Error
 
         ```
         {
-          :comparator => Proc, # (in: `test/suture/error/verification_failed_test.rb:117`)
           :database_path => "lol.db",
           :fail_fast => true,
           :call_limit => 42,
           :time_limit => nil, # (no limit)
           :error_message_limit => nil, # (no limit)
-          :random_seed => nil # (insertion order)
+          :random_seed => nil, # (insertion order)
+          :comparator => Proc # (in: `test/suture/error/verification_failed_test.rb:117`)
         }
         ```
 

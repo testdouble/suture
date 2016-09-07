@@ -68,13 +68,13 @@ module Suture::Error
 
         ```
         {
-          :comparator => #{describe_comparator(plan.comparator)}
           :database_path => #{plan.database_path.inspect},
           :fail_fast => #{plan.fail_fast},
           :call_limit => #{plan.call_limit.inspect},#{" # (no limit)" if plan.call_limit.nil?}
           :time_limit => #{plan.time_limit.inspect},#{plan.time_limit.nil? ? " # (no limit)" : " # (in seconds)"}
           :error_message_limit => #{plan.error_message_limit.inspect},#{" # (no limit)" if plan.error_message_limit.nil?}
-          :random_seed => #{plan.random_seed.inspect}#{" # (insertion order)" if plan.random_seed.nil?}
+          :random_seed => #{plan.random_seed.inspect},#{" # (insertion order)" if plan.random_seed.nil?}
+          :comparator => #{describe_comparator(plan.comparator)}
         }
         ```
       MSG
@@ -82,9 +82,9 @@ module Suture::Error
 
     def describe_comparator(comparator)
       if comparator.kind_of?(Proc)
-        "Proc, # (in: `#{describe_source_location(*comparator.source_location)}`)"
+        "Proc # (in: `#{describe_source_location(*comparator.source_location)}`)"
       elsif comparator.respond_to?(:method) && comparator.method(:call)
-        "#{comparator.class}.new, # (in: `#{describe_source_location(*comparator.method(:call).source_location)}`)"
+        "#{comparator.inspect}.new, # (in: `#{describe_source_location(*comparator.method(:call).source_location)}`)"
       end
     end
 

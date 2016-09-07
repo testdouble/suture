@@ -60,6 +60,6 @@ class RandomSeedVerifyTest < SafeTest
         :random_seed => nil
       })
     }
-    assert_match ":random_seed => nil # (insertion order)", expected_error.message
+    assert_match ":random_seed => nil, # (insertion order)", expected_error.message
   end
 end
