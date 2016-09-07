@@ -262,7 +262,7 @@ unit tests around new units that shook out from the activity. Having good tests
 for well-factored code is the best guard against seeing it slip once again into
 poorly-understood "legacy" code.
 
-## staging
+## Staging
 
 Once you've changed the code, you still may not be confident enough to delete it
 entirely. It's possible (even likely) that your local exploratory testing didn't
@@ -292,7 +292,7 @@ implementations, and will raise an error if they don't return the same value.
 Obviously, this setting is only helpful if the paths don't trigger major or
 destructive side effects.
 
-## production
+## Production
 
 You're _almost_ ready to delete the old code path and switch production over to
 the new one, but fear lingers: maybe there's an edge case your testing to this
@@ -408,7 +408,91 @@ where you call Suture, like `Suture.create(:foo, { :comparator => my_thing })`
 
 #### Suture.create
 
-TODO
+`Suture.create(name, [options hash])`
+
+* _name_ (required) - a unique name for the seam, by which any recordings will be
+identified. This should match the name used for any calls to `Suture.verify` by
+your automated tests
+
+* _old_ - something that responds to `call` for the provided `args` of the seam
+and either is the legacy code path (e.g. `OldCode.new.method(:old_path)`) or
+invokes it (inside an anonymous Proc or lambda)
+
+* _new_ - like old, but either references or invokes the code path designed to
+replace the `old` legacy code path. When set, Suture will default to invoking
+the `new` path at the exclusion of the `old` path (unless a mode flag like
+`record_calls`, `call_both`, or `fallback_on_error` suggests differently)
+
+* _database_path_ - (Default: `"db/suture.sqlite3"`) - a path relative to the
+current working directory to the Sqlite3 database Suture uses to record and
+playback calls
+
+* _record_calls_ - (Default: false) - when set to true, the `old` path is called
+(regardless of whether `new` is set) and its arguments and result (be it a return
+value or an expected raised error) is recorded into the Suture database for the
+purpose of more coverage for calls to `Suture.verify`. [Read
+more](#3-record-the-current-behavior)
+
+* _call_both_ - (Default: false) - when set to true, the `new` path is invoked,
+then the `old` path is invoked, each with the seam's `args`. The return value
+from each is compared with the `comparator`, and if they are not equivalent, then
+a `Suture::Error::ResultMismatch` is raised. Intended after the `new` path is
+initially developed and to be run in pre-production environments. [Read
+more](#staging)
+
+* _fallback_on_error_ - (Default: false) - designed to be run in production after
+the initial development of the new code path, when set to true, Suture will
+invoke the `new` code path. If `new` raises an error that isn't an
+`expected_error_type`, then Suture will invoke the `old` path with the same args
+in an attempt to recover a working state for the user. [Read more](#production)
+
+* _raise_on_result_mismatch_ - (Default: true) - when set to true, the
+`call_both` mode will merely log incidents of result mismatches, as opposed to
+raising `Suture::Error::ResultMismatch`.
+
+* _comparator_ - (Default: `Suture::Comparator.new`) - determines how return
+values from the Suture are compared when invoking `Suture.verify` or when
+`call_both` mode is activated. By default, results will be considered equivalent
+if `==` returns true or if they `Marshal.dump` to the same string. If this
+default isn't appropriate for the return value of your seam, [read
+on](#creating-a-custom-comparator)
+
+* _expected_error_types_ - (Default: `[]`) - if the seam is expected to raise
+certain types of errors, don't consider them to be exceptional cases. For
+example, if your `:widget` seam is known to raise `WidgetError` objects in
+certain cases, setting `:expected_error_types => [WidgetError]` will result in:
+  * `Suture.create` will record expected errors when `record_calls` is enabled
+  * `Suture.verify` will compare recorded and actual raised errors that are
+    `kind_of?` any recorded error type (regardless of whether `Suture.verify` is
+    passed a redundant list of `expected_error_types`)
+  * `Suture.create`, when `fallback_on_error` is enabled, will allow expected
+    errors raised by the `new` path to propogate, as opposed to logging &
+    rescuing them before calling the `old` path as a fallback
+  * Additionally, `Suture.verify` can be passed `expected_error_types` to squelch
+    warning logs that result from unexpectedly raised errors
+
+* _disable_ - (Default: false) - when enabled, Suture will attempt to revert to
+the original behavior of the `old` path and take no special action. Useful in
+cases where a bug is discovered in a deployed environment and you simply want
+to hit the brakes on any new code path experiments by setting
+`SUTURE_DISABLE=true` globally
+
+* _dup_args_ - (Default: false) - when enabled, Suture will call `dup` on each
+of the args passed to the `old` and/or `new` code paths. Useful when the code
+path(s) mutate the arguments in such a way as to prevent `call_both` or
+`fallback_on_error` from being effective
+
+* _after_new_ - a `call`-able hook that runs after `new` is invoked. If `new`
+raises an error, it is not invoked
+
+* _after_old_ - a `call`-able hook that runs after `old` is invoked. If `old`
+raises an error, it is not invoked
+
+* _on_new_error_ - a `call`-able hook that is invoked after `new` raises an
+unexpected error (see `expected_error_types`).
+
+* _on_old_error_ - a `call`-able hook that is invoked after `old` raises an
+unexpected error (see `expected_error_types`).
 
 #### Suture.verify
 
