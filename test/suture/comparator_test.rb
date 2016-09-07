@@ -24,6 +24,80 @@ module Suture
       assert_equal false, @subject.call(Object.new, Hash.new)
     end
 
+    def test_active_record_on_the_merits
+      assert_equal true, @subject.call(
+        MyRecord.new(:foo => 'bar'),
+        MyRecord.new('foo' => 'bar')
+      )
+      assert_equal false, @subject.call(
+        MyRecord.new(:foo => 'bar'),
+        MyRecord.new('foo' => 'baz')
+      )
+      assert_equal false, @subject.call(
+        MyRecord.new(:foo => 'bar'),
+        MyRecord.new('foo' => 'bar', :id => 4)
+      )
+      assert_equal false, @subject.call(MyRecord.new, MyOtherRecord.new)
+    end
+
+    def test_active_record_default_excluded_attrs
+      assert_equal true, @subject.call(
+        MyRecord.new(:foo => 'bar', :updated_at => Time.new - 49),
+        MyRecord.new(:foo => 'bar', :updated_at => Time.new)
+      )
+      assert_equal true, @subject.call(
+        MyRecord.new(:foo => 'bar', :created_at => Time.new - 49),
+        MyRecord.new(:foo => 'bar', :created_at => Time.new)
+      )
+      assert_equal true, @subject.call(
+        MyRecord.new(:created_at => Time.new - 49),
+        MyRecord.new(:updated_at => Time.new)
+      )
+    end
+
+    def test_active_record_default_excluded_attrs
+      @subject = Comparator.new(
+        :active_record_excluded_attributes => [:biz, :baz]
+      )
+
+      assert_equal true, @subject.call(
+        MyRecord.new(:biz => 1),
+        MyRecord.new(:biz => 2)
+      )
+      assert_equal true, @subject.call(
+        MyRecord.new(:biz => 2, :baz => 3),
+        MyRecord.new(:biz => 2)
+      )
+      assert_equal false, @subject.call(
+        MyRecord.new(:updated_at => Time.new - 49),
+        MyRecord.new(:updated_at => Time.new)
+      )
+      assert_equal false, @subject.call(
+        MyRecord.new(:created_at => Time.new - 49),
+        MyRecord.new(:created_at => Time.new)
+      )
+    end
+
+    module ::ActiveRecord
+      class Base
+        def initialize(attributes = {})
+          @attributes = attributes
+        end
+
+        def attributes
+          Hash[@attributes.map do |(k,v)|
+            [k.to_s, v]
+          end]
+        end
+      end
+    end
+
+    class MyRecord < ActiveRecord::Base
+    end
+
+    class MyOtherRecord < ActiveRecord::Base
+    end
+
     class MyCustomType
       attr_reader :data
       def initialize(data)

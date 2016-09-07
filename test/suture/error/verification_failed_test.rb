@@ -83,7 +83,7 @@ module Suture::Error
 
         ```
         {
-          :comparator => Suture::Comparator.new, # (in: `lib/suture/comparator.rb:3`)
+          :comparator => Suture::Comparator.new, # (in: `lib/suture/comparator.rb:11`)
           :database_path => "db/suture.sqlite3",
           :fail_fast => false,
           :call_limit => nil, # (no limit)

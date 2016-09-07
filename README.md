@@ -472,6 +472,44 @@ Suture.verify(:my_type, {
 })
 ```
 
+#### Comparing two ActiveRecord objects
+
+Let's face it, a massive proportion of legacy Ruby code in the wild involves
+ActiveRecord objects to some extent, and it's important that Suture be equipped
+to compare them gracefully. If Suture's default comparator (`Suture::Comparator`)
+detects two ActiveRecord model instances being compared, it will behave
+differently, by this logic:
+
+1. Instead of comparing the objects with `==` (which returns true so long as the
+`id` attribute matdhes), Suture will compare the objects' `attributes` hashes
+instead
+2. The built-in `updated_at` and `created_at` will typically differ when code
+is executed at different times and are usually not meaningful to application
+logic, Suture will ignore these attributes by default
+
+Other attributes may or may not matter (for instance, other timestamp fields,
+or the `id` of the object), in those cases, you can instantiate the comparator
+yourself and tell it which attributes to exclude, like so:
+
+``` ruby
+Suture.verify :thing,
+  :subject => Thing.new.method(:stuff),
+  :comparator => Suture::Comparator.new(
+    :active_record_excluded_attributes => [
+      :id,
+      :quality,
+      :created_at,
+      :updated_at
+    ]
+  )
+```
+
+If `Thing#stuff` returns an instance of an ActiveRecord model, the four
+attributes listed above will be ignored when comparing with recorded results.
+
+In all of the above cases, `:comparator` can be set on both `Suture.create` and
+`Suture.verify` and typically ought to be symmetrical for most seams.
+
 ## Troubleshooting
 
 Some ideas if you can't get a particular verification to work or if you keep
