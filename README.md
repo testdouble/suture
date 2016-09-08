@@ -471,8 +471,6 @@ certain cases, setting `:expected_error_types => [WidgetError]` will result in:
   * `Suture.create`, when `fallback_on_error` is enabled, will allow expected
     errors raised by the `new` path to propogate, as opposed to logging &
     rescuing them before calling the `old` path as a fallback
-  * Additionally, `Suture.verify` can be passed `expected_error_types` to squelch
-    warning logs that result from unexpectedly raised errors
 
 * _disable_ - (Default: false) - when enabled, Suture will attempt to revert to
 the original behavior of the `old` path and take no special action. Useful in
@@ -515,6 +513,10 @@ set of `args` and have its result compared to that of each recording. This is
 used in lieu of `old` or `new`, since the subject of a `Suture.verify` test might
 be either (or neither!)
 
+* _database_path_ - (Default: `"db/suture.sqlite3"`) - as with `Suture.create`, a
+custom database path can be set for almost any invocation of Suture, and
+`Suture.verify is no exception`
+
 * _verify_only_ - (Default: nil) - when set to an ID, Suture.verify` will only
 run against recorded calls for the matching ID. This option is meant to be used
 to focus work on resolving a single verification failure
@@ -552,9 +554,10 @@ used by `Suture.verify` to ensure the results are comparable. [Read
 more](#creating-a-custom-comparator) on creating custom comparators
 )
 
-* _database_path_ - (Default: `"db/suture.sqlite3"`) - as with `Suture.create`, a
-custom database path can be set for almost any invocation of Suture, and
-`Suture.verify is no exception`
+* _expected_error_types_ - (Default: `[]`) - this option has little impact on
+`Suture.verify` (since each recording will either verify a return value or an
+error in its own right), however it can be set to squelch log messages warning
+that errors were raised when invoking the `subject`
 
 * _after_subject_ - a `call`-able hook that runs after `subject` is invoked. If
 `subject` raises an error, it is not invoked
