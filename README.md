@@ -65,7 +65,7 @@ much easier to verify return values.
 Since any changes to the code while it's untested are very dangerous, it's
 important to minimize changes made for the sake of creating a clear seam.
 
-### 2. Create our suture
+### 2. Create our seam
 
 Next, we introduce Suture to the call site so we can start analyzing its
 behavior:
@@ -499,9 +499,13 @@ unexpected error (see `expected_error_types`).
 
 #### Suture.verify
 
-Many of the settings for `Suture.verify` are analogous to the same settings in
-`Suture.create` and are generally expected to be configured in the same way, as
-if symmetrically with the `Suture.create` call of the seam under test:
+`Suture.verify(name, [options hash])`
+
+Many of the settings for `Suture.verify` mirror the settings available to
+`Suture.create`. In general, the two methods' common options should be configured
+identically for a given seam; this is necessary, because the `Suture.verify` call
+site doesn't depend on (or know about) any `Suture.create` call site of the same
+name; the only resource they share is the recorded calls in Suture's database.
 
 * _name_ - (Required) - should be the same name as a seam for which some number
 of recorded calls exist
