@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/testdouble/suture/tree/HEAD)
-
-[Full Changelog](https://github.com/testdouble/suture/compare/v0.5.0...HEAD)
+## [v1.0.0](https://github.com/testdouble/suture/tree/v1.0.0) (2016-09-07)
+[Full Changelog](https://github.com/testdouble/suture/compare/v0.5.0...v1.0.0)
 
 **Implemented enhancements:**
 
