@@ -2,7 +2,8 @@ module Suture::Value
   class Plan
     attr_reader :name, :old, :new, :args, :after_new, :after_old, :on_new_error,
                 :on_old_error, :database_path, :record_calls, :comparator,
-                :call_both, :raise_on_result_mismatch, :fallback_on_error,
+                :call_both, :raise_on_result_mismatch,
+                :fallback_on_error, :fallback_on_mismatch,
                 :expected_error_types, :disable, :dup_args
 
     def initialize(attrs = {})
@@ -20,6 +21,7 @@ module Suture::Value
       @call_both = !!attrs[:call_both]
       @raise_on_result_mismatch = !!attrs[:raise_on_result_mismatch]
       @fallback_on_error = !!attrs[:fallback_on_error]
+      @fallback_on_mismatch = !!attrs[:fallback_on_mismatch]
       @expected_error_types = attrs[:expected_error_types] || []
       @disable = !!attrs[:disable]
       @dup_args = !!attrs[:dup_args]
