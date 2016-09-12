@@ -7,13 +7,21 @@ module Suture::Surgeon
     end
 
     def operate(plan)
+      old_result = nil
       begin
-        @scalpel.cut(plan ,:new)
+        new_result = @scalpel.cut(plan ,:new)
+        if plan.raise_on_result_mismatch
+          old_result ||= @scalpel.cut(plan, :old)
+          if !plan.comparator.call(old_result, new_result)
+            raise Suture::Error::ResultMismatch.new(plan, new_result, old_result)
+          end
+        end
+        new_result
       rescue StandardError => actual_error
         if plan.expected_error_types.any? { |e| actual_error.is_a?(e) }
           raise actual_error
         else
-          @scalpel.cut(plan, :old)
+          old_result || @scalpel.cut(plan, :old)
         end
       end
     end

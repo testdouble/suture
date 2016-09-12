@@ -15,7 +15,7 @@ module Suture
       assert_kind_of Suture::Comparator, result.comparator
       assert_equal false, result.call_both
       assert_equal false, result.dup_args
-      assert_equal true, result.raise_on_result_mismatch
+      assert_equal false, result.raise_on_result_mismatch
       assert_equal [], result.expected_error_types
       assert_equal false, result.disable
     end
@@ -117,7 +117,7 @@ module Suture
       result = BuildsPlan.new.build(:something)
 
       assert_equal false, result.record_calls
-      assert_equal true, result.raise_on_result_mismatch
+      assert_equal false, result.raise_on_result_mismatch
     end
 
     def test_build_with_false_string_env_var
