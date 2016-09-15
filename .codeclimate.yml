@@ -26,3 +26,4 @@ ratings:
 exclude_paths:
 - test/
 - safe/fixtures/
+- example/
