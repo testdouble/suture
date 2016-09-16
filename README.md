@@ -449,9 +449,9 @@ invoke the `new` code path. If `new` raises an error that isn't an
 `expected_error_type`, then Suture will invoke the `old` path with the same args
 in an attempt to recover a working state for the user. [Read more](#production)
 
-* _raise_on_result_mismatch_ - (Default: true) - when set to true, the
-`call_both` mode will merely log incidents of result mismatches, as opposed to
-raising `Suture::Error::ResultMismatch`.
+* _raise_on_result_mismatch_ - (Default: false) - when set to true, the
+`call_both` mode or `fallback_on_error` mode will raise
+`Suture::Error::ResultMismatch` if result mismatches.
 
 * _comparator_ - (Default: `Suture::Comparator.new`) - determines how return
 values from the Suture are compared when invoking `Suture.verify` or when
