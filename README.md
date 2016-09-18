@@ -432,28 +432,35 @@ the `new` path at the exclusion of the `old` path (unless a mode flag like
 current working directory to the Sqlite3 database Suture uses to record and
 playback calls
 
-* _record_calls_ - (Default: false) - when set to true, the `old` path is called
+* _record_calls_ - (Default: `false`) - when set to true, the `old` path is called
 (regardless of whether `new` is set) and its arguments and result (be it a return
 value or an expected raised error) is recorded into the Suture database for the
 purpose of more coverage for calls to `Suture.verify`. [Read
 more](#3-record-the-current-behavior)
 
-* _call_both_ - (Default: false) - when set to true, the `new` path is invoked,
+* _call_both_ - (Default: `false`) - when set to true, the `new` path is invoked,
 then the `old` path is invoked, each with the seam's `args`. The return value
 from each is compared with the `comparator`, and if they are not equivalent, then
 a `Suture::Error::ResultMismatch` is raised. Intended after the `new` path is
 initially developed and to be run in pre-production environments. [Read
 more](#staging)
 
-* _fallback_on_error_ - (Default: false) - designed to be run in production after
+* _fallback_on_error_ - (Default: `false`) - designed to be run in production after
 the initial development of the new code path, when set to true, Suture will
 invoke the `new` code path. If `new` raises an error that isn't an
 `expected_error_type`, then Suture will invoke the `old` path with the same args
 in an attempt to recover a working state for the user. [Read more](#production)
 
-* _raise_on_result_mismatch_ - (Default: true) - when set to true, the
+* _raise_on_result_mismatch_ - (Default: `true`) - when set to true, the
 `call_both` mode will merely log incidents of result mismatches, as opposed to
-raising `Suture::Error::ResultMismatch`.
+raising `Suture::Error::ResultMismatch`
+
+* _return_old_on_result_mismatch_ - (Default: `false`) - when set to true, the
+`call_both` mode will return the result of the `old` code path instead of the
+`new` code path. This is useful when you want to log mismatches in production
+(i.e. when you're very confident it's safe and fast enough to use `call_both` in
+production), but want to fallback to the `old` path in the case of a mismatch
+to minimize disruption to your users
 
 * _comparator_ - (Default: `Suture::Comparator.new`) - determines how return
 values from the Suture are compared when invoking `Suture.verify` or when
@@ -474,13 +481,13 @@ certain cases, setting `:expected_error_types => [WidgetError]` will result in:
     errors raised by the `new` path to propogate, as opposed to logging &
     rescuing them before calling the `old` path as a fallback
 
-* _disable_ - (Default: false) - when enabled, Suture will attempt to revert to
+* _disable_ - (Default: `false`) - when enabled, Suture will attempt to revert to
 the original behavior of the `old` path and take no special action. Useful in
 cases where a bug is discovered in a deployed environment and you simply want
 to hit the brakes on any new code path experiments by setting
 `SUTURE_DISABLE=true` globally
 
-* _dup_args_ - (Default: false) - when enabled, Suture will call `dup` on each
+* _dup_args_ - (Default: `false`) - when enabled, Suture will call `dup` on each
 of the args passed to the `old` and/or `new` code paths. Useful when the code
 path(s) mutate the arguments in such a way as to prevent `call_both` or
 `fallback_on_error` from being effective
@@ -519,27 +526,27 @@ be either (or neither!)
 custom database path can be set for almost any invocation of Suture, and
 `Suture.verify is no exception`
 
-* _verify_only_ - (Default: nil) - when set to an ID, Suture.verify` will only
+* _verify_only_ - (Default: `nil`) - when set to an ID, Suture.verify` will only
 run against recorded calls for the matching ID. This option is meant to be used
 to focus work on resolving a single verification failure
 
-* _fail_fast_ - (Default: false) - `Suture.verify` will, by default, run against
+* _fail_fast_ - (Default: `false`) - `Suture.verify` will, by default, run against
 every single recording, aggregating and reporting on all errors (just like, say,
 RSpec or Minitest would). However, if the seam is slow to invoke or if you
 confidently expect all of the recordings to pass verification, `fail_fast` is an
 appropriate option to set.
 
-* _call_limit_ - (Default: nil) - when set to a number, Suture will only verify
+* _call_limit_ - (Default: `nil`) - when set to a number, Suture will only verify
 up to the set number of recorded calls. Because Suture randomizes the order of
 verifications by default, you can see this as setting Suture.verify to sample a
 random smattering of `call_limit` recordings as a smell test. Potentially useful
 when a seam is very slow
 
-* _time_limit_ - (Default: nil) - when set to a number (in seconds), Suture will
+* _time_limit_ - (Default: `nil`) - when set to a number (in seconds), Suture will
 stop running verifications against recordings once `time_limit` seconds has
 elapsed. Useful when a seam is very slow to invoke
 
-* _error_message_limit_ - (Default: nil) - when set to a number, Suture will only
+* _error_message_limit_ - (Default: `nil`) - when set to a number, Suture will only
 print up to `error_message_limit` failure messages. That way, if you currently
 have hundreds of verifications failing, your console isn't overwhelmed by them on
 each run of `Suture.verify`
