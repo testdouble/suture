@@ -26,32 +26,81 @@ module Suture
     CONFLICTS = [
       lambda { |plan|
         if plan.record_calls && !plan.database_path
-          ":record_calls is enabled, but :database_path is nil, so Suture doesn't know where to record calls to the seam."
+          <<-MSG.gsub(/^ {12}/,'')
+            :record_calls is enabled, but :database_path is nil, so Suture
+              doesn't know where to record calls to the seam.
+          MSG
         end
       },
       lambda { |plan|
         if plan.record_calls && plan.call_both
-          ":record_calls & :call_both are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :call_both will invoke the new path and the old to compare their results after development of the new code path is initially complete (typically in a pre-production environment to validate the behavior of the new code path is consistent with the old). If you're still actively developing the new code path and need more recordings to feed Suture.verify, disable :call_both; otherwise, it's likely time to turn off :record_calls on this seam."
+          <<-MSG.gsub(/^ {12}/,'')
+            :record_calls & :call_both are both enabled and conflict with one
+              another. :record_calls will only invoke the old code path (intended
+              for characterization of the old code path and initial development
+              of the new code path), whereas :call_both will invoke the new path
+              and the old to compare their results after development of the new
+              code path is initially complete (typically in a pre-production
+              environment to validate the behavior of the new code path is
+              consistent with the old). If you're still actively developing the
+              new code path and need more recordings to feed Suture.verify,
+              disable :call_both; otherwise, it's likely time to turn off
+              :record_calls on this seam.
+          MSG
         end
       },
       lambda { |plan|
         if plan.record_calls && plan.fallback_on_error
-          ":record_calls & :fallback_on_error are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :fallback_on_error will call the new code path unless an error is raised, in which case it will fall back on the old code path."
+          <<-MSG.gsub(/^ {12}/,'')
+            :record_calls & :fallback_on_error are both enabled and conflict with
+              one another. :record_calls will only invoke the old code path
+              (intended for characterization of the old code path and initial
+              development of the new code path), whereas :fallback_on_error will
+              call the new code path unless an error is raised, in which case it
+              will fall back on the old code path.
+          MSG
         end
       },
       lambda { |plan|
         if plan.call_both && plan.fallback_on_error
-          ":call_both & :fallback_on_error are both enabled and conflict with one another. :call_both is designed for pre-production environments and will call both the old and new code paths to compare their results, whereas :fallback_on_error is designed for production environments where it is safe to call the old code path in the event that the new code path fails unexpectedly"
+          <<-MSG.gsub(/^ {12}/,'')
+            :call_both & :fallback_on_error are both enabled and conflict with
+              one another. :call_both is designed for pre-production environments
+              and will call both the old and new code paths to compare their
+              results, whereas :fallback_on_error is designed for production
+              environments where it is safe to call the old code path in the
+              event that the new code path fails unexpectedly
+          MSG
         end
       },
       lambda { |plan|
         if plan.call_both && !plan.new.respond_to?(:call)
-          ":call_both is set but :new is either not set or is not callable. In order to call both code paths, both :old and :new must be set and callable."
+          <<-MSG.gsub(/^ {12}/,'')
+            :call_both is set but :new is either not set or is not callable. In
+              order to call both code paths, both :old and :new must be set and
+              callable
+          MSG
         end
       },
       lambda { |plan|
         if plan.fallback_on_error && !plan.new.respond_to?(:call)
-          ":fallback_on_error is set but :new is either not set or is not callable. This mode is designed for after the :new code path has been developed and run in production-like environments, where :old is only kept around as a fallback to retry in the event that :new raises an unexpected error. Either specify a :new code path or disable :fallback_on_error."
+          <<-MSG.gsub(/^ {12}/,'')
+            :fallback_on_error is set but :new is either not set or is not
+              callable. This mode is designed for after the :new code path has
+              been developed and run in production-like environments, where :old
+              is only kept around as a fallback to retry in the event that
+              :new raises an unexpected error. Either specify a :new code path or
+              disable :fallback_on_error.
+          MSG
+        end
+      },
+      lambda { |plan|
+        if !plan.raise_on_result_mismatch && !plan.call_both
+          <<-MSG.gsub(/^ {12}/,'')
+            :raise_on_result_mismatch was disabled but :call_both is not enabled.
+              This option only applies to the :call_both mode, and will have no
+              impact when set for other modes
+          MSG
         end
       }
     ]

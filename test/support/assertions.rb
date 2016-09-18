@@ -12,12 +12,13 @@ module Support
 
     ##
     # Fails unless +matcher+ <tt>=~</tt> +obj+ (with whitespace normalized a bit)
+    # Flips expected & actual so it's easier to use heredocs
 
-    def assert_spacey_match matcher, obj, msg = nil
+    def assert_spacey_match obj, matcher, msg = nil
       msg = message(msg) { "Expected #{mu_pp matcher} to match #{mu_pp obj} (with relaxed whitespace)" }
       assert_respond_to matcher, :"=~"
-      matcher = Regexp.new Regexp.escape matcher.gsub(/\s+/, ' ') if String === matcher
-      assert matcher =~ obj.gsub(/\s+/, ' '), msg
+      matcher = Regexp.new(Regexp.escape(matcher.gsub(/\s+/, ''))) if String === matcher
+      assert(matcher =~ obj.gsub(/\s+/, ''), msg)
     end
   end
 end

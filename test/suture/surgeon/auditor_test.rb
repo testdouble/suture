@@ -92,6 +92,20 @@ module Suture::Surgeon
       assert_equal :shrugface, result
     end
 
+    def test_returns_old_when_toggled_and_raise_disabled
+      plan = Suture::BuildsPlan.new.build(:face_swap,
+        :old => lambda { |type| :trollface },
+        :new => lambda { |type| :shrugface },
+        :args => [:face],
+        :raise_on_result_mismatch => false,
+        :return_old_on_result_mismatch => true
+      )
+
+      result = @subject.operate(plan)
+
+      assert_equal :trollface, result
+    end
+
     def test_passes_when_comparator_bails_them_out
       plan = Suture::BuildsPlan.new.build(:less_than_10,
         :old => lambda { 8 },

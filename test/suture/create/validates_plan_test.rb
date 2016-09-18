@@ -10,7 +10,8 @@ module Suture
     end
 
     def test_valid_plan
-      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [])
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
+                             :raise_on_result_mismatch => true)
 
       result = @subject.validate(plan)
 
@@ -24,9 +25,11 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "options passed to `Suture.create` were invalid", error.message
-      assert_spacey_match "The following options are required:", error.message
-      assert_spacey_match "* :name - in order to identify recorded calls", error.message
+      assert_spacey_match error.message, <<-MSG
+        options passed to `Suture.create` were invalid.
+          The following options are required:
+            * :name - in order to identify recorded calls
+      MSG
     end
 
     def test_raise_when_no_code_path
@@ -34,7 +37,9 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :old - in order to call the legacy code path (must respond to `:call`)", error.message
+      assert_spacey_match error.message, <<-MSG
+        * :old - in order to call the legacy code path (must respond to `:call`)
+      MSG
     end
 
     def test_raise_when_args_are_not_set
@@ -42,7 +47,12 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "in order to differentiate recorded calls (if the code you're changing doesn't take arguments, you can set :args to `[]` but should probably consider creating a seam inside of it which can--consult the README for more advice)", error.message
+      assert_spacey_match error.message, <<-MSG
+        in order to differentiate recorded calls (if the code you're changing
+        doesn't take arguments, you can set :args to `[]` but should probably
+        consider creating a seam inside of it which can--consult the README for
+        more advice)
+      MSG
     end
 
     def test_raise_with_multiple_missing_required_params
@@ -50,9 +60,9 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :name", error.message
-      assert_spacey_match "* :old", error.message
-      assert_spacey_match "* :args", error.message
+      assert_spacey_match error.message, "* :name"
+      assert_spacey_match error.message, "* :old"
+      assert_spacey_match error.message, "* :args"
     end
 
     # 2. Arguments are invalid
@@ -62,8 +72,10 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "The following options were invalid:", error.message
-      assert_spacey_match "* :name - must be less than 256 characters", error.message
+      assert_spacey_match error.message, <<-MSG
+        The following options were invalid:
+          * :name - must be less than 256 characters
+      MSG
     end
 
     def test_raise_when_old_is_not_callable
@@ -71,7 +83,10 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :old - must respond to `call` (e.g. `dog.method(:bark)` or `->(*args){ dog.bark(*args) }`)", error.message
+      assert_spacey_match error.message, <<-MSG
+        * :old - must respond to `call` (e.g. `dog.method(:bark)` or
+          `->(*args){ dog.bark(*args) }`)
+      MSG
     end
 
     def test_raise_when_new_is_defined_and_not_callable
@@ -79,7 +94,10 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :new - must respond to `call` (e.g. `dog.method(:bark)` or `->(*args){ dog.bark(*args) }`)", error.message
+      assert_spacey_match error.message, <<-MSG
+        * :new - must respond to `call` (e.g. `dog.method(:bark)` or
+          `->(*args){ dog.bark(*args) }`)
+      MSG
     end
 
     def test_raise_when_comparator_is_defined_and_not_callable
@@ -88,7 +106,10 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :comparator - must respond to `call` (e.g. `MyComparator.new` or `->(recorded, actual) { recorded == actual }`)", error.message
+      assert_spacey_match error.message, <<-MSG
+        * :comparator - must respond to `call` (e.g. `MyComparator.new` or
+          `->(recorded, actual) { recorded == actual }`)
+      MSG
     end
 
     # 3. Invalid combinations
@@ -99,8 +120,11 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "Suture isn't sure how to best handle the combination of options passed", error.message
-      assert_spacey_match "* :record_calls is enabled, but :database_path is nil, so Suture doesn't know where to record calls to the seam.", error.message
+      assert_spacey_match error.message, <<-MSG
+        Suture isn't sure how to best handle the combination of options passed:
+          * :record_calls is enabled, but :database_path is nil, so Suture
+            doesn't know where to record calls to the seam.
+      MSG
     end
 
     def test_raise_when_record_calls_and_call_both_are_both_set
@@ -110,7 +134,18 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :record_calls & :call_both are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :call_both will invoke the new path and the old to compare their results after development of the new code path is initially complete (typically in a pre-production environment to validate the behavior of the new code path is consistent with the old). If you're still actively developing the new code path and need more recordings to feed Suture.verify, disable :call_both; otherwise, it's likely time to turn off :record_calls on this seam.", error.message
+      assert_spacey_match error.message, <<-MSG
+        * :record_calls & :call_both are both enabled and conflict with one
+          another. :record_calls will only invoke the old code path (intended
+          for characterization of the old code path and initial development of
+          the new code path), whereas :call_both will invoke the new path and
+          the old to compare their results after development of the new code
+          path is initially complete (typically in a pre-production environment
+          to validate the behavior of the new code path is consistent with the
+          old). If you're still actively developing the new code path and need
+          more recordings to feed Suture.verify, disable :call_both; otherwise,
+          it's likely time to turn off :record_calls on this seam.
+      MSG
     end
 
     def test_raise_when_record_calls_and_fallback_on_error_are_both_set
@@ -120,7 +155,14 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :record_calls & :fallback_on_error are both enabled and conflict with one another. :record_calls will only invoke the old code path (intended for characterization of the old code path and initial development of the new code path), whereas :fallback_on_error will call the new code path unless an error is raised, in which case it will fall back on the old code path.", error.message
+      assert_spacey_match error.message, <<-MSG
+        * :record_calls & :fallback_on_error are both enabled and conflict with
+          one another. :record_calls will only invoke the old code path
+          (intended for characterization of the old code path and initial
+          development of the new code path), whereas :fallback_on_error will
+          call the new code path unless an error is raised, in which case it
+          will fall back on the old code path.
+      MSG
     end
 
     def test_raise_when_call_both_and_fallback_on_error_are_both_set
@@ -129,17 +171,43 @@ module Suture
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :call_both & :fallback_on_error are both enabled and conflict with one another. :call_both is designed for pre-production environments and will call both the old and new code paths to compare their results, whereas :fallback_on_error is designed for production environments where it is safe to call the old code path in the event that the new code path fails unexpectedly", error.message
+      assert_spacey_match error.message, <<-MSG
+        * :call_both & :fallback_on_error are both enabled and conflict with
+          one another. :call_both is designed for pre-production environments
+          and will call both the old and new code paths to compare their
+          results, whereas :fallback_on_error is designed for production
+          environments where it is safe to call the old code path in the
+          event that the new code path fails unexpectedly
+      MSG
     end
 
-    def test_raise_when_call_both_does_not_have_both_paths
+    def test_raise_when_fallback_on_error_does_not_have_both_paths
       plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
                              :fallback_on_error => true)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
-      assert_spacey_match "* :fallback_on_error is set but :new is either not set or is not callable. This mode is designed for after the :new code path has been developed and run in production-like environments, where :old is only kept around as a fallback to retry in the event that :new raises an unexpected error. Either specify a :new code path or disable :fallback_on_error.", error.message
+      assert_spacey_match error.message, <<-MSG
+        * :fallback_on_error is set but :new is either not set or is not
+          callable. This mode is designed for after the :new code path has been
+          developed and run in production-like environments, where :old is only
+          kept around as a fallback to retry in the event that :new raises an
+          unexpected error. Either specify a :new code path or disable
+          :fallback_on_error.
+      MSG
     end
 
+    def test_raise_when_raise_mismatch_is_set_for_non_call_both
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
+                             :raise_on_result_mismatch => false)
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match error.message, <<-MSG
+        * :raise_on_result_mismatch was disabled but :call_both is not enabled. This
+          option only applies to the :call_both mode, and will have no impact
+          when set for other modes
+      MSG
+    end
   end
 end
