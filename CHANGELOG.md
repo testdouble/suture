@@ -1,5 +1,14 @@
 # Change Log
 
+## [v1.1.0](https://github.com/testdouble/suture/tree/v1.1.0) (2016-09-18)
+[Full Changelog](https://github.com/testdouble/suture/compare/v1.0.0...v1.1.0)
+
+**Merged pull requests:**
+
+- Return the old result when call\_both mismatches and raise is disable [\#63](https://github.com/testdouble/suture/pull/63) ([searls](https://github.com/searls))
+- excludes example/ from codeclimate analysis [\#62](https://github.com/testdouble/suture/pull/62) ([JoshTGreenwood](https://github.com/JoshTGreenwood))
+- update version in CHANGELOG \[ci skip\] [\#59](https://github.com/testdouble/suture/pull/59) ([y-yagi](https://github.com/y-yagi))
+
 ## [v1.0.0](https://github.com/testdouble/suture/tree/v1.0.0) (2016-09-07)
 [Full Changelog](https://github.com/testdouble/suture/compare/v0.5.0...v1.0.0)
 
