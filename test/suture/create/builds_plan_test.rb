@@ -16,6 +16,7 @@ module Suture
       assert_equal false, result.call_both
       assert_equal false, result.dup_args
       assert_equal true, result.raise_on_result_mismatch
+      assert_equal false, result.return_old_on_result_mismatch
       assert_equal [], result.expected_error_types
       assert_equal false, result.disable
     end
@@ -48,6 +49,7 @@ module Suture
         :comparator => some_comparator,
         :database_path => "blah.db",
         :raise_on_result_mismatch => false,
+        :return_old_on_result_mismatch => true,
         :after_new => some_after_new,
         :after_old => some_after_old,
         :on_new_error => some_on_new_error,
@@ -65,6 +67,7 @@ module Suture
       assert_equal some_comparator, result.comparator
       assert_equal "blah.db", result.database_path
       assert_equal false, result.raise_on_result_mismatch
+      assert_equal true, result.return_old_on_result_mismatch
       assert_equal some_after_new, result.after_new
       assert_equal some_after_old, result.after_old
       assert_equal some_on_new_error, result.on_new_error
@@ -83,6 +86,7 @@ module Suture
       ENV['SUTURE_COMPARATOR'] = 'e'
       ENV['SUTURE_DATABASE_PATH'] = 'd'
       ENV['SUTURE_RAISE_ON_RESULT_MISMATCH'] = 'false'
+      ENV['SUTURE_RETURN_OLD_ON_RESULT_MISMATCH'] = 'true'
       ENV['SUTURE_AFTER_OLD'] = 'f'
       ENV['SUTURE_AFTER_NEW'] = 'g'
       ENV['SUTURE_ON_NEW_ERROR'] = 'i'
@@ -102,6 +106,7 @@ module Suture
       assert_equal nil, result.args
       assert_equal Suture::DEFAULT_OPTIONS[:comparator], result.comparator
       assert_equal false, result.raise_on_result_mismatch
+      assert_equal true, result.return_old_on_result_mismatch
       assert_equal nil, result.after_old
       assert_equal nil, result.after_new
       assert_equal nil, result.on_new_error
