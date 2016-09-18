@@ -88,7 +88,7 @@ module Suture::Util
       )
 
       assert_raises(ZeroDivisionError) { @subject.cut(plan, :old) }
-      expected_message = <<-MSG.gsub(/^ {8}/,'')
+      assert_spacey_match log_io.tap(&:rewind).read, <<-MSG.gsub(/^ {8}/,'')
         Suture invoked the :my_seam seam's :old code path with args: ```
           [1, 2]
         ```
@@ -96,7 +96,6 @@ module Suture::Util
           divided by 0
         ```
       MSG
-      assert_spacey_match expected_message, log_io.tap(&:rewind).read
     end
 
     def test_does_not_log_errors_when_expected
