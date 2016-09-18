@@ -392,7 +392,9 @@ In general, most configuration options can be set in several places:
 to an expected ENV var named `SUTURE_RECORD_CALLS` and can be set from the
 command line like so: `SUTURE_RECORD_CALLS=true bundle exec rails server`, to
 tell Suture to record all your interactions with your seams without touching the
-source code.
+source code. (Note: this is really only appropriate if your codebase only has one
+Suture seam in progress at a time, since using a global env var configuration
+for one seam's sake will erroneously impact the other.)
 
 * Globally, via the top-level `Suture.config` method. Most variables can be set
 via this top-level configuration, like
