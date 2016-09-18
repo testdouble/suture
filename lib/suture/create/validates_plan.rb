@@ -53,6 +53,11 @@ module Suture
         if plan.fallback_on_error && !plan.new.respond_to?(:call)
           ":fallback_on_error is set but :new is either not set or is not callable. This mode is designed for after the :new code path has been developed and run in production-like environments, where :old is only kept around as a fallback to retry in the event that :new raises an unexpected error. Either specify a :new code path or disable :fallback_on_error."
         end
+      },
+      lambda { |plan|
+        if !plan.raise_on_result_mismatch && !plan.call_both
+          ":raise_on_result_mismatch was disabled but :call_both is not enabled. This option only applies to the :call_both mode, and will have no impact when set for other modes"
+        end
       }
     ]
 

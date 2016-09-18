@@ -10,7 +10,8 @@ module Suture
     end
 
     def test_valid_plan
-      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [])
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
+                             :raise_on_result_mismatch => true)
 
       result = @subject.validate(plan)
 
@@ -196,5 +197,17 @@ module Suture
       MSG
     end
 
+    def test_raise_when_raise_mismatch_is_set_for_non_call_both
+      plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
+                             :raise_on_result_mismatch => false)
+
+      error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
+
+      assert_spacey_match error.message, <<-MSG
+        * :raise_on_result_mismatch was disabled but :call_both is not enabled. This
+          option only applies to the :call_both mode, and will have no impact
+          when set for other modes
+      MSG
+    end
   end
 end
