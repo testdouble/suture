@@ -47,7 +47,7 @@ if Gem.ruby_version >= Gem::Version.new("2.2.2")
     puts "-------> #{cmd}"
     system cmd
   end
-  Rake::Task["release:source_control_push"].enhance([:changelog, :changelog_commit])
+  Rake::Task["release:rubygem_push"].enhance([:changelog, :changelog_commit])
 end
 
 
