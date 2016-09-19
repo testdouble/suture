@@ -15,7 +15,20 @@ module Support
     # Flips expected & actual so it's easier to use heredocs
 
     def assert_spacey_match obj, matcher, msg = nil
-      msg = message(msg) { "Expected #{mu_pp matcher} to match #{mu_pp obj} (with relaxed whitespace)" }
+      og_matcher = matcher
+      msg = message(msg) {
+        <<-MSG.gsub(/^ {10}/,'')
+          Expected this #{obj.class}:
+          ```
+          #{obj}
+          ```
+
+          To match this #{og_matcher.class}:
+          ```
+          #{og_matcher}
+          ```
+        MSG
+      }
       assert_respond_to matcher, :"=~"
       matcher = Regexp.new(Regexp.escape(matcher.gsub(/\s+/, ''))) if String === matcher
       assert(matcher =~ obj.gsub(/\s+/, ''), msg)
