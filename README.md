@@ -58,8 +58,8 @@ class LegacyWorker
 end
 ```
 
-As you can see, the call to `MyMailer.send` is left at the original call site,
-since its effectively a void method being invoked for its side effect, and its
+As you can see, the call to `MyMailer.send` is left at the original call site.
+It's effectively a void method being invoked for its side effect, and now it's
 much easier to verify return values.
 
 Since any changes to the code while it's untested are very dangerous, it's
@@ -89,8 +89,8 @@ LegacyWorker without taking any other meaningful action.
 
 ### 3. Record the current behavior
 
-Next, we want to start observing how the legacy worker is actually called: what
-arguments are sent to it and what values does it return? By recording the calls
+Next, we want to start observing how the legacy worker is actually called. We can observe
+what arguments are being sent to it and what values it returns. By recording the calls
 as we use our app locally, we can later test that the old and new
 implementations behave the same way.
 
@@ -101,8 +101,8 @@ any calls to our seam will record the arguments passed to the legacy code path
 and the return value.
 
 As you use the application (whether it's a queue system, a web app, or a CLI),
-the calls will be saved to a sqlite database. If the legacy code path relies on
-external data sources or services, keep in mind that your recorded inputs and
+the calls will be saved to a sqlite database. Keep in mind that if the legacy code
+path relies on external data sources or services, your recorded inputs and
 outputs will rely on them as well. You may want to narrow the scope of your
 seam accordingly (e.g. to receive an object as an argument instead of a database
 id).
@@ -146,7 +146,7 @@ expected value. It's a good idea to run this against the legacy code first,
 for two reasons:
 
 * running the characterization tests against the legacy code path will ensure
-the test environment has the data needed to behave the same way as when it was
+that the test environment has the data needed to behave the same way as when it was
 recorded (it may be appropriate to take a snapshot of the database before you
 start recording and load it before you run your tests)
 
@@ -158,13 +158,13 @@ start recording and load it before you run your tests)
   subordinate to it) to make sure our characterization test sufficiently
   exercises it
   * identify incidental coverage of code paths that are outside the scope of
-  what we hope to refactor, and in turn analyzing whether `LegacyWorker` has
-  side effects we didn't anticipate and should additionally write tests for
+  what we hope to refactor. This will help to see if `LegacyWorker` has
+  side effects we didn't anticipate and should additionally write tests for.
 
 ### 5. Specify and test a path for new code
 
-Once our automated characterization test of our recordings is passing, then we
-can start work on a `NewWorker`. To get started, we can update our Suture
+Once the automated characterization test of our recordings is passing, then we
+can start work on a `NewWorker`. To get started, we update our Suture
 configuration:
 
 ``` ruby
@@ -214,7 +214,7 @@ end
 ```
 
 Obviously, this should fail until `NewWorker`'s implementation covers all the
-cases we recorded from `LegacyWorker`.
+cases that we recorded from `LegacyWorker`.
 
 Remember, characterization tests aren't designed to be kept around forever. Once
 you're confident that the new implementation is sufficient, it's typically better
@@ -225,21 +225,21 @@ implementation and its component parts.
 
 This step is the hardest part and there's not much Suture can do to make it
 any easier. How you go about implementing your improvements depends on whether
-you intend to rewrite the legacy code path or refactor it. Some comment on each
-approach follows:
+you intend to rewrite the legacy code path or refactor it. Some comments on each
+approach follow:
 
 #### Reimplementing
 
 The best time to rewrite a piece of software is when you have a better
-understanding of the real-world process it models than the original authors did
+understanding of the real-world process that it models than the original authors did
 when they first wrote it. If that's the case, it's likely you'll think of more
 reliable names and abstractions than they did.
 
 As for workflow, consider writing the new implementation like you would any other
-new part of the system, with the added benefit of being able to run the
+new part of the system. The added benefit is being able to run the
 characterization tests as a progress indicator and a backstop for any missed edge
 cases. The ultimate goal of this workflow should be to incrementally arrive at a
-clean design that completely passes the characterization test run by
+clean design that completely passes the characterization test run by running
 `Suture.verify`.
 
 #### Refactoring
