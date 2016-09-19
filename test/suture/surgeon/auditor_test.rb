@@ -77,7 +77,7 @@ module Suture::Surgeon
       plan = Suture::BuildsPlan.new.build(:face_swap,
         :old => lambda { |type| raise ZeroDivisionError.new("trollface") },
         :new => lambda { |type| raise ZeroDivisionError.new("shrugface") },
-        :args => [:face],
+        :args => [:face]
       )
 
       assert_raises(Suture::Error::ResultMismatch) { @subject.operate(plan) }
