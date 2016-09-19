@@ -88,7 +88,7 @@ module Suture::Surgeon
       plan = Suture::BuildsPlan.new.build(:face_swap,
         :old => lambda { |type| raise "trollface" },
         :new => lambda { |type| raise new_error },
-        :args => [:face],
+        :args => [:face]
       )
 
       error = assert_raises { @subject.operate(plan) }
