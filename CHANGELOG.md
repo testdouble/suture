@@ -1,5 +1,16 @@
 # Change Log
 
+## [v1.1.1](https://github.com/testdouble/suture/tree/v1.1.1) (2016-09-19)
+[Full Changelog](https://github.com/testdouble/suture/compare/v1.1.0...v1.1.1)
+
+**Closed issues:**
+
+- call\_both: if raise\_on\_result\_mismatch is false and return\_old\_on\_result\_mismatch is true, rescue errors from :new path [\#64](https://github.com/testdouble/suture/issues/64)
+
+**Merged pull requests:**
+
+- Allow graceful fallback by call\_both when new code path raises [\#65](https://github.com/testdouble/suture/pull/65) ([searls](https://github.com/searls))
+
 ## [v1.1.0](https://github.com/testdouble/suture/tree/v1.1.0) (2016-09-18)
 [Full Changelog](https://github.com/testdouble/suture/compare/v1.0.0...v1.1.0)
 
