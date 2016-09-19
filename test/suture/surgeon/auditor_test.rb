@@ -92,6 +92,70 @@ module Suture::Surgeon
       assert_equal :shrugface, result
     end
 
+    def test_raises_mismatch_when_new_raises_and_old_does_not
+      plan = Suture::BuildsPlan.new.build(:face_swap,
+        :old => lambda { |type| :trollface },
+        :new => lambda { |type| "shrugface" },
+        :args => [:face]
+      )
+
+      error = assert_raises(Suture::Error::ResultMismatch) { @subject.operate(plan) }
+
+      assert_spacey_match error.message, "new code path raised"
+      assert_spacey_match error.message, "old code path returned"
+    end
+
+    def test_raises_mismatch_when_old_raises_and_new_does_not
+      plan = Suture::BuildsPlan.new.build(:face_swap,
+        :old => lambda { |type| raise "trollface" },
+        :new => lambda { |type| :shrugface },
+        :args => [:face]
+      )
+
+      error = assert_raises(Suture::Error::ResultMismatch) { @subject.operate(plan) }
+
+      assert_spacey_match error.message, "new code path returned"
+      assert_spacey_match error.message, "old code path raised"
+    end
+
+    def test_raises_actual_when_new_raises_and_old_raises_same_type
+      plan = Suture::BuildsPlan.new.build(:face_swap,
+        :old => lambda { |type| raise "trollface" },
+        :new => lambda { |type| raise "shrugface" },
+        :args => [:face],
+      )
+
+      error = assert_raises(StandardError) { @subject.operate(plan) }
+
+      assert_equal "shrugface", error.message
+    end
+
+    def test_raises_old_actual_when_new_and_old_raise_same_type_but_old_set
+      plan = Suture::BuildsPlan.new.build(:face_swap,
+        :old => lambda { |type| raise "trollface" },
+        :new => lambda { |type| raise "shrugface" },
+        :args => [:face],
+        :return_old_on_result_mismatch => true
+      )
+
+      error = assert_raises(StandardError) { @subject.operate(plan) }
+
+      assert_equal "trollface", error.message
+    end
+
+    def test_raises_actual_when_raise_mismatch_disabled_and_new_raises_and_old_does_not
+      plan = Suture::BuildsPlan.new.build(:face_swap,
+        :old => lambda { |type| :trollface },
+        :new => lambda { |type| raise "shrugface" },
+        :args => [:face],
+        :raise_on_result_mismatch => false
+      )
+
+      error = assert_raises(StandardError) { @subject.operate(plan) }
+
+      assert_equal "shrugface", error.message
+    end
+
     def test_returns_old_when_toggled_and_raise_disabled
       plan = Suture::BuildsPlan.new.build(:face_swap,
         :old => lambda { |type| :trollface },
@@ -117,6 +181,34 @@ module Suture::Surgeon
       result = @subject.operate(plan)
 
       assert_equal 7, result
+    end
+
+    def test_raise_disabled_old_return_and_new_raises_return_old
+      plan = Suture::BuildsPlan.new.build(:face_swap,
+        :old => lambda { |type| :trollface },
+        :new => lambda { |type| raise "shrugface" },
+        :args => [:face],
+        :raise_on_result_mismatch => false,
+        :return_old_on_result_mismatch => true
+      )
+
+      result = @subject.operate(plan)
+
+      assert_equal :trollface, result
+    end
+
+    def test_raise_disabled_old_return_and_new_raises_and_old_raises_raise_old
+      plan = Suture::BuildsPlan.new.build(:face_swap,
+        :old => lambda { |type| raise "trollface" },
+        :new => lambda { |type| raise "shrugface" },
+        :args => [:face],
+        :raise_on_result_mismatch => false,
+        :return_old_on_result_mismatch => true
+      )
+
+      error = assert_raises(StandardError) { @subject.operate(plan) }
+
+      assert_equal "trollface", error.message
     end
   end
 end
