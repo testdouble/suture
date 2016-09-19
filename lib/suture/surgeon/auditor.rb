@@ -1,4 +1,5 @@
 require "suture/error/result_mismatch"
+require "suture/value/result"
 require "suture/util/scalpel"
 
 module Suture::Surgeon
@@ -21,7 +22,11 @@ module Suture::Surgeon
     def handle_mismatch(plan, old_result, new_result)
       log_warning(plan, old_result, new_result)
       if plan.raise_on_result_mismatch
-        raise Suture::Error::ResultMismatch.new(plan, new_result, old_result)
+        raise Suture::Error::ResultMismatch.new(
+          plan,
+          Suture::Value::Result.returned(new_result),
+          Suture::Value::Result.returned(old_result)
+        )
       elsif plan.return_old_on_result_mismatch
         old_result
       else
