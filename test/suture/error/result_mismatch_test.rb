@@ -1,26 +1,26 @@
 module Suture::Error
-  class ResultMismatch < StandardError
-    def initialize(plan, new_result, old_result)
-      @plan = plan
-      @new_result = new_result
-      @old_result = old_result
-    end
+  class ResultMismatchTest < UnitTest
+    def test_simple_mismatch
+      plan = Suture::Value::Plan.new(:name => :SEAM, :args => [1,2,3])
+      new = Suture::Value::Result.returned('A')
+      old = Suture::Value::Result.errored(ZeroDivisionError.new('B'))
 
-    def message
-      <<-MSG.gsub(/^ {8}/,'')
+      subject = ResultMismatch.new(plan, new, old)
+
+      assert_spacey_match subject.message, <<-MSG.gsub(/^ {8}/,'')
         The results from the old & new code paths did not match for the seam
-        #{@plan.name.inspect} and Suture is raising this error because the `:call_both`
+        :SEAM and Suture is raising this error because the `:call_both`
         option is enabled, because both code paths are expected to return the
         same result.
 
         Arguments: ```
-          #{@plan.args.inspect}
+          [1, 2, 3]
         ```
-        The new code path #{@new_result.errored? ? "raised error" : "returned value"}: ```
-          #{@new_result.value.inspect}
+        The new code path returned value: ```
+          "A"
         ```
-        The old code path #{@old_result.errored? ? "raised error" : "returned value"}: ```
-          #{@old_result.value.inspect}
+        The old code path raised error: ```
+          #<ZeroDivisionError: B>
         ```
 
         Here's what we recommend you do next:
@@ -53,5 +53,6 @@ module Suture::Error
         disable this error by setting `:raise_on_result_mismatch` to false.
       MSG
     end
+
   end
 end
