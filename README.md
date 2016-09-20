@@ -9,11 +9,21 @@ Suture hopes to make it safer to completely reimplement a code path.
 Suture provides help to the entire lifecycle of refactoring poorly-understood
 code, from local development, to a staging environment, and even in production.
 
+# Video
+
+Suture was unveiled at Ruby Kaigi 2016 as a one approach that we can make
+refactors less scary and more predictable. You can watch the 45 minute screencast
+here:
+
+[<img width="803" alt="screen shot 2016-09-20 at 9 44 43 am" src="https://cloud.githubusercontent.com/assets/79303/18653743/e669d304-7f16-11e6-84e7-c86b8f88132c.png" alt="A presentation on Suture">](http://blog.testdouble.com/posts/2016-09-16-surgical-refactors-with-suture.html)
+
+# Walk-through guide
+
 Refactoring or reimplementing important code is an involved process! Instead of
 listing out Suture's API without sufficient exposition, here is an example that
 we'll take you through each stage of the lifecycle.
 
-## development
+## Development
 
 Suppose you have a really nasty worker method:
 
