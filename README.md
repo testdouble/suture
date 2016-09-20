@@ -59,8 +59,11 @@ end
 ```
 
 As you can see, the call to `MyMailer.send` is left at the original call site.
-It's effectively a void method being invoked for its side effect, and now it's
-much easier to verify return values.
+`MyMailer.send` is effectively a void method being invoked for its side effect,
+which would make it difficult to test. By creating `LegacyWorker#call`, we can
+now express the work more clearly in terms of repeatable inputs (`id`) and
+outputs (`thing.result`), which will help us verify that our refactor is working
+later.
 
 Since any changes to the code while it's untested are very dangerous, it's
 important to minimize changes made for the sake of creating a clear seam.
@@ -89,10 +92,10 @@ LegacyWorker without taking any other meaningful action.
 
 ### 3. Record the current behavior
 
-Next, we want to start observing how the legacy worker is actually called. We can observe
-what arguments are being sent to it and what values it returns. By recording the calls
-as we use our app locally, we can later test that the old and new
-implementations behave the same way.
+Next, we want to start observing how the legacy worker is actually called. What
+arguments are being sent to it and what value does it returns (or, what error
+does it raise)? By recording the calls as we use our app locally, we can later
+test that the old and new implementations behave the same way.
 
 First, we tell Suture to start recording calls by setting the environment
 variable `SUTURE_RECORD_CALLS` to something truthy (e.g.
@@ -159,7 +162,7 @@ start recording and load it before you run your tests)
   exercises it
   * identify incidental coverage of code paths that are outside the scope of
   what we hope to refactor. This will help to see if `LegacyWorker` has
-  side effects we didn't anticipate and should additionally write tests for.
+  side effects we didn't anticipate and should additionally write tests for
 
 ### 5. Specify and test a path for new code
 
