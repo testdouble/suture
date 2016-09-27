@@ -18,7 +18,12 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "sqlite3"
+  sqlite3 = if defined? JRUBY_VERSION
+              "activerecord-jdbcsqlite3-adapter"
+            else
+              "sqlite3"
+            end
+  spec.add_dependency sqlite3
   spec.add_dependency "backports"
   spec.add_dependency "bar-of-progress", ">= 0.1.3"
 
