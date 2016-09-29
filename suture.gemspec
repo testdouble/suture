@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   sqlite3 = if defined?(JRUBY_VERSION)
+              # "jdbc-sqlite3"
               "activerecord-jdbcsqlite3-adapter"
             else
               "sqlite3"

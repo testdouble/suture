@@ -6,6 +6,7 @@ gem 'rails', '3.2.22.4'
 gem "sqlite3", :platform => [:ruby, :mswin, :mingw]
 
 # for JRuby
+# gem "jdbc-sqlite3", :platform => :jruby, :require => 'jdbc/sqlite3'
 gem "activerecord-jdbcsqlite3-adapter", :platform => :jruby
 
 gem 'suture', :path => '../..'
@@ -16,4 +17,5 @@ gem 'minitest', :group => :test
 gem 'rake', '~> 10.0'
 gem 'i18n', '~> 0.6.0'
 gem 'rack-cache', '~> 1.2.0'
+gem 'pry'
 
