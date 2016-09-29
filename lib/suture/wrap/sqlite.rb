@@ -1,5 +1,10 @@
 require "fileutils"
-require "sqlite3"
+if defined?(JRUBY_VERSION)
+  require "jdbc/sqlite3"
+  Jdbc::SQLite3.load_driver
+else
+  require "sqlite3"
+end
 require "suture/error/schema_version"
 
 module Suture::Wrap
