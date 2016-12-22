@@ -10,7 +10,7 @@ module Suture::Surgeon
 
       result = @subject.operate(plan)
 
-      assert_equal nil, result
+      assert_nil result
     end
 
     def test_old_path_defined

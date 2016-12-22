@@ -18,13 +18,13 @@ class PrescribesTestPlanTest < UnitTest
 
     assert_equal :foo, result.name
     assert_equal false, result.fail_fast
-    assert_equal nil, result.call_limit
-    assert_equal nil, result.time_limit
-    assert_equal nil, result.error_message_limit
+    assert_nil result.call_limit
+    assert_nil result.time_limit
+    assert_nil result.error_message_limit
     assert_equal "db/suture.sqlite3", result.database_path
     assert_kind_of Suture::Comparator, result.comparator
     assert_includes 0..99999, result.random_seed
-    assert_equal nil, result.verify_only
+    assert_nil result.verify_only
     assert_equal [], result.expected_error_types
   end
 
@@ -39,7 +39,7 @@ class PrescribesTestPlanTest < UnitTest
 
     assert_equal "other.db", result.database_path
     assert_equal :lolcompare, result.comparator
-    assert_equal nil, result.random_seed
+    assert_nil result.random_seed
   end
 
   def test_options
@@ -103,10 +103,10 @@ class PrescribesTestPlanTest < UnitTest
     assert_equal 9922, result.random_seed
     # options that can't be set with ENV vars:
     assert_equal :a_name, result.name
-    assert_equal nil, result.subject
+    assert_nil result.subject
     assert_kind_of Suture::Comparator, result.comparator
-    assert_equal nil, result.after_subject
-    assert_equal nil, result.on_subject_error
+    assert_nil result.after_subject
+    assert_nil result.on_subject_error
     assert_equal [], result.expected_error_types
   end
 
@@ -115,6 +115,6 @@ class PrescribesTestPlanTest < UnitTest
 
     result = @subject.prescribe(:a_name)
 
-    assert_equal nil, result.random_seed
+    assert_nil result.random_seed
   end
 end

@@ -101,16 +101,16 @@ module Suture
       assert_equal true, result.record_calls
       # options that can't be set with ENV vars:
       assert_equal :a_name, result.name
-      assert_equal nil, result.old
-      assert_equal nil, result.new
-      assert_equal nil, result.args
+      assert_nil result.old
+      assert_nil result.new
+      assert_nil result.args
       assert_equal Suture::DEFAULT_OPTIONS[:comparator], result.comparator
       assert_equal false, result.raise_on_result_mismatch
       assert_equal true, result.return_old_on_result_mismatch
-      assert_equal nil, result.after_old
-      assert_equal nil, result.after_new
-      assert_equal nil, result.on_new_error
-      assert_equal nil, result.on_old_error
+      assert_nil result.after_old
+      assert_nil result.after_new
+      assert_nil result.on_new_error
+      assert_nil result.on_old_error
       assert_equal [], result.expected_error_types
       assert_equal true, result.disable
       assert_equal true, result.dup_args

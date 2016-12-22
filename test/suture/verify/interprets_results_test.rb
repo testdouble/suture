@@ -12,7 +12,7 @@ module Suture
 
       result = @subject.interpret(Value::TestPlan.new, test_results)
 
-      assert_equal nil, result
+      assert_nil result
     end
 
     def test_fail_and_all_ran
