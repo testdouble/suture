@@ -1,15 +1,17 @@
 language: ruby
 sudo: false
-before_install:
-  - gem install bundler
-  - cd example/rails_app && ./script/setup.sh && cd ../..
 rvm:
   - 1.8.7
   - 1.9
   - 2.0
   - 2.1
   - 2.2
-  - 2.3.1
+  - 2.3.3
+before_install:
+  - gem install bundler
+  - cd example/rails_app && ./script/setup.sh && cd ../..
+after_success:
+  - bundle exec codeclimate-test-reporter
 addons:
   code_climate:
     repo_token: 05e3e31164d59aa626b730b92eb9b7418326dbf23420a4b87eab2555840b39ef
