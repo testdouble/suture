@@ -336,7 +336,7 @@ Suture.config({
 ```
 
 When your new code path raises an error with the above settings, it will
-propogate and log the error to the specified file.
+propagate and log the error to the specified file.
 
 ### Custom error handlers
 
@@ -491,7 +491,7 @@ certain cases, setting `:expected_error_types => [WidgetError]` will result in:
     `kind_of?` any recorded error type (regardless of whether `Suture.verify` is
     passed a redundant list of `expected_error_types`)
   * `Suture.create`, when `fallback_on_error` is enabled, will allow expected
-    errors raised by the `new` path to propogate, as opposed to logging &
+    errors raised by the `new` path to propagate, as opposed to logging &
     rescuing them before calling the `old` path as a fallback
 
 * _disable_ - (Default: `false`) - when enabled, Suture will attempt to revert to
@@ -654,7 +654,7 @@ detects two ActiveRecord model instances being compared, it will behave
 differently, by this logic:
 
 1. Instead of comparing the objects with `==` (which returns true so long as the
-`id` attribute matdhes), Suture will compare the objects' `attributes` hashes
+`id` attribute matches), Suture will compare the objects' `attributes` hashes
 instead
 2. The built-in `updated_at` and `created_at` will typically differ when code
 is executed at different times and are usually not meaningful to application
