@@ -26,7 +26,7 @@ module Suture::Util
 
     def log_error_details(plan, location, args, error)
       return if expected_error?(plan, error)
-      log_error <<-MSG.gsub(/^ {8}/,'')
+      log_error <<-MSG.gsub(/^ {8}/, "")
         Suture invoked the #{plan.name.inspect} seam's #{location.inspect} code path with args: ```
           #{args.inspect}
         ```

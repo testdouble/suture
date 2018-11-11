@@ -4,8 +4,8 @@ class DevelopmentTest < SafeTest
   def test_no_record_is_no_op
     called_after_old = false
     result = Suture.create :add,
-      :old => lambda {|c,d| c + d },
-      :args => [5,9],
+      :old => lambda {|c, d| c + d },
+      :args => [5, 9],
       :after_old => lambda { |*args| called_after_old = true }
 
     assert_equal 14, result
@@ -15,9 +15,9 @@ class DevelopmentTest < SafeTest
   def test_no_record_prefers_new
     called_after_old = false
     result = Suture.create :add,
-      :old => lambda {|c,d| raise "No thanks!" },
-      :new => lambda {|c,d| c + d },
-      :args => [5,9]
+      :old => lambda {|c, d| raise "No thanks!" },
+      :new => lambda {|c, d| c + d },
+      :args => [5, 9]
 
     assert_equal 14, result
   end
@@ -27,8 +27,8 @@ class DevelopmentTest < SafeTest
     dictaphone = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:add))
 
     result = Suture.create :add,
-      :old => lambda {|c,*d| c + d[0] + d[1] },
-      :args => [1,2,3],
+      :old => lambda {|c, *d| c + d[0] + d[1] },
+      :args => [1, 2, 3],
       :record_calls => true,
       :after_old => lambda { |*args| called_after_old = true }
 
@@ -38,7 +38,7 @@ class DevelopmentTest < SafeTest
     observation = observations.first
     assert_equal 1, observation.id
     assert_equal :add, observation.name
-    assert_equal [1,2,3], observation.args
+    assert_equal [1, 2, 3], observation.args
     assert_equal false, observation.result.errored?
     assert_equal 6, observation.result.value
     assert_equal true, called_after_old

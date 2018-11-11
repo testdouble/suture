@@ -4,7 +4,7 @@ module Suture
   class BuildsPlanTest < UnitTest
     def teardown
       super
-      ENV.delete_if { |(k,v)| k.start_with?("SUTURE_") }
+      ENV.delete_if { |(k, v)| k.start_with?("SUTURE_") }
       Suture.reset!
     end
 
@@ -34,7 +34,7 @@ module Suture
     def test_build_without_env_vars
       some_callable = lambda { "hi" }
       some_new_callable = lambda { "hi" }
-      some_args = [1,2,3]
+      some_args = [1, 2, 3]
       some_comparator = :some_compare
       some_after_new = lambda {}
       some_after_old = lambda {}
@@ -78,22 +78,22 @@ module Suture
     end
 
     def test_build_with_env_vars
-      ENV['SUTURE_NAME'] = 'bad name'
-      ENV['SUTURE_RECORD_CALLS'] = 'trololol'
-      ENV['SUTURE_OLD'] = 'a'
-      ENV['SUTURE_NEW'] = 'b'
-      ENV['SUTURE_ARGS'] = 'c'
-      ENV['SUTURE_COMPARATOR'] = 'e'
-      ENV['SUTURE_DATABASE_PATH'] = 'd'
-      ENV['SUTURE_RAISE_ON_RESULT_MISMATCH'] = 'false'
-      ENV['SUTURE_RETURN_OLD_ON_RESULT_MISMATCH'] = 'true'
-      ENV['SUTURE_AFTER_OLD'] = 'f'
-      ENV['SUTURE_AFTER_NEW'] = 'g'
-      ENV['SUTURE_ON_NEW_ERROR'] = 'i'
-      ENV['SUTURE_ON_OLD_ERROR'] = 'j'
-      ENV['SUTURE_EXPECTED_ERROR_TYPES'] = 'h'
-      ENV['SUTURE_DISABLE'] = 'yes'
-      ENV['SUTURE_DUP_ARGS'] = 'yay'
+      ENV["SUTURE_NAME"] = "bad name"
+      ENV["SUTURE_RECORD_CALLS"] = "trololol"
+      ENV["SUTURE_OLD"] = "a"
+      ENV["SUTURE_NEW"] = "b"
+      ENV["SUTURE_ARGS"] = "c"
+      ENV["SUTURE_COMPARATOR"] = "e"
+      ENV["SUTURE_DATABASE_PATH"] = "d"
+      ENV["SUTURE_RAISE_ON_RESULT_MISMATCH"] = "false"
+      ENV["SUTURE_RETURN_OLD_ON_RESULT_MISMATCH"] = "true"
+      ENV["SUTURE_AFTER_OLD"] = "f"
+      ENV["SUTURE_AFTER_NEW"] = "g"
+      ENV["SUTURE_ON_NEW_ERROR"] = "i"
+      ENV["SUTURE_ON_OLD_ERROR"] = "j"
+      ENV["SUTURE_EXPECTED_ERROR_TYPES"] = "h"
+      ENV["SUTURE_DISABLE"] = "yes"
+      ENV["SUTURE_DUP_ARGS"] = "yay"
 
       result = BuildsPlan.new.build(:a_name)
 
@@ -117,7 +117,7 @@ module Suture
     end
 
     def test_build_with_falsey_env_var
-      ENV['SUTURE_RECORD_CALLS'] = nil
+      ENV["SUTURE_RECORD_CALLS"] = nil
 
       result = BuildsPlan.new.build(:something)
 
@@ -126,7 +126,7 @@ module Suture
     end
 
     def test_build_with_false_string_env_var
-      ENV['SUTURE_RECORD_CALLS'] = "false"
+      ENV["SUTURE_RECORD_CALLS"] = "false"
 
       result = BuildsPlan.new.build(:something)
 

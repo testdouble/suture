@@ -15,7 +15,7 @@ module Suture::Surgeon
 
     def test_old_path_defined
       plan = Suture::Value::Plan.new(
-        :old => lambda {|a,b,c| a + b + c},
+        :old => lambda {|a, b, c| a + b + c},
         :args => [1, 3, 5]
       )
 
@@ -26,7 +26,7 @@ module Suture::Surgeon
 
     def test_new_path_defined
       plan = Suture::Value::Plan.new(
-        :new => lambda {|a,b,c| a + b + c},
+        :new => lambda {|a, b, c| a + b + c},
         :args => [1, 3, 5]
       )
 
@@ -37,8 +37,8 @@ module Suture::Surgeon
 
     def test_old_and_new_path_defined
       plan = Suture::Value::Plan.new(
-        :old => lambda {|a,b,c| raise "EWW" },
-        :new => lambda {|a,b,c| a + b + c},
+        :old => lambda {|a, b, c| raise "EWW" },
+        :new => lambda {|a, b, c| a + b + c},
         :args => [1, 3, 5]
       )
 
@@ -49,8 +49,8 @@ module Suture::Surgeon
 
     def test_old_and_new_path_defined_but_suture_is_disabled
       plan = Suture::Value::Plan.new(
-        :old => lambda {|a,b,c| a + b + c},
-        :new => lambda {|a,b,c| raise "no i am disable" },
+        :old => lambda {|a, b, c| a + b + c},
+        :new => lambda {|a, b, c| raise "no i am disable" },
         :args => [1, 3, 5],
         :disable => true
       )

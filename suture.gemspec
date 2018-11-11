@@ -1,7 +1,7 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'suture/version'
+require "suture/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "suture"
@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry", "~> 0.9.12.6"
   spec.add_development_dependency "minitest", "~> 5.9"
   spec.add_development_dependency "gimme", "~> 0.5"
+  spec.add_development_dependency "standard"
 
   if Gem.ruby_version >= Gem::Version.new("1.9.3")
     spec.add_development_dependency "codeclimate-test-reporter"

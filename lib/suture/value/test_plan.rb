@@ -31,8 +31,8 @@ module Suture::Value
 
     def massage_values(attrs, names, &blk)
       Hash[
-        attrs.select {|(k,_)| names.include?(k) }.
-              map { |(k,v)| [k, v.nil? ? nil : blk.call(v) ]}
+        attrs.select {|(k, _)| names.include?(k) }.
+              map { |(k, v)| [k, v.nil? ? nil : blk.call(v) ]}
       ]
     end
 

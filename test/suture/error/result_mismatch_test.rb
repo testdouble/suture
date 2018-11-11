@@ -1,13 +1,13 @@
 module Suture::Error
   class ResultMismatchTest < UnitTest
     def test_simple_mismatch
-      plan = Suture::Value::Plan.new(:name => :SEAM, :args => [1,2,3])
-      new = Suture::Value::Result.returned('A')
-      old = Suture::Value::Result.errored(ZeroDivisionError.new('B'))
+      plan = Suture::Value::Plan.new(:name => :SEAM, :args => [1, 2, 3])
+      new = Suture::Value::Result.returned("A")
+      old = Suture::Value::Result.errored(ZeroDivisionError.new("B"))
 
       subject = ResultMismatch.new(plan, new, old)
 
-      assert_spacey_match subject.message, <<-MSG.gsub(/^ {8}/,'')
+      assert_spacey_match subject.message, <<-MSG.gsub(/^ {8}/, "")
         The results from the old & new code paths did not match for the seam
         :SEAM and Suture is raising this error because the `:call_both`
         option is enabled, because both code paths are expected to return the

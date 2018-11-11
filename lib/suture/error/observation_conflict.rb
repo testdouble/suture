@@ -9,7 +9,7 @@ module Suture::Error
     end
 
     def message
-      <<-MSG.gsub(/^ {8}/,'')
+      <<-MSG.gsub(/^ {8}/, "")
         At seam #{@name.inspect}, we just recorded a duplicate call, but the same arguments
         resulted in a different output. Read on for details:
 

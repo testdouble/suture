@@ -14,15 +14,15 @@ module Suture::Util
         :args => [:no, :this, :is, :wrong]
       )
 
-      result = @subject.cut(plan, :old, ['woo!'])
+      result = @subject.cut(plan, :old, ["woo!"])
 
-      assert_equal ['woo!'], result
+      assert_equal ["woo!"], result
     end
 
     def test_invokes_old_with_after
       after_old_args = nil
       plan = Suture::BuildsPlan.new.build(:my_seam,
-        :old => lambda { |a,b| :old_result },
+        :old => lambda { |a, b| :old_result },
         :after_old => lambda { |*args| after_old_args = args },
         :args => [:a, :b]
       )
@@ -38,7 +38,7 @@ module Suture::Util
 
     def test_invokes_old_with_no_after_defined
       plan = Suture::BuildsPlan.new.build(:my_seam,
-        :old => lambda { |a,b| :old_result },
+        :old => lambda { |a, b| :old_result },
         :args => [:a, :b]
       )
 
@@ -51,7 +51,7 @@ module Suture::Util
       on_new_error_args = nil
       some_error = StandardError.new("LOLOLOL")
       plan = Suture::BuildsPlan.new.build(:my_seam,
-        :new => lambda { |a,b| raise some_error },
+        :new => lambda { |a, b| raise some_error },
         :on_new_error => lambda { |*args| on_new_error_args = args },
         :args => [:c, :d]
       )
@@ -83,12 +83,12 @@ module Suture::Util
       Suture::Adapter::Log.reset!
 
       plan = Suture::BuildsPlan.new.build(:my_seam,
-        :old => lambda { |a,b| 100 / 0 },
+        :old => lambda { |a, b| 100 / 0 },
         :args => [1, 2]
       )
 
       assert_raises(ZeroDivisionError) { @subject.cut(plan, :old) }
-      assert_spacey_match log_io.tap(&:rewind).read, <<-MSG.gsub(/^ {8}/,'')
+      assert_spacey_match log_io.tap(&:rewind).read, <<-MSG.gsub(/^ {8}/, "")
         Suture invoked the :my_seam seam's :old code path with args: ```
           [1, 2]
         ```
@@ -102,7 +102,7 @@ module Suture::Util
       Suture.config(:log_io => log_io = StringIO.new)
       Suture::Adapter::Log.reset!
       plan = Suture::BuildsPlan.new.build(:my_seam,
-        :old => lambda { |a,b| 100 / 0 },
+        :old => lambda { |a, b| 100 / 0 },
         :args => [1, 2],
         :expected_error_types => [ZeroDivisionError]
       )

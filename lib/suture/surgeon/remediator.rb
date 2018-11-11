@@ -8,7 +8,7 @@ module Suture::Surgeon
 
     def operate(plan)
       begin
-        @scalpel.cut(plan ,:new)
+        @scalpel.cut(plan , :new)
       rescue StandardError => actual_error
         if plan.expected_error_types.any? { |e| actual_error.is_a?(e) }
           raise actual_error

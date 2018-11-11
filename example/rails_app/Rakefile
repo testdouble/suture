@@ -2,7 +2,7 @@
 # Add your own tasks in files placed in lib/tasks ending in .rake,
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
-require File.expand_path('../config/application', __FILE__)
+require File.expand_path("../config/application", __FILE__)
 
 RailsApp::Application.load_tasks
 
@@ -12,5 +12,5 @@ Rake::TestTask.new(:suture) do |t|
   t.libs << "config"
   t.libs << "app"
   t.libs << "test"
-  t.test_files = FileList['test/suture/**/*_test.rb']
+  t.test_files = FileList["test/suture/**/*_test.rb"]
 end

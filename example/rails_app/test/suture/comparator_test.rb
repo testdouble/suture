@@ -30,8 +30,8 @@ class SutureComparatorTest < Minitest::Test
     item3 = Item.create!(:quality => 5)
 
     assert_equal true, @subject.call(item1, item2)
-    assert_equal false, @subject.call(item1, item3), 'ids differ'
-    assert_equal false, @subject.call(item2, item3), 'ids differ'
+    assert_equal false, @subject.call(item1, item3), "ids differ"
+    assert_equal false, @subject.call(item2, item3), "ids differ"
 
     [item1, item2, item3].each { |i| i.id = nil }
 

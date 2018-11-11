@@ -30,13 +30,21 @@ module Suture::Wrap
 
     class NullIO
       def gets; end
+
       def each; end
-      def read(count=nil,buffer=nil); (count && count > 0) ? nil : ""; end
+
+      def read(count=nil, buffer=nil); (count && count > 0) ? nil : ""; end
+
       def rewind; 0; end
+
       def close; end
+
       def size; 0; end
+
       def sync=(*args); end
+
       def puts(*args); end
+
       def write(*args); end
     end
   end

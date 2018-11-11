@@ -58,7 +58,7 @@ module Suture::Surgeon
     end
 
     def log_warning(plan, old_result, new_result)
-      log_warn <<-MSG.gsub(/^ {8}/,'')
+      log_warn <<-MSG.gsub(/^ {8}/, "")
         Seam #{plan.name.inspect} is set to :call_both the :new and :old code
         paths, but they did not match.
 

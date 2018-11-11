@@ -9,7 +9,7 @@ class PrescribesTestPlanTest < UnitTest
 
   def teardown
     super
-    ENV.delete_if { |(k,v)| k.start_with?("SUTURE_") }
+    ENV.delete_if { |(k, v)| k.start_with?("SUTURE_") }
     Suture.reset!
   end
 
@@ -78,19 +78,19 @@ class PrescribesTestPlanTest < UnitTest
   end
 
   def test_env_vars
-    ENV['SUTURE_NAME'] = 'bad name'
-    ENV['SUTURE_SUBJECT'] = 'sub'
-    ENV['SUTURE_DATABASE_PATH'] = 'd'
-    ENV['SUTURE_COMPARATOR'] = 'e'
-    ENV['SUTURE_FAIL_FAST'] = 'true'
-    ENV['SUTURE_CALL_LIMIT'] = '91'
-    ENV['SUTURE_TIME_LIMIT'] = '20'
-    ENV['SUTURE_ERROR_MESSAGE_LIMIT'] = '999'
-    ENV['SUTURE_VERIFY_ONLY'] = '42'
-    ENV['SUTURE_RANDOM_SEED'] = '9922'
-    ENV['SUTURE_AFTER_SUBJECT'] = 'lol'
-    ENV['SUTURE_ON_SUBJECT_ERROR'] = 'lol'
-    ENV['SUTURE_EXPECTED_ERROR_TYPES'] = 'nai'
+    ENV["SUTURE_NAME"] = "bad name"
+    ENV["SUTURE_SUBJECT"] = "sub"
+    ENV["SUTURE_DATABASE_PATH"] = "d"
+    ENV["SUTURE_COMPARATOR"] = "e"
+    ENV["SUTURE_FAIL_FAST"] = "true"
+    ENV["SUTURE_CALL_LIMIT"] = "91"
+    ENV["SUTURE_TIME_LIMIT"] = "20"
+    ENV["SUTURE_ERROR_MESSAGE_LIMIT"] = "999"
+    ENV["SUTURE_VERIFY_ONLY"] = "42"
+    ENV["SUTURE_RANDOM_SEED"] = "9922"
+    ENV["SUTURE_AFTER_SUBJECT"] = "lol"
+    ENV["SUTURE_ON_SUBJECT_ERROR"] = "lol"
+    ENV["SUTURE_EXPECTED_ERROR_TYPES"] = "nai"
 
     result = @subject.prescribe(:a_name)
 
@@ -111,7 +111,7 @@ class PrescribesTestPlanTest < UnitTest
   end
 
   def test_special_env_vars
-    ENV['SUTURE_RANDOM_SEED'] = 'nil'
+    ENV["SUTURE_RANDOM_SEED"] = "nil"
 
     result = @subject.prescribe(:a_name)
 

@@ -19,7 +19,6 @@ module Suture::Adapter
       end
     end
 
-
     def record(returned_value)
       record_result(Suture::Value::Result.returned(returned_value))
     end

@@ -20,9 +20,9 @@ module Suture
 
     def test_single_successful_call
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
-      observation = observe([1,2,3], 6)
+      observation = observe([1, 2, 3], 6)
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
-        :subject => lambda {|a,b,c| a * b * c },
+        :subject => lambda {|a, b, c| a * b * c },
         :verify_only => "1337"
       )
       give(dictaphone).play(1337) { [observation] }
@@ -47,10 +47,10 @@ module Suture
 
     def test_single_failing_call
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
-      observation = observe([1,2,3], "this isn't 6 at all!!!")
+      observation = observe([1, 2, 3], "this isn't 6 at all!!!")
       give(dictaphone).play(nil) { [observation] }
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
-        :subject => lambda {|a,b,c| a * b * c }
+        :subject => lambda {|a, b, c| a * b * c }
       )
 
       result = @subject.test(test_plan)
@@ -73,11 +73,11 @@ module Suture
 
     def test_fail_fast
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
-      call1 = observe([1,2,3], "this isn't 6 at all!!!")
-      call2 = observe([1,2,3], 6)
+      call1 = observe([1, 2, 3], "this isn't 6 at all!!!")
+      call2 = observe([1, 2, 3], 6)
       give(dictaphone).play(nil) { [call1, call2] }
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
-        :subject => lambda {|a,b,c| a * b * c },
+        :subject => lambda {|a, b, c| a * b * c },
         :fail_fast => true,
         :random_seed => 48
       )
@@ -107,11 +107,11 @@ module Suture
     def test_with_errors
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       some_error = StandardError.new
-      call1 = observe([2,3,4], 24)
-      call2 = observe([1,2,3], 6)
+      call1 = observe([2, 3, 4], 24)
+      call2 = observe([1, 2, 3], 6)
       give(dictaphone).play(nil) { [call1, call2] }
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
-        :subject => lambda {|a,b,c|
+        :subject => lambda {|a, b, c|
           if a == 2
             raise some_error
           else
@@ -195,7 +195,7 @@ module Suture
     def test_no_calls
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
-        :subject => lambda {|a,b,c| a * b * c }
+        :subject => lambda {|a, b, c| a * b * c }
       )
       give(dictaphone).play(nil) { [] }
 

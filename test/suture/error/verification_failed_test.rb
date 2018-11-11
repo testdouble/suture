@@ -28,7 +28,7 @@ module Suture::Error
         }
       ]))
 
-      expected_message = <<-MSG.gsub(/^ {8}/,'')
+      expected_message = <<-MSG.gsub(/^ {8}/, "")
 
         # Verification of your seam failed!
 
@@ -159,7 +159,7 @@ module Suture::Error
         }
       ]))
 
-      expected_message = <<-MSG.gsub(/^ {8}/,'')
+      expected_message = <<-MSG.gsub(/^ {8}/, "")
 
         # Verification of your seam failed!
 

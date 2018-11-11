@@ -8,7 +8,7 @@ class SafeTest < Minitest::Test
   def setup
     super
     clean("db")
-    ENV.delete_if { |(k,_)| k.start_with?("SUTURE_") }
+    ENV.delete_if { |(k, _)| k.start_with?("SUTURE_") }
     Suture.reset!
     Suture.config(:log_level => "DEBUG", :log_stdout => false, :log_file => "log/safe.log")
     Suture::Adapter::Log.reset!

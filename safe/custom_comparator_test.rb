@@ -97,7 +97,7 @@ class CustomComparatorTest < SafeTest
         :comparator => MyComparator.new
       })
       Suture.create(:just_returns_an_array, {
-        :old => lambda { [1,2,3] },
+        :old => lambda { [1, 2, 3] },
         :args => [],
         :record_calls => true,
         :comparator => MyComparator.new

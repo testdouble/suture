@@ -5,7 +5,7 @@ require "suture/adapter/dictaphone"
 class DeleteTest < SafeTest
   def test_delete!
     Suture.create(:foo, {
-      :old => lambda { 'hi' },
+      :old => lambda { "hi" },
       :args => [],
       :record_calls => true,
       :database_path => "db/lol.db"
