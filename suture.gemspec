@@ -33,8 +33,11 @@ Gem::Specification.new do |spec|
     spec.add_development_dependency "simplecov", "~> 0.11.2" #<--only here to lock
   end
 
-  if Gem.ruby_version >= Gem::Version.new("2.2.2")
+  if Gem.ruby_version >= Gem::Version.new("2.2.0")
     spec.add_development_dependency "standard"
+  end
+
+  if Gem.ruby_version >= Gem::Version.new("2.2.2")
     spec.add_development_dependency "github_changelog_generator"
   end
 end
