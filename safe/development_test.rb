@@ -6,16 +6,15 @@ class DevelopmentTest < SafeTest
     result = Suture.create :add,
       :old => lambda {|c, d| c + d },
       :args => [5, 9],
-      :after_old => lambda { |*args| called_after_old = true }
+      :after_old => lambda { |*_args| called_after_old = true }
 
     assert_equal 14, result
     assert_equal true, called_after_old
   end
 
   def test_no_record_prefers_new
-    called_after_old = false
     result = Suture.create :add,
-      :old => lambda {|c, d| raise "No thanks!" },
+      :old => lambda {|_c, _d| raise "No thanks!" },
       :new => lambda {|c, d| c + d },
       :args => [5, 9]
 
@@ -30,7 +29,7 @@ class DevelopmentTest < SafeTest
       :old => lambda {|c, *d| c + d[0] + d[1] },
       :args => [1, 2, 3],
       :record_calls => true,
-      :after_old => lambda { |*args| called_after_old = true }
+      :after_old => lambda { |*_args| called_after_old = true }
 
     assert_equal 6, result
     observations = dictaphone.play
@@ -49,7 +48,7 @@ class DevelopmentTest < SafeTest
 
     assert_raises(ZeroDivisionError) do
       Suture.create :divide,
-        :old => lambda {|a| raise ZeroDivisionError.new("input: #{a}") },
+        :old => lambda {|a| raise ZeroDivisionError, "input: #{a}" },
         :args => [5],
         :record_calls => true,
         :expected_error_types => [ZeroDivisionError]
@@ -68,9 +67,9 @@ class DevelopmentTest < SafeTest
     dictaphone = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:add))
 
     result = Suture.create(:add, {
-      :old => lambda {|h| h["key ##{h.size+1}"] = "troll"; h},
+      :old => lambda {|h| h["key ##{h.size + 1}"] = "troll"; h},
       :args => [{:yo => "ho"}],
-      :record_calls => true
+      :record_calls => true,
     })
 
     assert_equal({:yo => "ho", "key #2" => "troll"}, result)

@@ -21,7 +21,7 @@ module Suture
 
     def test_object_type
       assert_equal true, @subject.call(Object.new, Object.new)
-      assert_equal false, @subject.call(Object.new, Hash.new)
+      assert_equal false, @subject.call(Object.new, {})
     end
 
     def test_active_record_on_the_merits
@@ -55,7 +55,7 @@ module Suture
       )
     end
 
-    def test_active_record_default_excluded_attrs
+    def test_active_record_custom_excluded_attrs
       @subject = Comparator.new(
         :active_record_excluded_attributes => [:biz, :baz]
       )
@@ -85,9 +85,9 @@ module Suture
         end
 
         def attributes
-          Hash[@attributes.map do |(k, v)|
+          Hash[@attributes.map { |(k, v)|
             [k.to_s, v]
-          end]
+          }]
         end
       end
     end
@@ -102,11 +102,11 @@ module Suture
       attr_reader :data
       def initialize(data)
         @data = data
-        @id = __id__ #<-- will differ each time & thus fail a marshal check
+        @id = __id__ # <-- will differ each time & thus fail a marshal check
       end
 
-      def ==(other_thing)
-        @data == other_thing.data
+      def ==(other)
+        @data == other.data
       end
     end
 
@@ -116,4 +116,3 @@ module Suture
     end
   end
 end
-

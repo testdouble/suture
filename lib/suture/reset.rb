@@ -6,4 +6,3 @@ module Suture
     Adapter::Log.reset!
   end
 end
-

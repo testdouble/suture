@@ -7,7 +7,7 @@ module Suture::Util
         index = random.rand(old_array.size)
         new_array << old_array.delete_at(index)
       end
-      return new_array
+      new_array
     end
   end
 end

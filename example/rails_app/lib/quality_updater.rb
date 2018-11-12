@@ -85,6 +85,6 @@ class QualityUpdater
   end
 
   def standard_updater
-    @standard_handler ||= StandardQualityUpdater.new
+    @standard_updater ||= StandardQualityUpdater.new
   end
 end

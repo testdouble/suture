@@ -47,7 +47,7 @@ module Suture::Adapter
       Suture::Wrap::Sqlite.delete(@db, :observations, "where name = ?", [name.to_s])
     end
 
-  private
+    private
 
     def record_result(result)
       Suture::Wrap::Sqlite.insert(

@@ -12,12 +12,12 @@ module Suture::Wrap
       end
 
       @logger.level = if options[:log_level]
-                        ::Logger.const_get(options[:log_level])
-                      else
-                        ::Logger::INFO
-                      end
+        ::Logger.const_get(options[:log_level])
+      else
+        ::Logger::INFO
+      end
 
-      @logger.formatter = proc { |_, time , _, msg|
+      @logger.formatter = proc { |_, time, _, msg|
         formatted_time = time.strftime("%Y-%m-%dT%H:%M:%S.%6N")
         "[#{formatted_time}] Suture: #{msg}\n".tap { |out|
           puts out if options[:log_stdout]
@@ -25,27 +25,39 @@ module Suture::Wrap
         }
       }
 
-      return @logger
+      @logger
     end
 
     class NullIO
-      def gets; end
+      def gets
+      end
 
-      def each; end
+      def each
+      end
 
-      def read(count=nil, buffer=nil); (count && count > 0) ? nil : ""; end
+      def read(count = nil, _buffer = nil)
+        count && count > 0 ? nil : ""
+      end
 
-      def rewind; 0; end
+      def rewind
+        0
+      end
 
-      def close; end
+      def close
+      end
 
-      def size; 0; end
+      def size
+        0
+      end
 
-      def sync=(*args); end
+      def sync=(*args)
+      end
 
-      def puts(*args); end
+      def puts(*args)
+      end
 
-      def write(*args); end
+      def write(*args)
+      end
     end
   end
 end

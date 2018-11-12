@@ -6,7 +6,7 @@ class RandomSeedVerifyTest < SafeTest
       @call_count = 0
     end
 
-    def call(*args_i_will_ignore)
+    def call(*_args_i_will_ignore)
       @call_count += 1
     end
   end
@@ -15,7 +15,7 @@ class RandomSeedVerifyTest < SafeTest
     Suture.create(:order_matters, {
       :old => order_matters,
       :args => [input],
-      :record_calls => true
+      :record_calls => true,
     })
   end
 
@@ -28,7 +28,7 @@ class RandomSeedVerifyTest < SafeTest
       Suture.verify(:order_matters, {
         :subject => MyOrderMatters.new,
         :fail_fast => false,
-        :random_seed => 19218
+        :random_seed => 19218,
       })
     }
     assert_match ":random_seed => 1921", expected_error.message
@@ -42,7 +42,7 @@ class RandomSeedVerifyTest < SafeTest
     Suture.verify(:order_matters, {
       :subject => MyOrderMatters.new,
       :fail_fast => false,
-      :random_seed => 73247
+      :random_seed => 73247,
     })
   end
 
@@ -55,9 +55,9 @@ class RandomSeedVerifyTest < SafeTest
 
     expected_error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:order_matters, {
-        :subject => lambda { |input| MyOrderMatters.new(input) }, #<-- newing each time will cause it to fail
+        :subject => lambda { |input| MyOrderMatters.new(input) }, # <-- newing each time will cause it to fail
         :fail_fast => false,
-        :random_seed => nil
+        :random_seed => nil,
       })
     }
     assert_match ":random_seed => nil, # (insertion order)", expected_error.message

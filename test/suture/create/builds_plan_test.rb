@@ -4,7 +4,7 @@ module Suture
   class BuildsPlanTest < UnitTest
     def teardown
       super
-      ENV.delete_if { |(k, v)| k.start_with?("SUTURE_") }
+      ENV.delete_if { |(k, _v)| k.start_with?("SUTURE_") }
       Suture.reset!
     end
 
@@ -56,7 +56,7 @@ module Suture
         :on_old_error => some_on_old_error,
         :expected_error_types => [ZeroDivisionError],
         :disable => true,
-        :dup_args => true
+        :dup_args => true,
       })
 
       assert_equal :some_name, result.name

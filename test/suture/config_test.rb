@@ -10,8 +10,6 @@ module Suture
     end
 
     def test_config_override
-      initial = Suture::DEFAULT_OPTIONS
-
       result = Suture.config({:pants => true})
 
       expected = Suture::DEFAULT_OPTIONS.merge(:pants => true)

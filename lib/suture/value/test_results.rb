@@ -45,4 +45,3 @@ module Suture::Value
     end
   end
 end
-

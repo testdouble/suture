@@ -13,7 +13,7 @@ module Suture::Value
     end
 
     def result
-      @expectation ||= @error ? Result.errored(@error) : Result.returned(@return_value)
+      @result ||= @error ? Result.errored(@error) : Result.returned(@return_value)
     end
   end
 end

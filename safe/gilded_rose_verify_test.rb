@@ -16,7 +16,7 @@ class GildedRoseVerifyTest < SafeTest
   def test_gilded_rose_old
     Suture.verify(:gilded_rose, {
       :subject => lambda { |items| GildedRose.old_update_quality(items); items },
-      :fail_fast => true
+      :fail_fast => true,
     })
   end
 
@@ -35,7 +35,7 @@ class GildedRoseVerifyTest < SafeTest
   def test_gilded_rose_new
     Suture.verify(:gilded_rose, {
       :subject => lambda { |items| GildedRose.new_update_quality(items); items },
-      :fail_fast => false
+      :fail_fast => false,
     })
   end
 
@@ -62,8 +62,7 @@ class GildedRoseVerifyTest < SafeTest
       GildedRose::Item.new("Aged Brie", 2, 0),
       GildedRose::Item.new("Elixir of the Mongoose", 5, 7),
       GildedRose::Item.new("Sulfuras, Hand of Ragnaros", 0, 80),
-      GildedRose::Item.new("Backstage passes to a TAFKAL80ETC concert", 15, 20)
+      GildedRose::Item.new("Backstage passes to a TAFKAL80ETC concert", 15, 20),
     ]
   end
-
 end

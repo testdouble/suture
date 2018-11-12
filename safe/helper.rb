@@ -14,7 +14,7 @@ class SafeTest < Minitest::Test
     Suture::Adapter::Log.reset!
   end
 
-private
+  private
 
   def clean(p)
     FileUtils.rm_rf(path(p))
@@ -24,4 +24,3 @@ private
     File.join(Dir.getwd, p)
   end
 end
-

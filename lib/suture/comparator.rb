@@ -7,7 +7,7 @@ module Suture
         :active_record_excluded_attributes => (
           options[:active_record_excluded_attributes] ||
             DEFAULT_ACTIVE_RECORD_EXCLUDED_ATTRIBUTES
-        ).map(&:to_s)
+        ).map(&:to_s),
       }
     end
 
@@ -23,7 +23,7 @@ module Suture
     protected
 
     def compare_active_record(recorded, actual)
-      actual.kind_of?(recorded.class) &&
+      actual.is_a?(recorded.class) &&
         without_excluded_attrs(recorded.attributes) ==
           without_excluded_attrs(actual.attributes)
     end
@@ -31,7 +31,7 @@ module Suture
     private
 
     def without_excluded_attrs(hash)
-      hash.reject do |k, v|
+      hash.reject do |k, _v|
         @options[:active_record_excluded_attributes].include?(k.to_s)
       end
     end
@@ -46,8 +46,8 @@ module Suture
 
     def is_active_record?(recorded, actual)
       defined?(ActiveRecord::Base) &&
-        recorded.kind_of?(ActiveRecord::Base) &&
-        actual.kind_of?(ActiveRecord::Base)
+        recorded.is_a?(ActiveRecord::Base) &&
+        actual.is_a?(ActiveRecord::Base)
     end
   end
 end

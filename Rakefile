@@ -32,8 +32,8 @@ task :example do
       BUNDLE_GEMFILE="$PWD/Gemfile" bundle install --quiet
       BUNDLE_GEMFILE="$PWD/Gemfile" bundle exec rake suture
     SH
-    if !passed
-      raise StandardError.new("Rails example failed!")
+    unless passed
+      raise StandardError, "Rails example failed!"
     end
   end
 end

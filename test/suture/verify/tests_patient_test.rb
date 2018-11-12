@@ -11,7 +11,7 @@ module Suture
 
     def observe(args, return_value)
       Value::Observation.new(
-        :id => -1, #<- subject shouldn't care
+        :id => -1, # <- subject shouldn't care
         :name => :multiply,
         :args => args,
         :return => return_value
@@ -23,8 +23,7 @@ module Suture
       observation = observe([1, 2, 3], 6)
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a, b, c| a * b * c },
-        :verify_only => "1337"
-      )
+        :verify_only => "1337")
       give(dictaphone).play(1337) { [observation] }
 
       result = @subject.test(test_plan)
@@ -41,7 +40,7 @@ module Suture
         :observation => observation,
         :new_result => Value::Result.returned(6),
         :passed => true,
-        :ran => true
+        :ran => true,
       }, result.all.first)
     end
 
@@ -50,8 +49,7 @@ module Suture
       observation = observe([1, 2, 3], "this isn't 6 at all!!!")
       give(dictaphone).play(nil) { [observation] }
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
-        :subject => lambda {|a, b, c| a * b * c }
-      )
+        :subject => lambda {|a, b, c| a * b * c })
 
       result = @subject.test(test_plan)
 
@@ -67,7 +65,7 @@ module Suture
         :observation => observation,
         :passed => false,
         :new_result => Value::Result.returned(6),
-        :ran => true
+        :ran => true,
       }, result.all.first)
     end
 
@@ -79,8 +77,7 @@ module Suture
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|a, b, c| a * b * c },
         :fail_fast => true,
-        :random_seed => 48
-      )
+        :random_seed => 48)
 
       result = @subject.test(test_plan)
 
@@ -96,11 +93,11 @@ module Suture
         :observation => call1,
         :passed => false,
         :new_result => Value::Result.returned(6),
-        :ran => true
+        :ran => true,
       }, result.all.first)
       assert_equal({
         :observation => call2,
-        :ran => false
+        :ran => false,
       }, result.all.last)
     end
 
@@ -119,8 +116,7 @@ module Suture
           end
         },
         :fail_fast => false,
-        :random_seed => 48 #<-- found this by trial and error ¯\_(ツ)_/¯
-      )
+        :random_seed => 48) # <-- found this by trial and error ¯\_(ツ)_/¯
 
       result = @subject.test(test_plan)
 
@@ -136,28 +132,29 @@ module Suture
         :observation => call1,
         :passed => false,
         :error => some_error,
-        :ran => true
+        :ran => true,
       }, result.all.first)
       assert_equal({
         :observation => call2,
         :passed => true,
         :new_result => Value::Result.returned(6),
-        :ran => true
+        :ran => true,
       }, result.all.last)
     end
 
     def test_call_limit
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
-      give(dictaphone).play(nil) {[
-        observe([0], 1),
-        observe([1], 2),
-        observe([2], 3)
-      ]}
+      give(dictaphone).play(nil) do
+        [
+          observe([0], 1),
+          observe([1], 2),
+          observe([2], 3),
+        ]
+      end
       call_count = 0
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|n| call_count += 1; n + 1 },
-        :call_limit => 2
-      )
+        :call_limit => 2)
 
       result = @subject.test(test_plan)
 
@@ -169,11 +166,13 @@ module Suture
     def test_time_limit
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       timer = gimme_next(Suture::Util::Timer)
-      give(dictaphone).play(nil) {[
-        observe([0], 1),
-        observe([1], 2),
-        observe([2], 3)
-      ]}
+      give(dictaphone).play(nil) do
+        [
+          observe([0], 1),
+          observe([1], 2),
+          observe([2], 3),
+        ]
+      end
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
         :subject => lambda {|n|
           if n == 1
@@ -182,8 +181,7 @@ module Suture
           n + 1
         },
         :random_seed => nil,
-        :time_limit => 10 #<-- seconds
-      )
+        :time_limit => 10) # <-- seconds
 
       result = @subject.test(test_plan)
 
@@ -195,8 +193,7 @@ module Suture
     def test_no_calls
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
-        :subject => lambda {|a, b, c| a * b * c }
-      )
+        :subject => lambda {|a, b, c| a * b * c })
       give(dictaphone).play(nil) { [] }
 
       result = @subject.test(test_plan)
@@ -214,17 +211,16 @@ module Suture
     def test_invalid_plan_missing_subject
       test_plan = PrescribesTestPlan.new.prescribe(:thing, {})
 
-      error = assert_raises(Suture::Error::InvalidTestPlan) do
+      error = assert_raises(Suture::Error::InvalidTestPlan) {
         @subject.test(test_plan)
-      end
+      }
 
       assert_equal "Suture.verify requires a `:subject` that responds to `:call`.", error.message
     end
 
     def test_invalid_plan_subject_not_callable
       test_plan = PrescribesTestPlan.new.prescribe(:multiply,
-        :subject => "not callable!"
-      )
+        :subject => "not callable!")
 
       assert_raises(Suture::Error::InvalidTestPlan) do
         @subject.test(test_plan)

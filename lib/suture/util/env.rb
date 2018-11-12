@@ -3,8 +3,8 @@ module Suture::Util
     def self.to_map(excludes = {})
       Hash[
         ENV.keys.
-            select { |k| k.start_with?("SUTURE_") }.
-            map { |k| [to_sym(k), sanitize_value(ENV[k])] }
+          select { |k| k.start_with?("SUTURE_") }.
+          map { |k| [to_sym(k), sanitize_value(ENV[k])] }
       ].reject { |(k, _)| excludes.include?(k) }
     end
 

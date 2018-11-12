@@ -9,7 +9,7 @@ class PrescribesTestPlanTest < UnitTest
 
   def teardown
     super
-    ENV.delete_if { |(k, v)| k.start_with?("SUTURE_") }
+    ENV.delete_if { |(k, _v)| k.start_with?("SUTURE_") }
     Suture.reset!
   end
 
@@ -59,8 +59,7 @@ class PrescribesTestPlanTest < UnitTest
       :random_seed => 1337,
       :after_subject => some_after_subject,
       :on_subject_error => some_on_subject_error,
-      :expected_error_types => [ZeroDivisionError]
-    )
+      :expected_error_types => [ZeroDivisionError])
 
     assert_equal :foo, result.name
     assert_equal some_subject, result.subject

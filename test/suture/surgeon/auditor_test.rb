@@ -11,10 +11,9 @@ module Suture::Surgeon
     def test_new_and_old_returns_new_result_when_equivalent
       new_result = [:woo]
       plan = Suture::BuildsPlan.new.build(:lol,
-        :old => lambda { |a| [:woo] },
-        :new => lambda { |a| new_result },
-        :args => [:yay]
-      )
+        :old => lambda { |_a| [:woo] },
+        :new => lambda { |_a| new_result },
+        :args => [:yay])
 
       result = @subject.operate(plan)
 
@@ -23,11 +22,10 @@ module Suture::Surgeon
 
     def test_raises_when_new_and_old_differ
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| :trollface },
-        :new => lambda { |type| :shrugface },
+        :old => lambda { |_type| :trollface },
+        :new => lambda { |_type| :shrugface },
         :args => [:face],
-        :raise_on_result_mismatch => true
-      )
+        :raise_on_result_mismatch => true)
 
       error = assert_raises(Suture::Error::ResultMismatch) { @subject.operate(plan) }
 
@@ -36,11 +34,10 @@ module Suture::Surgeon
 
     def test_does_not_raise_when_raise_is_disabled
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| :trollface },
-        :new => lambda { |type| :shrugface },
+        :old => lambda { |_type| :trollface },
+        :new => lambda { |_type| :shrugface },
         :args => [:face],
-        :raise_on_result_mismatch => false
-      )
+        :raise_on_result_mismatch => false)
 
       result = @subject.operate(plan)
 
@@ -49,10 +46,9 @@ module Suture::Surgeon
 
     def test_raises_mismatch_when_new_raises_and_old_does_not
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| :trollface },
-        :new => lambda { |type| raise ZeroDivisionError.new("shrugface") },
-        :args => [:face]
-      )
+        :old => lambda { |_type| :trollface },
+        :new => lambda { |_type| raise ZeroDivisionError, "shrugface" },
+        :args => [:face])
 
       error = assert_raises(Suture::Error::ResultMismatch) { @subject.operate(plan) }
 
@@ -62,10 +58,9 @@ module Suture::Surgeon
 
     def test_raises_mismatch_when_old_raises_and_new_does_not
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| raise ZeroDivisionError.new("trollface") },
-        :new => lambda { |type| :shrugface },
-        :args => [:face]
-      )
+        :old => lambda { |_type| raise ZeroDivisionError, "trollface" },
+        :new => lambda { |_type| :shrugface },
+        :args => [:face])
 
       error = assert_raises(Suture::Error::ResultMismatch) { @subject.operate(plan) }
 
@@ -75,10 +70,9 @@ module Suture::Surgeon
 
     def test_raises_mismatch_when_new_raises_and_old_raises_different
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| raise ZeroDivisionError.new("trollface") },
-        :new => lambda { |type| raise ZeroDivisionError.new("shrugface") },
-        :args => [:face]
-      )
+        :old => lambda { |_type| raise ZeroDivisionError, "trollface" },
+        :new => lambda { |_type| raise ZeroDivisionError, "shrugface" },
+        :args => [:face])
 
       assert_raises(Suture::Error::ResultMismatch) { @subject.operate(plan) }
     end
@@ -86,10 +80,9 @@ module Suture::Surgeon
     def test_raises_actual_when_new_raises_and_old_raises_same
       new_error = RuntimeError.new("trollface")
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| raise "trollface" },
-        :new => lambda { |type| raise new_error },
-        :args => [:face]
-      )
+        :old => lambda { |_type| raise "trollface" },
+        :new => lambda { |_type| raise new_error },
+        :args => [:face])
 
       error = assert_raises { @subject.operate(plan) }
 
@@ -98,11 +91,10 @@ module Suture::Surgeon
 
     def test_raises_actual_when_raise_mismatch_disabled_and_new_raises_and_old_does_not
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| :trollface },
-        :new => lambda { |type| raise ZeroDivisionError.new("shrugface") },
+        :old => lambda { |_type| :trollface },
+        :new => lambda { |_type| raise ZeroDivisionError, "shrugface" },
         :args => [:face],
-        :raise_on_result_mismatch => false
-      )
+        :raise_on_result_mismatch => false)
 
       error = assert_raises(ZeroDivisionError) { @subject.operate(plan) }
 
@@ -111,12 +103,11 @@ module Suture::Surgeon
 
     def test_returns_old_when_toggled_and_raise_disabled
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| :trollface },
-        :new => lambda { |type| :shrugface },
+        :old => lambda { |_type| :trollface },
+        :new => lambda { |_type| :shrugface },
         :args => [:face],
         :raise_on_result_mismatch => false,
-        :return_old_on_result_mismatch => true
-      )
+        :return_old_on_result_mismatch => true)
 
       result = @subject.operate(plan)
 
@@ -128,8 +119,7 @@ module Suture::Surgeon
         :old => lambda { 8 },
         :new => lambda { 7 },
         :args => [],
-        :comparator => lambda {|old, new| old < 10 && new < 10 }
-      )
+        :comparator => lambda {|old, new| old < 10 && new < 10 })
 
       result = @subject.operate(plan)
 
@@ -138,12 +128,11 @@ module Suture::Surgeon
 
     def test_raise_disabled_old_return_and_new_raises_return_old
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| :trollface },
-        :new => lambda { |type| raise ZeroDivisionError.new("shrugface") },
+        :old => lambda { |_type| :trollface },
+        :new => lambda { |_type| raise ZeroDivisionError, "shrugface" },
         :args => [:face],
         :raise_on_result_mismatch => false,
-        :return_old_on_result_mismatch => true
-      )
+        :return_old_on_result_mismatch => true)
 
       result = @subject.operate(plan)
 
@@ -152,12 +141,11 @@ module Suture::Surgeon
 
     def test_raise_disabled_old_return_and_new_raises_and_old_raises_raise_old
       plan = Suture::BuildsPlan.new.build(:face_swap,
-        :old => lambda { |type| raise ZeroDivisionError.new("trollface") },
-        :new => lambda { |type| raise ZeroDivisionError.new("shrugface") },
+        :old => lambda { |_type| raise ZeroDivisionError, "trollface" },
+        :new => lambda { |_type| raise ZeroDivisionError, "shrugface" },
         :args => [:face],
         :raise_on_result_mismatch => false,
-        :return_old_on_result_mismatch => true
-      )
+        :return_old_on_result_mismatch => true)
 
       error = assert_raises(ZeroDivisionError) { @subject.operate(plan) }
 

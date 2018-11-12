@@ -5,22 +5,22 @@ module Suture
     REQUIREMENTS = {
       :name => "in order to identify recorded calls",
       :old => "in order to call the legacy code path (must respond to `:call`)",
-      :args => "in order to differentiate recorded calls (if the code you're changing doesn't take arguments, you can set :args to `[]` but should probably consider creating a seam inside of it which can--consult the README for more advice)"
+      :args => "in order to differentiate recorded calls (if the code you're changing doesn't take arguments, you can set :args to `[]` but should probably consider creating a seam inside of it which can--consult the README for more advice)",
     }
 
     VALIDATIONS = {
       :name => {
         :test => lambda { |name| name.to_s.size < 256 },
-        :message => "must be less than 256 characters"
+        :message => "must be less than 256 characters",
       },
-      :old => CALLABLE_VALIDATION = ({
+      :old => CALLABLE_VALIDATION = {
         :test => lambda { |old| old.respond_to?(:call) },
-        :message => "must respond to `call` (e.g. `dog.method(:bark)` or `->(*args){ dog.bark(*args) }`)"
-      }),
+        :message => "must respond to `call` (e.g. `dog.method(:bark)` or `->(*args){ dog.bark(*args) }`)",
+      },
       :new => CALLABLE_VALIDATION,
       :comparator => CALLABLE_VALIDATION.merge(
         :message => "must respond to `call` (e.g. `MyComparator.new` or `->(recorded, actual) { recorded == actual }`)"
-      )
+      ),
     }
 
     CONFLICTS = [
@@ -102,7 +102,7 @@ module Suture
               impact when set for other modes
           MSG
         end
-      }
+      },
     ]
 
     def validate(plan)
@@ -125,7 +125,7 @@ module Suture
 
     def invalid_attrs(plan)
       VALIDATIONS.select { |name, rule|
-        next unless attr = plan.send(name)
+        next unless (attr = plan.send(name))
         !rule[:test].call(attr)
       }
     end

@@ -12,4 +12,3 @@ gem "minitest", :group => :test
 gem "rake", "~> 10.0"
 gem "i18n", "~> 0.6.0"
 gem "rack-cache", "~> 1.2.0"
-

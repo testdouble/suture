@@ -21,7 +21,7 @@ class CustomComparatorTest < SafeTest
   end
 
   def test_demonstrating_observation_conflict
-    expected_error = assert_raises(Suture::Error::ObservationConflict) do
+    expected_error = assert_raises(Suture::Error::ObservationConflict) {
       2.times do
         # Without a custom comparator here, we'll raise ObservationConflict
         #   errors. (Reason being that the same inputs will yield differing
@@ -29,10 +29,10 @@ class CustomComparatorTest < SafeTest
         Suture.create(:time_goes_on, {
           :old => @subject,
           :args => [],
-          :record_calls => true
+          :record_calls => true,
         })
       end
-    end
+    }
     assert_match "At seam :time_goes_on", expected_error.message
   end
 
@@ -45,14 +45,14 @@ class CustomComparatorTest < SafeTest
         :old => @subject,
         :args => [],
         :record_calls => true,
-        :comparator => lambda { |recorded, actual| recorded.created_at < actual.created_at }
+        :comparator => lambda { |recorded, actual| recorded.created_at < actual.created_at },
       })
     end
 
     # This makes sense, because the recorded created_at will always be less.
     Suture.verify(:time_goes_on, {
       :subject => @subject,
-      :comparator => lambda { |recorded, actual| recorded.created_at < actual.created_at }
+      :comparator => lambda { |recorded, actual| recorded.created_at < actual.created_at },
     })
   end
 
@@ -62,7 +62,7 @@ class CustomComparatorTest < SafeTest
     Suture.create(:time_goes_on, {
       :old => @subject,
       :args => [],
-      :record_calls => true
+      :record_calls => true,
     })
 
     # This will fail because the comparator is expecting greater than instead of
@@ -70,14 +70,14 @@ class CustomComparatorTest < SafeTest
     assert_raises(Suture::Error::VerificationFailed) do
       Suture.verify(:time_goes_on, {
         :subject => @subject,
-        :comparator => lambda { |recorded, actual| recorded.created_at > actual.created_at }
+        :comparator => lambda { |recorded, actual| recorded.created_at > actual.created_at },
       })
     end
   end
 
   class MyComparator < Suture::Comparator
     def call(recorded, actual)
-      if recorded.kind_of?(MyType)
+      if recorded.is_a?(MyType)
         recorded.data_stuff == actual.data_stuff
       else
         super
@@ -94,26 +94,24 @@ class CustomComparatorTest < SafeTest
         :old => @subject,
         :args => [],
         :record_calls => true,
-        :comparator => MyComparator.new
+        :comparator => MyComparator.new,
       })
       Suture.create(:just_returns_an_array, {
         :old => lambda { [1, 2, 3] },
         :args => [],
         :record_calls => true,
-        :comparator => MyComparator.new
+        :comparator => MyComparator.new,
       })
     end
 
     # This makes sense, because the recorded created_at will always be less.
     Suture.verify(:time_goes_on, {
       :subject => @subject,
-      :comparator => MyComparator.new
+      :comparator => MyComparator.new,
     })
     Suture.verify(:just_returns_an_array, {
       :subject => lambda { [1, 2, 3] },
-      :comparator => MyComparator.new
+      :comparator => MyComparator.new,
     })
-
   end
-
 end

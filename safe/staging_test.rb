@@ -8,8 +8,7 @@ class StagingTest < SafeTest
       :new => lambda { |a, b| new_called = true; a + b },
       :args => [3, 5],
       :comparator => lambda { |old, new| old == 15 && new == 8 },
-      :call_both => true
-    )
+      :call_both => true)
 
     assert_equal 8, result
     assert_equal true, old_called
@@ -28,17 +27,16 @@ class StagingTest < SafeTest
 
     result = Suture.create(:thing,
       :old => lambda { |a, b|
-        old_called = true;
-        (a.number + b).tap { |result| a.number = result }
+        old_called = true
+        (a.number + b).tap { |r| a.number = r }
       },
       :new => lambda { |a, b|
-        new_called = true;
-        (a.number + b).tap { |result| a.number = result }
+        new_called = true
+        (a.number + b).tap { |r| a.number = r }
       },
       :args => [Stateful.new(3), 5],
       :call_both => true,
-      :dup_args => true
-    )
+      :dup_args => true)
 
     assert_equal 8, result
     assert_equal true, old_called

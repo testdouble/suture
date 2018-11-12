@@ -24,12 +24,12 @@ module Suture
         if should_skip?(test_plan, experienced_failure_in_life, i, timer)
           {
             :observation => observation,
-            :ran => false
+            :ran => false,
           }
         else
           @administers_test.administer(test_plan, observation).merge({
             :observation => observation,
-            :ran => true
+            :ran => true,
           }).tap { |r| experienced_failure_in_life = true unless r[:passed] }
         end
       })
@@ -39,7 +39,7 @@ module Suture
 
     def validate_test_plan!(test_plan)
       if !test_plan.subject || !test_plan.subject.respond_to?(:call)
-        raise Suture::Error::InvalidTestPlan.new
+        raise Suture::Error::InvalidTestPlan
       end
     end
 
@@ -70,4 +70,3 @@ module Suture
     end
   end
 end
-

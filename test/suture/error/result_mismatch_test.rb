@@ -53,6 +53,5 @@ module Suture::Error
         disable this error by setting `:raise_on_result_mismatch` to false.
       MSG
     end
-
   end
 end

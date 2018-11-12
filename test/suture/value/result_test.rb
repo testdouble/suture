@@ -9,7 +9,7 @@ module Suture::Value
     end
 
     def test_hashability
-      hash = { Result.returned("a") => Result.returned("b") }
+      hash = {Result.returned("a") => Result.returned("b")}
 
       hash[Result.returned("a")] = Result.returned("c")
 

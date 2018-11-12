@@ -13,4 +13,3 @@ class UnitTest < Minitest::Test
     Suture::Adapter::Log.reset!
   end
 end
-

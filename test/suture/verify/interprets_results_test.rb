@@ -18,7 +18,7 @@ module Suture
     def test_fail_and_all_ran
       test_results = Value::TestResults.new([{:passed => false, :ran => true}])
 
-      expected_error = assert_raises(Suture::Error::VerificationFailed) {
+      assert_raises(Suture::Error::VerificationFailed) {
         @subject.interpret(Value::TestPlan.new, test_results)
       }
     end

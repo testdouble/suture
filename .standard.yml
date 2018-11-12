@@ -1,1 +1,7 @@
 ruby_version: 1.8.7
+
+ignore:
+  - "{safe,test}/**/*":
+    - Style/Semicolon
+  - "safe/fixtures/gilded_rose.rb"
+  - "example/rails_app/app/**/*"

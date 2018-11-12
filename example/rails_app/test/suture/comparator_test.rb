@@ -9,7 +9,7 @@ class SutureComparatorTest < Minitest::Test
   def setup
     ActiveRecord::Base.establish_connection(
       :adapter => "sqlite3",
-      :database  => "db/test.sqlite3"
+      :database => "db/test.sqlite3"
     )
 
     @subject = Suture::Comparator.new
@@ -57,4 +57,3 @@ class SutureComparatorTest < Minitest::Test
     assert_equal true, @subject.call(item2, item3)
   end
 end
-

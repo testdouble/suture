@@ -4,7 +4,7 @@ require "suture/error/schema_version"
 
 module Suture::Wrap
   module Sqlite
-    SCHEMA_VERSION=2
+    SCHEMA_VERSION = 2
     def self.init(location)
       full_path = File.join(Dir.getwd, location)
       FileUtils.mkdir_p(File.dirname(full_path))

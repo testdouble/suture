@@ -9,8 +9,7 @@ module Suture::Util
       result = Shuffle.shuffle(random, array)
 
       assert_equal [4, 5, 6, 7, 9, 8, 1, 10, 3, 2], result
-      assert_equal [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], array #<-- that it has not mutated
+      assert_equal [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], array # <-- that it has not mutated
     end
   end
 end
-
