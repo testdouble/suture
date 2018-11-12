@@ -7,7 +7,7 @@ module Suture::Error
     end
 
     def message
-      <<-MSG.gsub(/^ {8}/,'')
+      <<-MSG.gsub(/^ {8}/, "")
         The results from the old & new code paths did not match for the seam
         #{@plan.name.inspect} and Suture is raising this error because the `:call_both`
         option is enabled, because both code paths are expected to return the

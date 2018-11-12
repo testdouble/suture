@@ -19,10 +19,10 @@ module Suture::Value
     end
 
     def ==(other)
-      other.kind_of?(self.class) && other.state == state
+      other.is_a?(self.class) && other.state == state
     end
 
-    alias_method :eql?, :==
+    alias eql? ==
 
     def hash
       state.hash

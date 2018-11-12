@@ -9,8 +9,8 @@ module Suture::Surgeon
         Suture::Util::Scalpel.new.cut(plan, :old).tap do |result|
           dictaphone.record(result)
         end
-      rescue StandardError => error
-        if plan.expected_error_types.any? {|e| error.kind_of?(e) }
+      rescue => error
+        if plan.expected_error_types.any? {|e| error.is_a?(e) }
           dictaphone.record_error(error)
         end
         raise error
@@ -18,4 +18,3 @@ module Suture::Surgeon
     end
   end
 end
-

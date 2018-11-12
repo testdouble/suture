@@ -56,7 +56,7 @@ module Suture
     end
 
     def test_raise_with_multiple_missing_required_params
-      plan = Value::Plan.new()
+      plan = Value::Plan.new
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 

@@ -1,7 +1,8 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'suture/version'
+require "suture/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "suture"
@@ -9,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Justin Searls"]
   spec.email         = ["searls@gmail.com"]
 
-  spec.summary       = %q{A gem that helps people refactor or reimplement legacy code}
-  spec.description   = %q{Provides tools to record calls to legacy code and verify new implementations still work}
+  spec.summary       = "A gem that helps people refactor or reimplement legacy code"
+  spec.description   = "Provides tools to record calls to legacy code and verify new implementations still work"
   spec.homepage      = "https://github.com/testdouble/suture"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(example|test|db|log|safe|spec|features)/}) }
@@ -30,7 +31,11 @@ Gem::Specification.new do |spec|
 
   if Gem.ruby_version >= Gem::Version.new("1.9.3")
     spec.add_development_dependency "codeclimate-test-reporter"
-    spec.add_development_dependency "simplecov", "~> 0.11.2" #<--only here to lock
+    spec.add_development_dependency "simplecov", "~> 0.11.2" # <--only here to lock
+  end
+
+  if Gem.ruby_version >= Gem::Version.new("2.2.0")
+    spec.add_development_dependency "standard"
   end
 
   if Gem.ruby_version >= Gem::Version.new("2.2.2")

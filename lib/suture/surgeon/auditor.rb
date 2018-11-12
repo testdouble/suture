@@ -24,11 +24,9 @@ module Suture::Surgeon
     private
 
     def result_for(plan, path)
-      begin
-        Suture::Value::Result.returned(@scalpel.cut(plan, path))
-      rescue StandardError => error
-        Suture::Value::Result.errored(error)
-      end
+      Suture::Value::Result.returned(@scalpel.cut(plan, path))
+    rescue => error
+      Suture::Value::Result.errored(error)
     end
 
     def comparable?(plan, old_result, new_result)
@@ -53,12 +51,12 @@ module Suture::Surgeon
       if result.errored?
         raise result.value
       else
-        return result.value
+        result.value
       end
     end
 
     def log_warning(plan, old_result, new_result)
-      log_warn <<-MSG.gsub(/^ {8}/,'')
+      log_warn <<-MSG.gsub(/^ {8}/, "")
         Seam #{plan.name.inspect} is set to :call_both the :new and :old code
         paths, but they did not match.
 

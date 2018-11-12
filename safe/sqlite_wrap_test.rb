@@ -42,4 +42,3 @@ class SqliteWrapTest < SafeTest
     Suture::Wrap::Sqlite.const_set("SCHEMA_VERSION", ACTUAL)
   end
 end
-

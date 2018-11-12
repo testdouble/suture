@@ -9,7 +9,7 @@ class UpdateQualityTest < Minitest::Test
   def setup
     ActiveRecord::Base.establish_connection(
       :adapter => "sqlite3",
-      :database  => "db/test.sqlite3"
+      :database => "db/test.sqlite3"
     )
   end
 

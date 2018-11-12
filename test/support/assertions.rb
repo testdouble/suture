@@ -17,7 +17,7 @@ module Support
     def assert_spacey_match obj, matcher, msg = nil
       og_matcher = matcher
       msg = message(msg) {
-        <<-MSG.gsub(/^ {10}/,'')
+        <<-MSG.gsub(/^ {10}/, "")
           Expected this #{obj.class}:
           ```
           #{obj}
@@ -30,8 +30,8 @@ module Support
         MSG
       }
       assert_respond_to matcher, :"=~"
-      matcher = Regexp.new(Regexp.escape(matcher.gsub(/\s+/, ''))) if String === matcher
-      assert(matcher =~ obj.gsub(/\s+/, ''), msg)
+      matcher = Regexp.new(Regexp.escape(matcher.gsub(/\s+/, ""))) if String === matcher
+      assert(matcher =~ obj.gsub(/\s+/, ""), msg)
     end
   end
 end

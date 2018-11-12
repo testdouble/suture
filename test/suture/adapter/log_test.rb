@@ -22,7 +22,7 @@ module Suture::Adapter
     def test_debug_level
       config_log(:log_level => "DEBUG")
 
-      subject = FakeThing.new.stuff
+      FakeThing.new.stuff
 
       assert_match "Suture: an debug", read_log
       assert_match "Suture: an info", read_log
@@ -33,7 +33,7 @@ module Suture::Adapter
     def test_warn_level
       config_log(:log_level => "WARN")
 
-      subject = FakeThing.new.stuff
+      FakeThing.new.stuff
 
       assert_not_match "Suture: an debug", read_log
       assert_not_match "Suture: an info", read_log
@@ -41,10 +41,10 @@ module Suture::Adapter
       assert_match "Suture: an error", read_log
     end
 
-    def test_warn_level
+    def test_error_level
       config_log(:log_level => "ERROR", :log_file => nil)
 
-      subject = FakeThing.new.stuff
+      FakeThing.new.stuff
 
       assert_not_match "Suture: an debug", read_log
       assert_not_match "Suture: an info", read_log
@@ -55,7 +55,7 @@ module Suture::Adapter
     def test_default_level
       config_log(:log_level => nil)
 
-      subject = FakeThing.new.stuff
+      FakeThing.new.stuff
 
       assert_not_match "Suture: an debug", read_log
       assert_match "Suture: an info", read_log
@@ -73,6 +73,5 @@ module Suture::Adapter
     def read_log
       @log_io.tap(&:rewind).read
     end
-
   end
 end

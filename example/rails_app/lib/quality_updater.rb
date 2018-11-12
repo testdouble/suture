@@ -33,6 +33,7 @@ class QualityUpdater
   class NoopQualityUpdater < StandardQualityUpdater
     def update_quality(item)
     end
+
     def update_sell_in(item)
     end
   end
@@ -84,6 +85,6 @@ class QualityUpdater
   end
 
   def standard_updater
-    @standard_handler ||= StandardQualityUpdater.new
+    @standard_updater ||= StandardQualityUpdater.new
   end
 end

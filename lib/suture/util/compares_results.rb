@@ -8,7 +8,7 @@ module Suture::Util
       if expected.errored? != actual.errored?
         false
       elsif expected.errored?
-        actual.value.kind_of?(expected.value.class) &&
+        actual.value.is_a?(expected.value.class) &&
           expected.value.message == actual.value.message
       else
         @comparator.call(expected.value, actual.value)

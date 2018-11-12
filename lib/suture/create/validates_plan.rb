@@ -5,28 +5,28 @@ module Suture
     REQUIREMENTS = {
       :name => "in order to identify recorded calls",
       :old => "in order to call the legacy code path (must respond to `:call`)",
-      :args => "in order to differentiate recorded calls (if the code you're changing doesn't take arguments, you can set :args to `[]` but should probably consider creating a seam inside of it which can--consult the README for more advice)"
+      :args => "in order to differentiate recorded calls (if the code you're changing doesn't take arguments, you can set :args to `[]` but should probably consider creating a seam inside of it which can--consult the README for more advice)",
     }
 
     VALIDATIONS = {
       :name => {
         :test => lambda { |name| name.to_s.size < 256 },
-        :message => "must be less than 256 characters"
+        :message => "must be less than 256 characters",
       },
-      :old => CALLABLE_VALIDATION = ({
+      :old => CALLABLE_VALIDATION = {
         :test => lambda { |old| old.respond_to?(:call) },
-        :message => "must respond to `call` (e.g. `dog.method(:bark)` or `->(*args){ dog.bark(*args) }`)"
-      }),
+        :message => "must respond to `call` (e.g. `dog.method(:bark)` or `->(*args){ dog.bark(*args) }`)",
+      },
       :new => CALLABLE_VALIDATION,
       :comparator => CALLABLE_VALIDATION.merge(
         :message => "must respond to `call` (e.g. `MyComparator.new` or `->(recorded, actual) { recorded == actual }`)"
-      )
+      ),
     }
 
     CONFLICTS = [
       lambda { |plan|
         if plan.record_calls && !plan.database_path
-          <<-MSG.gsub(/^ {12}/,'')
+          <<-MSG.gsub(/^ {12}/, "")
             :record_calls is enabled, but :database_path is nil, so Suture
               doesn't know where to record calls to the seam.
           MSG
@@ -34,7 +34,7 @@ module Suture
       },
       lambda { |plan|
         if plan.record_calls && plan.call_both
-          <<-MSG.gsub(/^ {12}/,'')
+          <<-MSG.gsub(/^ {12}/, "")
             :record_calls & :call_both are both enabled and conflict with one
               another. :record_calls will only invoke the old code path (intended
               for characterization of the old code path and initial development
@@ -51,7 +51,7 @@ module Suture
       },
       lambda { |plan|
         if plan.record_calls && plan.fallback_on_error
-          <<-MSG.gsub(/^ {12}/,'')
+          <<-MSG.gsub(/^ {12}/, "")
             :record_calls & :fallback_on_error are both enabled and conflict with
               one another. :record_calls will only invoke the old code path
               (intended for characterization of the old code path and initial
@@ -63,7 +63,7 @@ module Suture
       },
       lambda { |plan|
         if plan.call_both && plan.fallback_on_error
-          <<-MSG.gsub(/^ {12}/,'')
+          <<-MSG.gsub(/^ {12}/, "")
             :call_both & :fallback_on_error are both enabled and conflict with
               one another. :call_both is designed for pre-production environments
               and will call both the old and new code paths to compare their
@@ -75,7 +75,7 @@ module Suture
       },
       lambda { |plan|
         if plan.call_both && !plan.new.respond_to?(:call)
-          <<-MSG.gsub(/^ {12}/,'')
+          <<-MSG.gsub(/^ {12}/, "")
             :call_both is set but :new is either not set or is not callable. In
               order to call both code paths, both :old and :new must be set and
               callable
@@ -84,7 +84,7 @@ module Suture
       },
       lambda { |plan|
         if plan.fallback_on_error && !plan.new.respond_to?(:call)
-          <<-MSG.gsub(/^ {12}/,'')
+          <<-MSG.gsub(/^ {12}/, "")
             :fallback_on_error is set but :new is either not set or is not
               callable. This mode is designed for after the :new code path has
               been developed and run in production-like environments, where :old
@@ -96,13 +96,13 @@ module Suture
       },
       lambda { |plan|
         if !plan.raise_on_result_mismatch && !plan.call_both
-          <<-MSG.gsub(/^ {12}/,'')
+          <<-MSG.gsub(/^ {12}/, "")
             :raise_on_result_mismatch was disabled but :call_both is not enabled.
               This option only applies to the :call_both mode, and will have no
               impact when set for other modes
           MSG
         end
-      }
+      },
     ]
 
     def validate(plan)
@@ -125,7 +125,7 @@ module Suture
 
     def invalid_attrs(plan)
       VALIDATIONS.select { |name, rule|
-        next unless attr = plan.send(name)
+        next unless (attr = plan.send(name))
         !rule[:test].call(attr)
       }
     end

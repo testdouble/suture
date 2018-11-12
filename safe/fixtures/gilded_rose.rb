@@ -18,16 +18,16 @@ module GildedRose
 
   def self.old_update_quality(items)
     items.each do |item|
-      if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
+      if item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert"
         if item.quality > 0
-          if item.name != 'Sulfuras, Hand of Ragnaros'
+          if item.name != "Sulfuras, Hand of Ragnaros"
             item.quality -= 1
           end
         end
       else
         if item.quality < 50
           item.quality += 1
-          if item.name == 'Backstage passes to a TAFKAL80ETC concert'
+          if item.name == "Backstage passes to a TAFKAL80ETC concert"
             if item.sell_in < 11
               if item.quality < 50
                 item.quality += 1
@@ -41,14 +41,14 @@ module GildedRose
           end
         end
       end
-      if item.name != 'Sulfuras, Hand of Ragnaros'
+      if item.name != "Sulfuras, Hand of Ragnaros"
         item.sell_in -= 1
       end
       if item.sell_in < 0
         if item.name != "Aged Brie"
-          if item.name != 'Backstage passes to a TAFKAL80ETC concert'
+          if item.name != "Backstage passes to a TAFKAL80ETC concert"
             if item.quality > 0
-              if item.name != 'Sulfuras, Hand of Ragnaros'
+              if item.name != "Sulfuras, Hand of Ragnaros"
                 item.quality -= 1
               end
             end
@@ -105,6 +105,7 @@ module GildedRose
     class NoopQualityUpdater < StandardQualityUpdater
       def update_quality(item)
       end
+
       def update_sell_in(item)
       end
     end

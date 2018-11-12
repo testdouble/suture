@@ -8,5 +8,3 @@ module Suture
     end
   end
 end
-
-

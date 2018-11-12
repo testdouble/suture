@@ -14,7 +14,7 @@ module Suture::Error
         describe_failures(@results.failed, @plan),
         configuration(@plan),
         summarize(@results),
-        progress(@plan, @results)
+        progress(@plan, @results),
       ].compact.join("\n").tap do
       end
     end
@@ -22,7 +22,7 @@ module Suture::Error
     private
 
     def intro
-      <<-MSG.gsub(/^ {8}/,'')
+      <<-MSG.gsub(/^ {8}/, "")
 
         # Verification of your seam failed!
 
@@ -31,7 +31,7 @@ module Suture::Error
     end
 
     def summarize(results)
-      <<-MSG.gsub(/^ {8}/,'')
+      <<-MSG.gsub(/^ {8}/, "")
         # Result Summary
 
           - Passed........#{results.passed_count}
@@ -49,7 +49,7 @@ module Suture::Error
         results.all.size
       )
       percent = Suture::Util::Numbers.percent(results.passed.size, results.all.size)
-      <<-MSG.gsub(/^ {8}/,'')
+      <<-MSG.gsub(/^ {8}/, "")
         ## Progress
 
         Here's what your progress to initial completion looks like so far:
@@ -61,7 +61,7 @@ module Suture::Error
     end
 
     def configuration(plan)
-      <<-MSG.gsub(/^ {8}/,'')
+      <<-MSG.gsub(/^ {8}/, "")
         # Configuration
 
         This is the configuration used by this test run:
@@ -81,7 +81,7 @@ module Suture::Error
     end
 
     def describe_comparator(comparator)
-      if comparator.kind_of?(Proc)
+      if comparator.is_a?(Proc)
         "Proc # (in: `#{describe_source_location(*comparator.source_location)}`)"
       elsif comparator.respond_to?(:method) && comparator.method(:call)
         "#{comparator.inspect}.new, # (in: `#{describe_source_location(*comparator.method(:call).source_location)}`)"
@@ -90,7 +90,7 @@ module Suture::Error
 
     def describe_source_location(file, line)
       root = File.join(Dir.getwd, "/")
-      path = file.start_with?(root) ? file.gsub(root, '') : file
+      path = file.start_with?(root) ? file.gsub(root, "") : file
       "#{path}:#{line}"
     end
 
@@ -102,13 +102,13 @@ module Suture::Error
           describe_failure(failure, index) if plan.error_message_limit.nil? || index < plan.error_message_limit
         },
         describe_squelched_failure_messages(failures.size, plan.error_message_limit),
-        describe_general_failure_advice(plan)
+        describe_general_failure_advice(plan),
       ].flatten.compact.join("\n")
     end
 
     def describe_failure(failure, index)
       expected = failure[:observation]
-      return <<-MSG.gsub(/^ {8}/,'')
+      <<-MSG.gsub(/^ {8}/, "")
         #{index + 1}.) Recorded call for seam #{expected.name.inspect} (ID: #{expected.id}) ran and #{failure[:error] ? "raised an error" : "failed comparison"}.
 
           Arguments: ```
@@ -117,13 +117,12 @@ module Suture::Error
           Expected #{expected.result.errored? ? "error raised" : "returned value"}: ```
             #{expected.result.value.inspect}
           ```
-          Actual #{(failure[:error] || failure[:new_result].errored?) ? "error raised" : "returned value"}: ```
+          Actual #{failure[:error] || failure[:new_result].errored? ? "error raised" : "returned value"}: ```
             #{if failure[:error]
                 stringify_error(failure[:error])
               else
                 failure[:new_result].value.inspect
-              end
-            }
+              end}
           ```
 
           Ideas to fix this:
@@ -138,7 +137,7 @@ module Suture::Error
     end
 
     def describe_general_failure_advice(plan)
-      <<-MSG.gsub(/^ {8}/,'')
+      <<-MSG.gsub(/^ {8}/, "")
         ### Fixing these failures
 
         #### Custom comparator
@@ -156,7 +155,7 @@ module Suture::Error
         behavior somewhere in your subject's code.
 
         #{if !plan.random_seed.nil?
-            <<-MOAR.gsub(/^ {14}/,'')
+            <<-MOAR.gsub(/^ {14}/, "")
               To re-run the tests with the same random seed as was used in this run,
               set the env var `SUTURE_RANDOM_SEED=#{plan.random_seed}` or the config entry
               `:random_seed => #{plan.random_seed}`.
@@ -167,7 +166,7 @@ module Suture::Error
               `:random_seed => nil`.
             MOAR
           else
-            <<-MOAR.gsub(/^ {14}/,'')
+            <<-MOAR.gsub(/^ {14}/, "")
               This test was run in insertion order (by the primary key of the table
               that stores calls, ascending). This is sometimes necessary when the
               code has an order-dependent side effect, but shouldn't be set unless it's
@@ -179,7 +178,6 @@ module Suture::Error
           end.chomp}
       MSG
     end
-
 
     def stringify_error(error)
       s = error.inspect

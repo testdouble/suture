@@ -3,15 +3,14 @@ require "suture/adapter/dictaphone"
 class DictaphoneAdapterTest < SafeTest
   def test_will_fail_on_identical_observation_with_different_result
     subject = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:foo,
-      :args => [1,2,3]
-    ))
+      :args => [1, 2, 3]))
 
     subject.record(:bar)
 
     e = assert_raises(Suture::Error::ObservationConflict) {
       subject.record(:baz)
     }
-    expected_message = <<-MSG.gsub(/^ {6}/,'')
+    expected_message = <<-MSG.gsub(/^ {6}/, "")
       At seam :foo, we just recorded a duplicate call, but the same arguments
       resulted in a different output. Read on for details:
 
@@ -57,8 +56,7 @@ class DictaphoneAdapterTest < SafeTest
 
   def test_will_succeed_on_identical_observation_with_identical_result
     subject = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:foo,
-      :args => [1,2,3]
-    ))
+      :args => [1, 2, 3]))
 
     subject.record(:bar)
     subject.record(:bar)
@@ -66,14 +64,14 @@ class DictaphoneAdapterTest < SafeTest
 
   def test_will_support_playing_just_one_row
     Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:foo, {
-      :args => [:pants]
+      :args => [:pants],
     })).record(:shirt)
     Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:foo, {
-      :args => [:panda]
+      :args => [:panda],
     })).record(:bamboo)
 
     rows = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:foo, {
-      :verify_only => 1
+      :verify_only => 1,
     })).play(1) # <-- where one assumes 1 is the ID of pants
     assert_equal 1, rows.size
     assert_equal [:pants], rows.first.args

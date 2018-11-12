@@ -11,7 +11,7 @@ module Suture::Error
       test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets, {
         :fail_fast => false,
         :random_seed => 998,
-        :time_limit => 30
+        :time_limit => 30,
       })
 
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
@@ -24,11 +24,11 @@ module Suture::Error
           ),
           :new_result => Suture::Value::Result.returned(:cat),
           :passed => false,
-          :ran => true
-        }
+          :ran => true,
+        },
       ]))
 
-      expected_message = <<-MSG.gsub(/^ {8}/,'')
+      expected_message = <<-MSG.gsub(/^ {8}/, "")
 
         # Verification of your seam failed!
 
@@ -118,13 +118,13 @@ module Suture::Error
         :database_path => "lol.db",
         :fail_fast => true,
         :call_limit => 42,
-        :random_seed => nil
+        :random_seed => nil,
       })
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new([
         {
           :observation => "blah",
           :passed => true,
-          :ran => true
+          :ran => true,
         },
         {
           :observation => Suture::Value::Observation.new(
@@ -135,7 +135,7 @@ module Suture::Error
           ),
           :new_result => Suture::Value::Result.returned(:cat),
           :passed => false,
-          :ran => true
+          :ran => true,
         },
         {
           :observation => Suture::Value::Observation.new(
@@ -146,7 +146,7 @@ module Suture::Error
           ),
           :error => StandardError.new("Yikes"),
           :passed => false,
-          :ran => true
+          :ran => true,
         },
         {
           :observation => Suture::Value::Observation.new(
@@ -155,11 +155,11 @@ module Suture::Error
             :args => ["Joey"],
             :return => :parrot
           ),
-          :ran => false
-        }
+          :ran => false,
+        },
       ]))
 
-      expected_message = <<-MSG.gsub(/^ {8}/,'')
+      expected_message = <<-MSG.gsub(/^ {8}/, "")
 
         # Verification of your seam failed!
 
@@ -252,7 +252,7 @@ module Suture::Error
 
     def test_error_message_limit
       test_plan = Suture::PrescribesTestPlan.new.prescribe(:pets, {
-        :error_message_limit => 2
+        :error_message_limit => 2,
       })
       error = VerificationFailed.new(test_plan, Suture::Value::TestResults.new(
         20.times.map { |i|
@@ -265,7 +265,7 @@ module Suture::Error
             ),
             :new_result => Suture::Value::Result.returned(:blech),
             :passed => false,
-            :ran => true
+            :ran => true,
           }
         }
       ))
