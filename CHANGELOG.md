@@ -1,5 +1,19 @@
 # Change Log
 
+## [v1.1.2](https://github.com/testdouble/suture/tree/v1.1.2) (2018-11-12)
+[Full Changelog](https://github.com/testdouble/suture/compare/v1.1.1...v1.1.2)
+
+**Closed issues:**
+
+- task to explode tests from recorded suture data? [\#69](https://github.com/testdouble/suture/issues/69)
+
+**Merged pull requests:**
+
+- Standardize [\#71](https://github.com/testdouble/suture/pull/71) ([searls](https://github.com/searls))
+- Fix couple typos in README.md [\#70](https://github.com/testdouble/suture/pull/70) ([sharipov-ru](https://github.com/sharipov-ru))
+- Make minor sentence changes to the README [\#66](https://github.com/testdouble/suture/pull/66) ([alexcameron89](https://github.com/alexcameron89))
+- Add a Docker image [\#58](https://github.com/testdouble/suture/pull/58) ([seeflanigan](https://github.com/seeflanigan))
+
 ## [v1.1.1](https://github.com/testdouble/suture/tree/v1.1.1) (2016-09-19)
 [Full Changelog](https://github.com/testdouble/suture/compare/v1.1.0...v1.1.1)
 
