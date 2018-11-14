@@ -1,5 +1,6 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
+require "standard/rake"
 
 Rake::TestTask.new(:unit) do |t|
   t.libs << "test"
@@ -50,4 +51,4 @@ if Gem.ruby_version >= Gem::Version.new("2.2.2")
   Rake::Task["release:rubygem_push"].enhance([:changelog, :changelog_commit])
 end
 
-task :default => [:test, :example]
+task :default => [:test, :"standard:fix", :example]

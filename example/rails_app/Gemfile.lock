@@ -1,7 +1,7 @@
 PATH
   remote: ../..
   specs:
-    suture (1.1.1)
+    suture (1.1.2)
       backports
       bar-of-progress (>= 0.1.3)
       sqlite3
@@ -37,7 +37,7 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     arel (3.0.3)
-    backports (3.6.8)
+    backports (3.11.4)
     bar-of-progress (0.1.3)
     builder (3.0.4)
     erubis (2.7.0)
@@ -103,4 +103,4 @@ DEPENDENCIES
   suture!
 
 BUNDLED WITH
-   1.13.6
+   1.17.1
