@@ -11,7 +11,7 @@ code, from local development, to a staging environment, and even in production.
 
 # Video
 
-Suture was unveiled at Ruby Kaigi 2016 as a one approach that we can make
+Suture was unveiled at Ruby Kaigi 2016 as one approach that can make
 refactors less scary and more predictable. You can watch the 45 minute screencast
 here:
 
@@ -21,7 +21,7 @@ here:
 
 Refactoring or reimplementing important code is an involved process! Instead of
 listing out Suture's API without sufficient exposition, here is an example that
-we'll take you through each stage of the lifecycle.
+will take you through each stage of the lifecycle.
 
 ## Development
 
