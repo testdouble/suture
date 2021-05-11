@@ -1,6 +1,6 @@
 # Suture 🏥
 
-[![Build Status](https://travis-ci.org/testdouble/suture.svg?branch=master)](https://travis-ci.org/testdouble/suture) [![Code Climate](https://codeclimate.com/github/testdouble/suture/badges/gpa.svg)](https://codeclimate.com/github/testdouble/suture) [![Test Coverage](https://codeclimate.com/github/testdouble/suture/badges/coverage.svg)](https://codeclimate.com/github/testdouble/suture/coverage)
+[![Build Status](https://travis-ci.org/testdouble/suture.svg?branch=main)](https://travis-ci.org/testdouble/suture) [![Code Climate](https://codeclimate.com/github/testdouble/suture/badges/gpa.svg)](https://codeclimate.com/github/testdouble/suture) [![Test Coverage](https://codeclimate.com/github/testdouble/suture/badges/coverage.svg)](https://codeclimate.com/github/testdouble/suture/coverage)
 
 A refactoring tool for Ruby, designed to make it safe to change code you don't
 confidently understand. In fact, changing untrustworthy code is so fraught,
