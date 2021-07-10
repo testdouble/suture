@@ -74,7 +74,7 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rake (10.5.0)
+    rake (13.0.3)
     rdoc (3.12.2)
       json (~> 1.4)
     sprockets (2.2.3)
@@ -98,7 +98,7 @@ DEPENDENCIES
   minitest
   rack-cache (~> 1.2.0)
   rails (= 3.2.22.4)
-  rake (~> 10.0)
+  rake (~> 13.0)
   sqlite3
   suture!
 
