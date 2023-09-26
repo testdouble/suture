@@ -17,7 +17,7 @@ module Suture
 
       assert_equal({
         :new_result => Value::Result.returned(5),
-        :passed => true,
+        :passed => true
       }, result)
     end
 
@@ -33,7 +33,7 @@ module Suture
 
       assert_equal({
         :new_result => Value::Result.returned("this is not 5"),
-        :passed => false,
+        :passed => false
       }, result)
     end
 
@@ -49,7 +49,7 @@ module Suture
 
       assert_equal({
         :error => some_error,
-        :passed => false,
+        :passed => false
       }, result)
     end
 
@@ -65,7 +65,7 @@ module Suture
 
       assert_equal({
         :new_result => Value::Result.errored(some_error),
-        :passed => true,
+        :passed => true
       }, result)
     end
 
@@ -82,7 +82,7 @@ module Suture
 
       assert_equal({
         :new_result => Value::Result.errored(actual_error),
-        :passed => false,
+        :passed => false
       }, result)
     end
   end

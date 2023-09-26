@@ -21,6 +21,7 @@ class StagingTest < SafeTest
       @number = number
     end
   end
+
   def test_call_both_and_dup_args
     old_called = false
     new_called = true

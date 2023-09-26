@@ -14,7 +14,7 @@ module Suture::Error
         describe_failures(@results.failed, @plan),
         configuration(@plan),
         summarize(@results),
-        progress(@plan, @results),
+        progress(@plan, @results)
       ].compact.join("\n").tap do
       end
     end
@@ -102,7 +102,7 @@ module Suture::Error
           describe_failure(failure, index) if plan.error_message_limit.nil? || index < plan.error_message_limit
         },
         describe_squelched_failure_messages(failures.size, plan.error_message_limit),
-        describe_general_failure_advice(plan),
+        describe_general_failure_advice(plan)
       ].flatten.compact.join("\n")
     end
 

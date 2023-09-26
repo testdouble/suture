@@ -37,6 +37,7 @@ module Suture::Util
 
     class SubZeroDivisionError < ZeroDivisionError
     end
+
     def test_error_same_class_and_message
       expected = Suture::Value::Result.errored(ZeroDivisionError.new("hi"))
       actual = Suture::Value::Result.errored(SubZeroDivisionError.new("hi"))

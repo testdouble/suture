@@ -30,7 +30,7 @@ module Suture::Util
       assert_equal :old_result, result
       assert_equal [
         [:a, :b],
-        :old_result,
+        :old_result
       ], after_old_args
     end
 
@@ -57,7 +57,7 @@ module Suture::Util
       assert_equal [
         :my_seam,
         [:c, :d],
-        some_error,
+        some_error
       ], on_new_error_args
     end
 

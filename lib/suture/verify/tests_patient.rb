@@ -24,12 +24,12 @@ module Suture
         if should_skip?(test_plan, experienced_failure_in_life, i, timer)
           {
             :observation => observation,
-            :ran => false,
+            :ran => false
           }
         else
           @administers_test.administer(test_plan, observation).merge({
             :observation => observation,
-            :ran => true,
+            :ran => true
           }).tap { |r| experienced_failure_in_life = true unless r[:passed] }
         end
       })
@@ -46,7 +46,7 @@ module Suture
     def should_skip?(test_plan, failed_fast, call_count, timer)
       (test_plan.fail_fast && failed_fast) ||
         (test_plan.call_limit && call_count >= test_plan.call_limit) ||
-        (timer && timer.time_up?)
+        timer&.time_up?
     end
 
     def build_test_cases(test_plan)

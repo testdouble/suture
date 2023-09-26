@@ -56,7 +56,7 @@ module Suture
         :on_old_error => some_on_old_error,
         :expected_error_types => [ZeroDivisionError],
         :disable => true,
-        :dup_args => true,
+        :dup_args => true
       })
 
       assert_equal :some_name, result.name

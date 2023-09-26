@@ -10,7 +10,7 @@ module Suture::Surgeon
     def test_record_calls
       dictaphone = gimme_next(Suture::Adapter::Dictaphone)
       plan = Suture::Value::Plan.new(
-        :old => lambda {|arg1| "#{arg1} pants" },
+        :old => lambda { |arg1| "#{arg1} pants" },
         :args => [5]
       )
 
@@ -45,7 +45,7 @@ module Suture::Surgeon
 
       assert_raises(ZeroDivisionError) { @subject.operate(plan) }
 
-      verify(dictaphone, 0.times).record_error(some_error)
+      verify(dictaphone, 0).record_error(some_error)
     end
   end
 end

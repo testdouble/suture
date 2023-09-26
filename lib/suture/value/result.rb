@@ -22,7 +22,7 @@ module Suture::Value
       other.is_a?(self.class) && other.state == state
     end
 
-    alias eql? ==
+    alias_method :eql?, :==
 
     def hash
       state.hash

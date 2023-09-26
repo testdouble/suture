@@ -64,14 +64,14 @@ class DictaphoneAdapterTest < SafeTest
 
   def test_will_support_playing_just_one_row
     Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:foo, {
-      :args => [:pants],
+      :args => [:pants]
     })).record(:shirt)
     Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:foo, {
-      :args => [:panda],
+      :args => [:panda]
     })).record(:bamboo)
 
     rows = Suture::Adapter::Dictaphone.new(Suture::BuildsPlan.new.build(:foo, {
-      :verify_only => 1,
+      :verify_only => 1
     })).play(1) # <-- where one assumes 1 is the ID of pants
     assert_equal 1, rows.size
     assert_equal [:pants], rows.first.args

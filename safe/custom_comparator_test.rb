@@ -29,7 +29,7 @@ class CustomComparatorTest < SafeTest
         Suture.create(:time_goes_on, {
           :old => @subject,
           :args => [],
-          :record_calls => true,
+          :record_calls => true
         })
       end
     }
@@ -45,14 +45,14 @@ class CustomComparatorTest < SafeTest
         :old => @subject,
         :args => [],
         :record_calls => true,
-        :comparator => lambda { |recorded, actual| recorded.created_at < actual.created_at },
+        :comparator => lambda { |recorded, actual| recorded.created_at < actual.created_at }
       })
     end
 
     # This makes sense, because the recorded created_at will always be less.
     Suture.verify(:time_goes_on, {
       :subject => @subject,
-      :comparator => lambda { |recorded, actual| recorded.created_at < actual.created_at },
+      :comparator => lambda { |recorded, actual| recorded.created_at < actual.created_at }
     })
   end
 
@@ -62,7 +62,7 @@ class CustomComparatorTest < SafeTest
     Suture.create(:time_goes_on, {
       :old => @subject,
       :args => [],
-      :record_calls => true,
+      :record_calls => true
     })
 
     # This will fail because the comparator is expecting greater than instead of
@@ -70,7 +70,7 @@ class CustomComparatorTest < SafeTest
     assert_raises(Suture::Error::VerificationFailed) do
       Suture.verify(:time_goes_on, {
         :subject => @subject,
-        :comparator => lambda { |recorded, actual| recorded.created_at > actual.created_at },
+        :comparator => lambda { |recorded, actual| recorded.created_at > actual.created_at }
       })
     end
   end
@@ -94,24 +94,24 @@ class CustomComparatorTest < SafeTest
         :old => @subject,
         :args => [],
         :record_calls => true,
-        :comparator => MyComparator.new,
+        :comparator => MyComparator.new
       })
       Suture.create(:just_returns_an_array, {
         :old => lambda { [1, 2, 3] },
         :args => [],
         :record_calls => true,
-        :comparator => MyComparator.new,
+        :comparator => MyComparator.new
       })
     end
 
     # This makes sense, because the recorded created_at will always be less.
     Suture.verify(:time_goes_on, {
       :subject => @subject,
-      :comparator => MyComparator.new,
+      :comparator => MyComparator.new
     })
     Suture.verify(:just_returns_an_array, {
       :subject => lambda { [1, 2, 3] },
-      :comparator => MyComparator.new,
+      :comparator => MyComparator.new
     })
   end
 end

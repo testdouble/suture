@@ -7,7 +7,7 @@ module Suture
         :active_record_excluded_attributes => (
           options[:active_record_excluded_attributes] ||
             DEFAULT_ACTIVE_RECORD_EXCLUDED_ATTRIBUTES
-        ).map(&:to_s),
+        ).map(&:to_s)
       }
     end
 

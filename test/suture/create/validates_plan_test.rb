@@ -11,7 +11,7 @@ module Suture
 
     def test_valid_plan
       plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
-                             :raise_on_result_mismatch => true)
+        :raise_on_result_mismatch => true)
 
       result = @subject.validate(plan)
 
@@ -102,7 +102,7 @@ module Suture
 
     def test_raise_when_comparator_is_defined_and_not_callable
       plan = Value::Plan.new(:name => :a, :old => lambda {}, :args => [],
-                             :comparator => "Object#method")
+        :comparator => "Object#method")
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -116,7 +116,7 @@ module Suture
 
     def test_raise_when_record_calls_and_nil_database_path
       plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
-                             :record_calls => true, :database_path => nil)
+        :record_calls => true, :database_path => nil)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -129,8 +129,8 @@ module Suture
 
     def test_raise_when_record_calls_and_call_both_are_both_set
       plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
-                             :record_calls => true, :database_path => true,
-                             :call_both => true)
+        :record_calls => true, :database_path => true,
+        :call_both => true)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -150,8 +150,8 @@ module Suture
 
     def test_raise_when_record_calls_and_fallback_on_error_are_both_set
       plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
-                             :record_calls => true, :database_path => true,
-                             :fallback_on_error => true)
+        :record_calls => true, :database_path => true,
+        :fallback_on_error => true)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -167,7 +167,7 @@ module Suture
 
     def test_raise_when_call_both_and_fallback_on_error_are_both_set
       plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
-                             :call_both => true, :fallback_on_error => true)
+        :call_both => true, :fallback_on_error => true)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -183,7 +183,7 @@ module Suture
 
     def test_raise_when_fallback_on_error_does_not_have_both_paths
       plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
-                             :fallback_on_error => true)
+        :fallback_on_error => true)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 
@@ -199,7 +199,7 @@ module Suture
 
     def test_raise_when_raise_mismatch_is_set_for_non_call_both
       plan = Value::Plan.new(:name => :pants, :old => lambda {}, :args => [],
-                             :raise_on_result_mismatch => false)
+        :raise_on_result_mismatch => false)
 
       error = assert_raises(Error::InvalidPlan) { @subject.validate(plan) }
 

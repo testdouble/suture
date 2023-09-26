@@ -15,7 +15,7 @@ class TestTest < SafeTest
 
     Suture.verify(:add, {
       :subject => @subject.method(:old_add),
-      :after_subject => lambda { |*_args| called_after_subject = true },
+      :after_subject => lambda { |*_args| called_after_subject = true }
     })
 
     assert_equal true, called_after_subject
@@ -28,8 +28,8 @@ class TestTest < SafeTest
 
     assert_raises(Suture::Error::VerificationFailed) do
       Suture.verify(:add, {
-        :subject => lambda {|*_args| raise some_error },
-        :on_subject_error => lambda { |_, _, e| passed_error = e },
+        :subject => lambda { |*_args| raise some_error },
+        :on_subject_error => lambda { |_, _, e| passed_error = e }
       })
     end
 
@@ -42,7 +42,7 @@ class TestTest < SafeTest
 
     assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:add, {
-        :subject => @subject.method(:broken_add),
+        :subject => @subject.method(:broken_add)
       })
     }
   end
@@ -54,7 +54,7 @@ class TestTest < SafeTest
     expected_error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:add, {
         :subject => @subject.method(:really_broken_add),
-        :verify_only => 2,
+        :verify_only => 2
       })
     }
     assert_match "- Failed........1", expected_error.message
@@ -69,7 +69,7 @@ class TestTest < SafeTest
     error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:add, {
         :subject => @subject.method(:broken_add),
-        :fail_fast => false,
+        :fail_fast => false
       })
     }
     assert_match "- Failed........2", error.message
@@ -84,7 +84,7 @@ class TestTest < SafeTest
     error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:add, {
         :subject => @subject.method(:broken_add),
-        :fail_fast => true,
+        :fail_fast => true
       })
     }
     assert_match "- Failed........1", error.message
@@ -98,7 +98,7 @@ class TestTest < SafeTest
     expected_error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:add, {
         :subject => @subject.method(:really_broken_add),
-        :call_limit => 1,
+        :call_limit => 1
       })
     }
     assert_match "- Failed........1", expected_error.message
@@ -113,7 +113,7 @@ class TestTest < SafeTest
     expected_error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:add, {
         :subject => @subject.method(:really_broken_add),
-        :time_limit => 20,
+        :time_limit => 20
       })
     }
     assert_match "- Failed........2", expected_error.message
@@ -130,7 +130,7 @@ class TestTest < SafeTest
     end
 
     Suture.verify(:boom, {
-      :subject => lambda { raise ZeroDivisionError, "hi" },
+      :subject => lambda { raise ZeroDivisionError, "hi" }
     })
   end
 
@@ -145,7 +145,7 @@ class TestTest < SafeTest
 
     error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:boom, {
-        :subject => lambda { raise ZeroDivisionError, "bye!" },
+        :subject => lambda { raise ZeroDivisionError, "bye!" }
       })
     }
     expected_message = <<-MSG.gsub(/^ {4}/, "")
@@ -170,7 +170,7 @@ class TestTest < SafeTest
 
     error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:boom, {
-        :subject => lambda { return ZeroDivisionError.new("hi") },
+        :subject => lambda { return ZeroDivisionError.new("hi") }
       })
     }
     expected_message = <<-MSG.gsub(/^ {4}/, "")
@@ -195,7 +195,7 @@ class TestTest < SafeTest
 
     error = assert_raises(Suture::Error::VerificationFailed) {
       Suture.verify(:boom, {
-        :subject => lambda { raise StandardError, "hi" },
+        :subject => lambda { raise StandardError, "hi" }
       })
     }
     expected_message = <<-MSG.gsub(/^ {4}/, "")

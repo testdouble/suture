@@ -8,7 +8,7 @@ module Suture::Error
 
         The following options are required:
 
-          #{requirements.map {|(name, explanation)|
+          #{requirements.map { |(name, explanation)|
               "* #{name.inspect} - #{explanation}"
             }.join("\n  ")}
       MSG
@@ -20,7 +20,7 @@ module Suture::Error
 
         The following options were invalid:
 
-          #{invalids.map {|(name, rule)|
+          #{invalids.map { |(name, rule)|
               "* #{name.inspect} - #{rule[:message]}"
             }.join("\n  ")}
       MSG
@@ -32,7 +32,7 @@ module Suture::Error
 
         Suture isn't sure how to best handle the combination of options passed:
 
-          #{conflicts.map {|message|
+          #{conflicts.map { |message|
               "* #{message}"
             }.join("\n  ")}
       MSG

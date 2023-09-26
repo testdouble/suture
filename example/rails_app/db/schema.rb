@@ -14,9 +14,9 @@
 
 ActiveRecord::Schema.define(:version => 20160906070047) do
   create_table "items", :force => true do |t|
-    t.string   "name"
-    t.integer  "sell_in"
-    t.integer  "quality"
+    t.string "name"
+    t.integer "sell_in"
+    t.integer "quality"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

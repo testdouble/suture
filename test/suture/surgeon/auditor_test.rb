@@ -119,7 +119,7 @@ module Suture::Surgeon
         :old => lambda { 8 },
         :new => lambda { 7 },
         :args => [],
-        :comparator => lambda {|old, new| old < 10 && new < 10 })
+        :comparator => lambda { |old, new| old < 10 && new < 10 })
 
       result = @subject.operate(plan)
 

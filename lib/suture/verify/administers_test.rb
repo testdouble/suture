@@ -14,14 +14,14 @@ module Suture
         result = Value::Result.returned(@scalpel.cut(test_plan, :subject, observation.args))
         {
           :new_result => result,
-          :passed => compares_results.compare(observation.result, result),
+          :passed => compares_results.compare(observation.result, result)
         }
       rescue => error
         if observation.result.errored?
           result = Value::Result.errored(error)
           {
             :new_result => result,
-            :passed => compares_results.compare(observation.result, result),
+            :passed => compares_results.compare(observation.result, result)
           }
         else
           {:error => error, :passed => false}

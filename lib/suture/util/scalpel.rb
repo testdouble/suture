@@ -43,7 +43,7 @@ module Suture::Util
     end
 
     def expected_error?(plan, error)
-      plan.expected_error_types.any? {|e| error.is_a?(e) }
+      plan.expected_error_types.any? { |e| error.is_a?(e) }
     end
 
     def args_for(plan, args_override)

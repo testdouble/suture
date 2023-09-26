@@ -10,7 +10,7 @@ module Suture::Surgeon
           dictaphone.record(result)
         end
       rescue => error
-        if plan.expected_error_types.any? {|e| error.is_a?(e) }
+        if plan.expected_error_types.any? { |e| error.is_a?(e) }
           dictaphone.record_error(error)
         end
         raise error

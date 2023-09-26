@@ -76,7 +76,7 @@ class QualityUpdater
     [/^Sulfuras, Hand of Ragnaros$/, NoopQualityUpdater.new],
     [/^Aged Brie$/, BrieQualityUpdater.new],
     [/^Backstage passes to a TAFKAL80ETC concert$/, BackstagePassQualityUpdater.new],
-    [/^Conjured /, ConjuredItemQualityUpdater.new],
+    [/^Conjured /, ConjuredItemQualityUpdater.new]
   ]
 
   def updater_for(item)

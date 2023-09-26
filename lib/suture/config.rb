@@ -8,7 +8,7 @@ module Suture
     :log_stdout => true,
     :log_io => nil,
     :log_file => nil,
-    :raise_on_result_mismatch => true,
+    :raise_on_result_mismatch => true
   }
 
   def self.config(config = {})
