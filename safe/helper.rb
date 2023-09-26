@@ -1,6 +1,4 @@
 require "minitest/autorun"
-require "pry"
-
 require "suture"
 
 require "fileutils"

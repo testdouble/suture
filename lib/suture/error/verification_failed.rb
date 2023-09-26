@@ -117,7 +117,7 @@ module Suture::Error
           Expected #{expected.result.errored? ? "error raised" : "returned value"}: ```
             #{expected.result.value.inspect}
           ```
-          Actual #{failure[:error] || failure[:new_result].errored? ? "error raised" : "returned value"}: ```
+          Actual #{(failure[:error] || failure[:new_result].errored?) ? "error raised" : "returned value"}: ```
             #{if failure[:error]
                 stringify_error(failure[:error])
               else

@@ -46,7 +46,7 @@ module Suture
     def should_skip?(test_plan, failed_fast, call_count, timer)
       (test_plan.fail_fast && failed_fast) ||
         (test_plan.call_limit && call_count >= test_plan.call_limit) ||
-        timer&.time_up?
+        (timer && timer.time_up?)
     end
 
     def build_test_cases(test_plan)

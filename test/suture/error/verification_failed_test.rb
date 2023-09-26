@@ -89,7 +89,7 @@ module Suture::Error
           :time_limit => 30, # (in seconds)
           :error_message_limit => nil, # (no limit)
           :random_seed => 998,
-          :comparator => Suture::Comparator.new({:active_record_excluded_attributes=>[\"updated_at\", \"created_at\"]}).new, # (in: `lib/suture/comparator.rb:14`)
+          :comparator => Suture::Comparator.new({:active_record_excluded_attributes=>["updated_at", "created_at"]}).new, # (in: `lib/suture/comparator.rb:14`)
         }
         ```
 

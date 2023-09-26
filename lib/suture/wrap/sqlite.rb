@@ -16,7 +16,7 @@ module Suture::Wrap
         SQL
         db.execute("insert or ignore into suture_schema_info values (?)", [SCHEMA_VERSION])
         actual_schema_version = db.execute("select * from suture_schema_info").first[0]
-        if SCHEMA_VERSION != actual_schema_version
+        if actual_schema_version != SCHEMA_VERSION
           raise Suture::Error::SchemaVersion.new(SCHEMA_VERSION, actual_schema_version)
         end
 
