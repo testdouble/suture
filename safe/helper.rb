@@ -1,8 +1,8 @@
-require "minitest/autorun"
+require "tldr"
 require "suture"
 
 require "fileutils"
-class SafeTest < Minitest::Test
+class SafeTest < TLDR
   def setup
     super
     clean("db")

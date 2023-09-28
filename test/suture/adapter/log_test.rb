@@ -2,6 +2,8 @@ require "suture/adapter/log"
 
 module Suture::Adapter
   class LogTest < UnitTest
+    dont_run_these_in_parallel!
+
     class FakeThing
       include Suture::Adapter::Log
 

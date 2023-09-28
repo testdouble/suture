@@ -1,10 +1,11 @@
-require "minitest/autorun"
 require "gimme"
+require "tldr"
 
 require "suture/config"
 require "support/assertions"
-class UnitTest < Minitest::Test
+class UnitTest < TLDR
   include Support::Assertions
+  include TLDR::Assertions::MinitestCompatibility
 
   def setup
     super

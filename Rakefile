@@ -1,29 +1,16 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
+require "tldr/rake"
 
-Rake::TestTask.new(:unit) do |t|
-  t.libs << "test"
-  t.libs << "lib"
-  t.test_files = FileList["test/helper.rb", "test/**/*_test.rb"]
-end
+TLDR::Task.new(:name => :unit)
+TLDR::Task.new(:name => :safe, :config => TLDR::Config.new(
+  :parallel => false,
+  :load_paths => ["safe", "lib"],
+  :helper => "safe/helper.rb",
+  :paths => FileList["safe/**/*_test.rb"]
+))
 
-Rake::TestTask.new(:safe) do |t|
-  t.libs << "safe"
-  t.libs << "lib"
-  t.test_files = FileList["safe/helper.rb", "safe/**/*_test.rb"]
-end
-
-Rake::TestTask.new(:test) do |t|
-  t.libs << "test"
-  t.libs << "safe"
-  t.libs << "lib"
-  t.test_files = FileList[
-    "test/helper.rb",
-    "test/**/*_test.rb",
-    "safe/helper.rb",
-    "safe/**/*_test.rb"
-  ]
-end
+task :test => [:unit, :safe]
 
 require "standard/rake"
 task :default => [:test, :"standard:fix"]

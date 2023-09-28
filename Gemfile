@@ -4,6 +4,6 @@ source "https://rubygems.org"
 gemspec
 
 gem "rake"
-gem "minitest"
+gem "tldr"
 gem "gimme"
 gem "standard"
