@@ -3,6 +3,8 @@ require "suture"
 
 require "fileutils"
 class SafeTest < TLDR
+  dont_run_these_in_parallel!
+
   def setup
     super
     clean("db")

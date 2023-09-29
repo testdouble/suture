@@ -68,7 +68,7 @@ GEM
       attr_extras (>= 6.2.4)
       diff-lcs
       patience_diff
-    tldr (0.5.0)
+    tldr (0.6.0)
       concurrent-ruby (~> 1.2)
       super_diff (~> 0.10)
     unicode-display_width (2.4.2)
