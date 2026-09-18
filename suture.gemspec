@@ -22,4 +22,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "sqlite3"
   spec.add_dependency "backports"
   spec.add_dependency "bar-of-progress", ">= 0.1.3"
+  spec.add_dependency "bigdecimal"
 end
