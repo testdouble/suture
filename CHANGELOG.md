@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.2.0](https://github.com/testdouble/suture/tree/v1.2.0) (2026-09-18)
+[Full Changelog](https://github.com/testdouble/suture/compare/v1.1.2...v1.2.0)
+
+**Implemented enhancements:**
+
+- Add support for Ruby 3.4 and 4.0, including fixes for missing stdlib gem dependencies
+
 ## [v1.1.2](https://github.com/testdouble/suture/tree/v1.1.2) (2018-11-12)
 [Full Changelog](https://github.com/testdouble/suture/compare/v1.1.1...v1.1.2)
 
